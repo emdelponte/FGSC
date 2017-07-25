@@ -1,0 +1,47 @@
+@import url('https://fonts.googleapis.com/css?family=Pragati+Narrow');
+@import url('https://fonts.googleapis.com/css?family=Ubuntu');
+
+.rev{
+font-family: 'Ubuntu', sans-serif;
+font-size:18px;
+padding-bottom:5px;
+}
+body {
+     font-size: 16px;
+     font-family: 'Pragati Narrow', sans-serif
+     }
+
+img {
+        padding: 2px
+}
+p    {
+     padding-left: 15px; 
+     padding-right: 15px;
+     padding-top:10px;
+     padding-bottom:2px
+     }
+.td-limit {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+.navbar-inverse
+{
+ background-color: #003366}
+}
+body{color: #339966}
+
+.table {
+        width: 100%     
+        
+    }
+.table td {
+    padding: 7px;
+    font-size: 110%
+    
+}
+.img-circle {
+    border-radius: 50%;
+    padding:10px;
+}
+
