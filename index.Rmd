@@ -24,6 +24,20 @@ library(viridis)
 ```{r load data, include=FALSE}
 Sys.setlocale("LC_ALL", 'pt_BR.UTF-8')
 # carrega os dados com lat e long
+
+  
+#read_excel_allsheets <- function(filename) {
+#    sheets <- readxl::excel_sheets(filename)
+#    x <-    lapply(sheets, function(X) readxl::read_excel(filename, sheet = X))
+#    names(x) <- sheets
+#    x
+#}
+
+#fgsc<- read_excel_allsheets("fgsc-dat2.xlsx")
+#fgsc$`Machado et al 2015`
+#rbind(fgsc$`Machado et al 2015`, fgsc$`Machado et al 2017`)
+
+
 fgsc2 <- read_excel("fgsc-dat2.xlsx", 3)
 fgsc21 <- read_excel("fgsc-dat2.xlsx", 2)
 fgsc22 <- read_excel("fgsc-dat2.xlsx", 4)
@@ -33,10 +47,15 @@ fgsc25 <- read_excel("fgsc-dat2.xlsx", 7)
 fgsc26 <- read_excel("fgsc-dat2.xlsx", 8)
 fgsc29 <- read_excel("fgsc-dat2.xlsx", 9)
 fgsc210 <- read_excel("fgsc-dat2.xlsx", 10)
-fgsc2 <- rbind(fgsc2, fgsc21, fgsc22, fgsc23, fgsc24, fgsc25, fgsc26, fgsc29, fgsc210)
+fgsc211 <- read_excel("fgsc-dat2.xlsx", 11)
+fgsc212 <- read_excel("fgsc-dat2.xlsx", 12)
+fgsc213 <- read_excel("fgsc-dat2.xlsx", 13)
+fgsc214 <- read_excel("fgsc-dat2.xlsx", 14)
+fgsc215 <- read_excel("fgsc-dat2.xlsx", 15)
+fgsc216 <- read_excel("fgsc-dat2.xlsx", 16)
+fgsc2 <- rbind(fgsc2, fgsc21, fgsc22, fgsc23, fgsc24, fgsc25, fgsc26, fgsc29, fgsc210, fgsc211, fgsc212, fgsc213, fgsc214, fgsc215, fgsc216)
 fgsc2$Latitude <- round(jitter(fgsc2$Latitude, factor = 6),4)
 fgsc2$Longitude <- round(jitter(fgsc2$Longitude, factor = 6),4)
-
 
 fgsc <- fgsc2 %>% select(c(1,2, 6,7, 8,9, 10, 14, 19, 20, 21))
 library(plyr)
@@ -44,7 +63,10 @@ fgsc$FGSC <- revalue(fgsc$FGSC, c("F. graminearum" = "Fgra",
                                   "F. meridionale" = "Fmer",
                                   "F. cortaderiae" = "Fcor",
                                   "F. austroamericanum" = "Faus",
-                                  "F. asiaticum" = "Fasi"
+                                  "F. asiaticum" = "Fasi", 
+                                  "F. louisianense" = "Flou", 
+                                  "F. boothii" = "Fboo",
+                                  "F. gerlachii" = "Fger"
                                   ))
 
 ```
@@ -59,7 +81,7 @@ sd <- SharedData$new(fgsc)
 sd2 <- SharedData$new(fgsc2)
 ```
 
-Main dashboard
+<i class="fa fa-home" aria-hidden="true"></i> Main dashboard
 ==================
 
 
@@ -68,28 +90,26 @@ Column {}
 
 
 ### Filters
-
-
-**Welcome!**  to the **Global *Fusarium graminearum* species complex (FGSC) database**, a curated collection of information on strains isolated from different hosts and which were identified to phylogenetic species and reported in peer-reviewed scientific articles. Apply the filters below to update the table, the plot and map according to selected fields. Use backspace to clean up your search and start again. Use the search field in the table below for quick browsing.
-
-
 <table class= "table">
 <tr>
-<td width=50%>
+<td width=40%>
+The **Global FGSC database** is a curated database of peer-reviewed information of *F. graminearum* species complex (FGSC) members strains. Select filter criteria at the right to update the table, the plot and the geographic map. Use backspace to clean up your search and start again. The search field on top of the table allows for quick filtering.
 
-```{r}
-filter_select("Pub1", "Select article(s)", sd, ~Pub1)
-filter_select("Country", "Select Country", sd, ~Country)
-```
+N. of isolates: `r nrow(fgsc)`  
+Last update: `r Sys.Date()`
 
 </td><td>
 ```{r}
-
-filter_select("Host", "Host", sd, ~Host)
-filter_select("Tri_genotype", "Select genotype(s)", sd, ~Tri_genotype)
-#filter_select("FGSC", "Species", sd, ~FGSC)
+filter_select("Pub1", "Select article(s)", sd, ~Pub1)
+filter_select("Country", "Select Country", sd, ~Country)
+filter_slider("Year", "Year of isolation", sd, ~Year)
 ```
-
+</td><td>
+```{r}
+filter_select("Host", "Host", sd, ~Host)
+filter_select("FGSC", "Species", sd, ~FGSC)
+filter_select("Tri_genotype", "Select genotype(s)", sd, ~Tri_genotype)
+```
 </td></tr></table>
 
 
@@ -124,33 +144,32 @@ datatable(sd,
 
 
 
-Column {data-width=400}
+Column {data-width=430}
 ----------------------------------
 
-###  <i class="fa fa-map" aria-hidden="true"></i> Map of isolates
+###  <i class="fa fa-map" aria-hidden="true"></i> Geographic map
 
 ```{r}
 library(viridis)
-
-pal <- colorFactor("viridis", domain = c("Fgra", "Fmer", "Fasi", "Fcor", "F. aus"))
+library(leaflet)
+pal <- colorFactor("viridis", domain = c("Fgra", "Fmer", "Fasi", "Fcor", "Faus", "Flou", "Fboo", "Fger"))
 
 library(magrittr)
 leaflet(sd) %>% 
-  setView(-49.65, -1.0285, zoom = 2) %>% 
-  addProviderTiles(providers$OpenStreetMap.Mapnik)   %>%
-   addTiles() %>% 
-  addCircleMarkers(group = "Species", color = NA, fillColor = ~pal(FGSC), radius = 5, fillOpacity = 0.9) %>% 
+  addProviderTiles(providers$OpenStreetMap)   %>%
+  addTiles() %>% 
+  addCircleMarkers(group = "Species", color = NA, fillColor = ~pal(FGSC), radius = 5, fillOpacity = 0.9, label = ~Tri_genotype) %>% 
 addLegend("bottomright", pal = pal, values = ~FGSC, title = "Species",  opacity = 1) %>%  
 addEasyButton(easyButton(
     icon="fa-globe", title="Back to initial view",
-    onClick=JS("function(btn, map){ map.setZoom(2); }"))) 
+    onClick=JS("function(btn, map){ map.setZoom(1); }"))) 
 
 ```
 
 
 
 
-### <i class="fa fa-bar-chart" aria-hidden="true"></i> Trichothecene genotype frequency plot
+### <i class="fa fa-bar-chart" aria-hidden="true"></i> Trichothecene genotype by species frequency plot
 
 
 ```{r}
@@ -168,7 +187,173 @@ addEasyButton(easyButton(
 
 
 sd %>% 
-  plot_ly(x = ~Tri_genotype, 
+  plot_ly(x = ~FGSC, 
+         color=~Tri_genotype,
+      
+          colors = viridis_pal(option = "D")(3)) %>% 
+  layout(barmode = 'stack',
+         margin=list(l=40,r=40,t=40,b=40))
+
+ #add_trace(x = ~FGSC)
+
+
+```
+
+
+
+
+
+
+
+<i class="fa fa-map" aria-hidden="true"></i> Map and chart
+============
+
+
+
+Column {data-width=230}
+----------------------------------
+
+### Quick filter
+
+
+```{r}
+filter_slider("Year", "Year of isolation", sd, ~Year)
+filter_select("Pub1", "Select article(s)", sd, ~Pub1)
+filter_select("Country", "Select Country", sd, ~Country)
+filter_select("Host", "Host", sd, ~Host)
+filter_select("FGSC", "Species", sd, ~FGSC)
+filter_select("Tri_genotype", "Select genotype(s)", sd, ~Tri_genotype)
+```
+
+
+
+
+
+Column {.tabset}
+----------------------------------
+
+### <i class="fa fa-map" aria-hidden="true"></i> Species map
+
+
+```{r}
+
+library(htmltools)
+pal <- colorFactor("viridis", domain = c("Fgra", "Fmer", "Fasi", "Fcor", "Faus", "Flou", "Fboo", "Fger"))
+leaflet(data = sd) %>%
+ addProviderTiles(providers$OpenStreetMap.Mapnik)  %>% 
+    addCircleMarkers(group = "FGSC", radius = 7, fillOpacity = 0.8,  weight=1, color = NA, fillColor = ~pal(FGSC), label = ~Tri_genotype) %>%
+addLegend("topright", pal = pal, values = ~FGSC, title = "Species",  opacity = 1 ) %>%   
+ addEasyButton(easyButton(
+    icon="fa-globe", title="Back to initial view",
+    onClick=JS("function(btn, map){ map.setZoom(2); }"))) 
+
+
+```
+
+
+
+### <i class="fa fa-map" aria-hidden="true"></i> Tri genotype map
+
+
+```{r}
+
+library(htmltools)
+pal <- colorFactor("viridis", domain = c("15-ADON", "3-ADON", "NIV", "NA"))
+leaflet(data = sd) %>%
+ addProviderTiles(providers$OpenStreetMap.Mapnik)  %>% 
+    addCircleMarkers(group = "Tri_genotype", radius = 7, fillOpacity = 0.8,  weight=1, color = NA, fillColor = ~pal(Tri_genotype), label = ~Tri_genotype) %>%
+addLegend("topright", pal = pal, values = ~Tri_genotype, title = "Species",  opacity = 1 ) %>%   
+ addEasyButton(easyButton(
+    icon="fa-globe", title="Back to initial view",
+    onClick=JS("function(btn, map){ map.setZoom(2); }"))) 
+
+
+```
+
+### <i class="fa fa-bar-chart" aria-hidden="true"></i> Tri genotype by species 
+
+
+```{r}
+
+#fgsc$FGSC2 <- with(fgsc, reorder(FGSC, FGSC, function(x) length(x)))
+#p<-sd %>% 
+# ggplot(aes(FGSC))+
+# geom_bar(aes(fill = Tri_genotype)) +
+# theme_grey() +
+# scale_fill_viridis(discrete = TRUE)+
+# coord_flip()+
+# theme(legend.position = "bottom", panel.background = element_rect(fill = "grey97"))+
+# labs(fill = "Tri genotype", y = "Frequency", x = "", title = "")
+#(gg <- ggplotly(p))
+
+
+sd %>% 
+  plot_ly(x = ~FGSC, 
+         color=~Tri_genotype,
+      
+          colors = viridis_pal(option = "D")(3)) %>% 
+  layout(barmode = 'stack',
+         margin=list(l=40,r=40,t=40,b=40))
+
+ #add_trace(x = ~FGSC)
+
+
+```
+
+
+
+
+### <i class="fa fa-bar-chart" aria-hidden="true"></i> Tri genotypes by year
+
+
+```{r}
+
+#fgsc$FGSC2 <- with(fgsc, reorder(FGSC, FGSC, function(x) length(x)))
+#p<-sd %>% 
+# ggplot(aes(FGSC))+
+# geom_bar(aes(fill = Tri_genotype)) +
+# theme_grey() +
+# scale_fill_viridis(discrete = TRUE)+
+# coord_flip()+
+# theme(legend.position = "bottom", panel.background = element_rect(fill = "grey97"))+
+# labs(fill = "Tri genotype", y = "Frequency", x = "", title = "")
+#(gg <- ggplotly(p))
+
+
+sd %>% 
+  plot_ly(x = ~Year, 
+         color=~Tri_genotype,
+      
+          colors = viridis_pal(option = "D")(3)) %>% 
+  layout(barmode = 'stack',
+         margin=list(l=40,r=40,t=40,b=40))
+
+ #add_trace(x = ~FGSC)
+
+
+```
+
+
+
+### <i class="fa fa-bar-chart" aria-hidden="true"></i> Tri genotypes by country
+
+
+```{r}
+
+#fgsc$FGSC2 <- with(fgsc, reorder(FGSC, FGSC, function(x) length(x)))
+#p<-sd %>% 
+# ggplot(aes(FGSC))+
+# geom_bar(aes(fill = Tri_genotype)) +
+# theme_grey() +
+# scale_fill_viridis(discrete = TRUE)+
+# coord_flip()+
+# theme(legend.position = "bottom", panel.background = element_rect(fill = "grey97"))+
+# labs(fill = "Tri genotype", y = "Frequency", x = "", title = "")
+#(gg <- ggplotly(p))
+
+
+sd %>% 
+  plot_ly(x = ~Country, 
          color=~Tri_genotype,
       
           colors = viridis_pal(option = "D")(3)) %>% 
@@ -187,9 +372,9 @@ sd %>%
 
 
 
+<i class="fa fa-table" aria-hidden="true"></i> Full Table
+=================
 
-<i class="fa fa-table" aria-hidden="true"></i> Full table
-===========
 ```{r}
 datatable(fgsc2, 
           extensions = c('Buttons', 'ColReorder'),
@@ -204,52 +389,6 @@ datatable(fgsc2,
   lengthMenu = c(100, 250, 500))) %>% 
 formatStyle(c(1:19),
   fontSize = '90%')
-```
-
-
-<i class="fa fa-map" aria-hidden="true"></i> Full page map 
-============
-
-
-
-Column {data-width=100}
-----------------------------------
-
-### Quick filter
-
-```{r}
-filter_checkbox("Tri_genotype", "Tricothecene genotype", sd, ~Tri_genotype, inline = FALSE)
-
-filter_checkbox("Host", "Host", sd, ~Host, inline = FALSE)
-
-```
-
-
-
-Column {.tabset tabset-fade}
-----------------------------------
-
-
-
-### Full map
-
-
-```{r}
-
-
-
-library(htmltools)
-pal <- colorFactor("viridis", domain = c("Fgra", "Fmer", "Fasi", "Fcor", "Faus"))
-leaflet(data = sd) %>%
- setView(-49.65, -25.0285, zoom = 3) %>% 
- addProviderTiles(providers$OpenStreetMap.Mapnik)  %>% 
-    addCircleMarkers(group = "FGSC", radius = 7, fillOpacity = 0.8,  weight=1, color = NA, fillColor = ~pal(FGSC), label = ~Tri_genotype) %>%
-addLegend("topright", pal = pal, values = ~FGSC, title = "Species",  opacity = 1 ) %>%   
- addEasyButton(easyButton(
-    icon="fa-globe", title="Back to initial view",
-    onClick=JS("function(btn, map){ map.setZoom(5); }"))) 
-
-
 ```
 
 

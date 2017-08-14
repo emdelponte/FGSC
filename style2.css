@@ -7,7 +7,7 @@ font-size:18px;
 padding-bottom:5px;
 }
 body {
-     font-size: 16px;
+     font-size: 15px;
      font-family: 'Pragati Narrow', sans-serif
      }
 
@@ -15,7 +15,7 @@ img {
         padding: 2px
 }
 p    {
-     padding-left: 15px; 
+     padding-left: 15px;
      padding-right: 15px;
      padding-top:10px;
      padding-bottom:2px
@@ -32,13 +32,13 @@ p    {
 body{color: #339966}
 
 .table {
-        width: 100%     
-        
+        width: 100%
+
     }
 .table td {
     padding: 7px;
-    font-size: 110%
-    
+    font-size: 100%
+
 }
 .img-circle {
     border-radius: 50%;
