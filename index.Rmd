@@ -38,27 +38,34 @@ Sys.setlocale("LC_ALL", 'pt_BR.UTF-8')
 #rbind(fgsc$`Machado et al 2015`, fgsc$`Machado et al 2017`)
 
 
-fgsc2 <- read_excel("fgsc-dat2.xlsx", 3)
-fgsc21 <- read_excel("fgsc-dat2.xlsx", 2)
-fgsc22 <- read_excel("fgsc-dat2.xlsx", 4)
-fgsc23 <- read_excel("fgsc-dat2.xlsx", 5)
-fgsc24 <- read_excel("fgsc-dat2.xlsx", 6)
-fgsc25 <- read_excel("fgsc-dat2.xlsx", 7)
-fgsc26 <- read_excel("fgsc-dat2.xlsx", 8)
-fgsc29 <- read_excel("fgsc-dat2.xlsx", 9)
-fgsc210 <- read_excel("fgsc-dat2.xlsx", 10)
-fgsc211 <- read_excel("fgsc-dat2.xlsx", 11)
-fgsc212 <- read_excel("fgsc-dat2.xlsx", 12)
-fgsc213 <- read_excel("fgsc-dat2.xlsx", 13)
-fgsc214 <- read_excel("fgsc-dat2.xlsx", 14)
-fgsc215 <- read_excel("fgsc-dat2.xlsx", 15)
-fgsc216 <- read_excel("fgsc-dat2.xlsx", 16)
-fgsc2 <- rbind(fgsc2, fgsc21, fgsc22, fgsc23, fgsc24, fgsc25, fgsc26, fgsc29, fgsc210, fgsc211, fgsc212, fgsc213, fgsc214, fgsc215, fgsc216)
+s3 <- read_excel("fgsc-dat2.xlsx", 3)
+s4 <- read_excel("fgsc-dat2.xlsx", 4)
+s5 <- read_excel("fgsc-dat2.xlsx", 5)
+s6 <- read_excel("fgsc-dat2.xlsx", 6)
+s7 <- read_excel("fgsc-dat2.xlsx", 7)
+s8 <- read_excel("fgsc-dat2.xlsx", 8)
+s9 <- read_excel("fgsc-dat2.xlsx", 9)
+s10 <- read_excel("fgsc-dat2.xlsx", 10)
+s11 <- read_excel("fgsc-dat2.xlsx", 11)
+s12 <- read_excel("fgsc-dat2.xlsx", 12)
+s13 <- read_excel("fgsc-dat2.xlsx", 13)
+s14 <- read_excel("fgsc-dat2.xlsx", 14)
+s15 <- read_excel("fgsc-dat2.xlsx", 15)
+s16 <- read_excel("fgsc-dat2.xlsx", 16)
+s17 <- read_excel("fgsc-dat2.xlsx", 17)
+s18 <- read_excel("fgsc-dat2.xlsx", 18)
+s19 <- read_excel("fgsc-dat2.xlsx", 19)
+s20 <- read_excel("fgsc-dat2.xlsx", 20)
+s21 <- read_excel("fgsc-dat2.xlsx", 21)
+s30 <- read_excel("fgsc-dat2.xlsx", 30)
+s31 <- read_excel("fgsc-dat2.xlsx", 31)
+fgsc2 <- rbind(s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14, s15, s16, s17, s18, s19, s20, s21, s30, s31)
 fgsc2$Latitude <- round(jitter(fgsc2$Latitude, factor = 6),4)
 fgsc2$Longitude <- round(jitter(fgsc2$Longitude, factor = 6),4)
 
-fgsc <- fgsc2 %>% select(c(1,2, 6,7, 8,9, 10, 14, 19, 20, 21))
+fgsc <- fgsc2 %>% select(c(1,2,6,7, 8,9, 10, 14, 19, 20, 21))
 library(plyr)
+table(fgsc$FGSC)
 fgsc$FGSC <- revalue(fgsc$FGSC, c("F. graminearum" = "Fgra",
                                   "F. meridionale" = "Fmer",
                                   "F. cortaderiae" = "Fcor",
@@ -66,9 +73,15 @@ fgsc$FGSC <- revalue(fgsc$FGSC, c("F. graminearum" = "Fgra",
                                   "F. asiaticum" = "Fasi", 
                                   "F. louisianense" = "Flou", 
                                   "F. boothii" = "Fboo",
-                                  "F. gerlachii" = "Fger"
+                                  "F. gerlachii" = "Fger", 
+                                  "F. ussurianum" = "Fuss",
+                                  "F. vorosii" = "Fvor"
                                   ))
-
+fgsc$Year <- as.numeric(fgsc$Year)
+fgsc <- fgsc %>% 
+  filter(FGSC != 30) %>% 
+  filter(FGSC != "F. cerealis") %>% 
+  filter(FGSC != "F. culmorum")
 ```
 
 
@@ -240,7 +253,7 @@ Column {.tabset}
 library(htmltools)
 pal <- colorFactor("viridis", domain = c("Fgra", "Fmer", "Fasi", "Fcor", "Faus", "Flou", "Fboo", "Fger"))
 leaflet(data = sd) %>%
- addProviderTiles(providers$OpenStreetMap.Mapnik)  %>% 
+ addProviderTiles(providers$OpenStreetMap)  %>% 
     addCircleMarkers(group = "FGSC", radius = 7, fillOpacity = 0.8,  weight=1, color = NA, fillColor = ~pal(FGSC), label = ~Tri_genotype) %>%
 addLegend("topright", pal = pal, values = ~FGSC, title = "Species",  opacity = 1 ) %>%   
  addEasyButton(easyButton(
@@ -260,7 +273,7 @@ addLegend("topright", pal = pal, values = ~FGSC, title = "Species",  opacity = 1
 library(htmltools)
 pal <- colorFactor("viridis", domain = c("15-ADON", "3-ADON", "NIV", "NA"))
 leaflet(data = sd) %>%
- addProviderTiles(providers$OpenStreetMap.Mapnik)  %>% 
+ addProviderTiles(providers$OpenStreetMap)  %>% 
     addCircleMarkers(group = "Tri_genotype", radius = 7, fillOpacity = 0.8,  weight=1, color = NA, fillColor = ~pal(Tri_genotype), label = ~Tri_genotype) %>%
 addLegend("topright", pal = pal, values = ~Tri_genotype, title = "Species",  opacity = 1 ) %>%   
  addEasyButton(easyButton(
