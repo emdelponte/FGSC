@@ -186,8 +186,8 @@ pal <- colorFactor("viridis", domain = c("15-ADON", "3-ADON", "NIV", "MIXED"))
 
 library(magrittr)
 leaflet(sd) %>% 
-  addProviderTiles(providers$OpenStreetMap)   %>%
-  addTiles() %>% 
+  addTiles(urlTemplate = "https://mts1.google.com/vt/lyrs=r&hl=en&src=app&x={x}&y={y}&z={z}&s=G", attribution = 'Google') %>% 
+  
   addCircleMarkers(group = "Species", color = NA, fillColor = ~pal(Tri_genotype), radius = 5, fillOpacity = 0.9, label = ~FGSC) %>% 
 addLegend("bottomleft", pal = pal, values = ~Tri_genotype, title = "Tri genotype",  opacity = 1) %>%  
 addEasyButton(easyButton(
@@ -269,8 +269,8 @@ Column {.tabset}
 
 library(htmltools)
 pal <- colorFactor("viridis", domain = c("Fgra", "Fmer", "Fasi", "Fcor", "Faus", "Flou", "Fboo", "Fger", "Fbra", "Fboo x Fgra", "Faca", "Fuss", "Fvor"))
-leaflet(data = sd) %>%
- addProviderTiles(providers$OpenStreetMap)  %>% 
+leaflet(data = sd) %>%  
+  addTiles(urlTemplate = "https://mts1.google.com/vt/lyrs=r&hl=en&src=app&x={x}&y={y}&z={z}&s=G", attribution = 'Google') %>% 
     addCircleMarkers(group = "FGSC", radius = 7, fillOpacity = 0.8,  weight=1, color = NA, fillColor = ~pal(FGSC), label = ~FGSC) %>%
 addLegend("bottomleft", pal = pal, values = ~FGSC, title = "Species",  opacity = 1 ) %>%   
  addEasyButton(easyButton(
