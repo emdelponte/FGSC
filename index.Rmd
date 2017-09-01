@@ -37,51 +37,75 @@ Sys.setlocale("LC_ALL", 'pt_BR.UTF-8')
 #fgsc$`Machado et al 2015`
 #rbind(fgsc$`Machado et al 2015`, fgsc$`Machado et al 2017`)
 
+s2 <- read_excel("fgsc-dat4.xlsx", 2)
+s3 <- read_excel("fgsc-dat4.xlsx", 3)
+s4 <- read_excel("fgsc-dat4.xlsx", 4)
+s5 <- read_excel("fgsc-dat4.xlsx", 5)
+s6 <- read_excel("fgsc-dat4.xlsx", 6)
+s7 <- read_excel("fgsc-dat4.xlsx", 7)
+s8 <- read_excel("fgsc-dat4.xlsx", 8)
+s9 <- read_excel("fgsc-dat4.xlsx", 9)
+s10 <- read_excel("fgsc-dat4.xlsx", 10)
+s11 <- read_excel("fgsc-dat4.xlsx", 11)
+s12 <- read_excel("fgsc-dat4.xlsx", 12)
+s13 <- read_excel("fgsc-dat4.xlsx", 13)
+s14 <- read_excel("fgsc-dat4.xlsx", 14)
+s15 <- read_excel("fgsc-dat4.xlsx", 15)
+s16 <- read_excel("fgsc-dat4.xlsx", 16)
 
-s3 <- read_excel("fgsc-dat2.xlsx", 3)
-s4 <- read_excel("fgsc-dat2.xlsx", 4)
-s5 <- read_excel("fgsc-dat2.xlsx", 5)
-s6 <- read_excel("fgsc-dat2.xlsx", 6)
-s7 <- read_excel("fgsc-dat2.xlsx", 7)
-s8 <- read_excel("fgsc-dat2.xlsx", 8)
-s9 <- read_excel("fgsc-dat2.xlsx", 9)
-s10 <- read_excel("fgsc-dat2.xlsx", 10)
-s11 <- read_excel("fgsc-dat2.xlsx", 11)
-s12 <- read_excel("fgsc-dat2.xlsx", 12)
-s13 <- read_excel("fgsc-dat2.xlsx", 13)
-s14 <- read_excel("fgsc-dat2.xlsx", 14)
-s15 <- read_excel("fgsc-dat2.xlsx", 15)
-s16 <- read_excel("fgsc-dat2.xlsx", 16)
-s17 <- read_excel("fgsc-dat2.xlsx", 17)
-s18 <- read_excel("fgsc-dat2.xlsx", 18)
-s19 <- read_excel("fgsc-dat2.xlsx", 19)
-s20 <- read_excel("fgsc-dat2.xlsx", 20)
-s21 <- read_excel("fgsc-dat2.xlsx", 21)
-s30 <- read_excel("fgsc-dat2.xlsx", 30)
-s31 <- read_excel("fgsc-dat2.xlsx", 31)
-fgsc2 <- rbind(s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14, s15, s16, s17, s18, s19, s20, s21, s30, s31)
+s19 <- read_excel("fgsc-dat4.xlsx", 19)
+s20 <- read_excel("fgsc-dat4.xlsx", 20)
+s21 <- read_excel("fgsc-dat4.xlsx", 21)
+s22 <- read_excel("fgsc-dat4.xlsx", 22)
+
+s23 <- read_excel("fgsc-dat4.xlsx", 23)
+s24 <- read_excel("fgsc-dat4.xlsx", 24)
+s25 <- read_excel("fgsc-dat4.xlsx", 25)
+s26 <- read_excel("fgsc-dat4.xlsx", 26)
+s27 <- read_excel("fgsc-dat4.xlsx", 27)
+
+s29 <- read_excel("fgsc-dat4.xlsx", 29)
+
+s30 <- read_excel("fgsc-dat4.xlsx", 30)
+s31 <- read_excel("fgsc-dat4.xlsx", 31)
+s32 <- read_excel("fgsc-dat4.xlsx", 32)
+s33 <- read_excel("fgsc-dat4.xlsx", 33)
+fgsc2 <- rbind(s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14, s15, s16, s19, s20, s21, s22, s23, s24, s25, s26, s27, s29, s30, s31, s32, s33)
 fgsc2$Latitude <- round(jitter(fgsc2$Latitude, factor = 6),4)
 fgsc2$Longitude <- round(jitter(fgsc2$Longitude, factor = 6),4)
 
-fgsc <- fgsc2 %>% select(c(1,2,6,7, 8,9, 10, 14, 19, 20, 21))
+fgsc <- fgsc2 %>% select(c(13,2,6,7, 8,9, 10, 14, 19, 20, 21))
 library(plyr)
 table(fgsc$FGSC)
-fgsc$FGSC <- revalue(fgsc$FGSC, c("F. graminearum" = "Fgra",
-                                  "F. meridionale" = "Fmer",
-                                  "F. cortaderiae" = "Fcor",
+fgsc$FGSC <- revalue(fgsc$FGSC, 
+                     c("F. graminearum" = "Fgra",
+                            "F. meridionale" = "Fmer",
+                              "F. cortaderiae" = "Fcor",
                                   "F. austroamericanum" = "Faus",
                                   "F. asiaticum" = "Fasi", 
                                   "F. louisianense" = "Flou", 
                                   "F. boothii" = "Fboo",
                                   "F. gerlachii" = "Fger", 
                                   "F. ussurianum" = "Fuss",
-                                  "F. vorosii" = "Fvor"
+                                  "F. vorosii" = "Fvor", 
+                       "F. acaciae-mearnsii" = "Faca", 
+                       "F. boothii X F. graminearum hybrid" = "Fboo x Fgra",
+                       "F. brasilicum" = "Fbra"
                                   ))
 fgsc$Year <- as.numeric(fgsc$Year)
 fgsc <- fgsc %>% 
   filter(FGSC != 30) %>% 
   filter(FGSC != "F. cerealis") %>% 
-  filter(FGSC != "F. culmorum")
+  filter(FGSC != "F. culmorum") 
+
+fgsc$Host <- revalue(fgsc$Host, 
+                     c("oat" = "Oat",
+                       "corn" = "Maize",
+                       "wheat" = "Wheat", 
+                     "barley" = "Barley"))
+
+fgsc$Tri_genotype <- revalue(fgsc$Tri_genotype, 
+                     c("NX2" = "NX-2"))
 ```
 
 
@@ -105,11 +129,11 @@ Column {}
 ### Filters
 <table class= "table">
 <tr>
-<td width=40%>
-The **Global FGSC database** is a curated database of peer-reviewed information of *F. graminearum* species complex (FGSC) members strains. Select filter criteria at the right to update the table, the plot and the geographic map. Use backspace to clean up your search and start again. The search field on top of the table allows for quick filtering.
+<td width=33%>
+The **FGSC database** is a curated database of peer-reviewed information of *F. graminearum* species complex (FGSC) members strains. Apply the filters to update the table, plot and map. Backspace to clean up your search.  
+Last update: `r Sys.Date()`  
+<input type="button" value="Clean all filters" onClick="window.location.reload()">
 
-N. of isolates: `r nrow(fgsc)`  
-Last update: `r Sys.Date()`
 
 </td><td>
 ```{r}
@@ -139,7 +163,7 @@ datatable(sd,
           extensions = c('Buttons', 'ColReorder'),
           escape = TRUE,
           rownames = FALSE, 
-          colnames = c('ID', 'Host', 'Country', 'Year', 'Lat', 'Long', 'FGSC', 'Tri genotype', 'Pub1'), 
+          colnames = c('Code', 'Host', 'Country', 'Year', 'Lat', 'Long', 'FGSC', 'Tri genotype', 'Pub1'), 
          class = 'cell-border stripe',
                       options=list(dom = 'Bfrtip',
                                    buttons = c( 'excel', 'pdf'), deferRender=TRUE, 
@@ -151,13 +175,13 @@ datatable(sd,
     fontSize = 8,
   lengthMenu = c(100, 250, 500))) %>% 
  formatStyle(
-  c('ID', 'Host', 'Country', 'Year', 'Latitude', 'Longitude', 'FGSC', 'Tri_genotype', 'Pub1'),
+  c('Collection code', 'Host', 'Country', 'Year', 'Latitude', 'Longitude', 'FGSC', 'Tri_genotype', 'Pub1'),
   fontSize = '90%')
 ```
 
 
 
-Column {data-width=430}
+Column {}
 ----------------------------------
 
 ###  <i class="fa fa-map" aria-hidden="true"></i> Geographic map
@@ -165,14 +189,14 @@ Column {data-width=430}
 ```{r}
 library(viridis)
 library(leaflet)
-pal <- colorFactor("viridis", domain = c("Fgra", "Fmer", "Fasi", "Fcor", "Faus", "Flou", "Fboo", "Fger"))
+pal <- colorFactor("viridis", domain = c("15-ADON", "3-ADON", "NIV", "NX-2"))
 
 library(magrittr)
 leaflet(sd) %>% 
-  addProviderTiles(providers$OpenStreetMap)   %>%
-  addTiles() %>% 
-  addCircleMarkers(group = "Species", color = NA, fillColor = ~pal(FGSC), radius = 5, fillOpacity = 0.9, label = ~Tri_genotype) %>% 
-addLegend("bottomright", pal = pal, values = ~FGSC, title = "Species",  opacity = 1) %>%  
+  addTiles(urlTemplate = "https://mts1.google.com/vt/lyrs=r&hl=en&src=app&x={x}&y={y}&z={z}&s=G", attribution = 'Google') %>% 
+  
+  addCircleMarkers(group = "Species", color = NA, fillColor = ~pal(Tri_genotype), radius = 5, fillOpacity = 0.9, label = ~FGSC) %>% 
+addLegend("bottomleft", pal = pal, values = ~Tri_genotype, title = "Tri genotype",  opacity = 1) %>%  
 addEasyButton(easyButton(
     icon="fa-globe", title="Back to initial view",
     onClick=JS("function(btn, map){ map.setZoom(1); }"))) 
@@ -205,7 +229,7 @@ sd %>%
       
           colors = viridis_pal(option = "D")(3)) %>% 
   layout(barmode = 'stack',
-         margin=list(l=40,r=40,t=40,b=40))
+         margin=list(l=40,r=40,t=40,b=80))
 
  #add_trace(x = ~FGSC)
 
@@ -239,29 +263,12 @@ filter_select("Tri_genotype", "Select genotype(s)", sd, ~Tri_genotype)
 ```
 
 
+<input type="button" value="Clean all filters" onClick="window.location.reload()">
 
 
 
 Column {.tabset}
 ----------------------------------
-
-### <i class="fa fa-map" aria-hidden="true"></i> Species map
-
-
-```{r}
-
-library(htmltools)
-pal <- colorFactor("viridis", domain = c("Fgra", "Fmer", "Fasi", "Fcor", "Faus", "Flou", "Fboo", "Fger"))
-leaflet(data = sd) %>%
- addProviderTiles(providers$OpenStreetMap)  %>% 
-    addCircleMarkers(group = "FGSC", radius = 7, fillOpacity = 0.8,  weight=1, color = NA, fillColor = ~pal(FGSC), label = ~Tri_genotype) %>%
-addLegend("topright", pal = pal, values = ~FGSC, title = "Species",  opacity = 1 ) %>%   
- addEasyButton(easyButton(
-    icon="fa-globe", title="Back to initial view",
-    onClick=JS("function(btn, map){ map.setZoom(2); }"))) 
-
-
-```
 
 
 
@@ -271,17 +278,37 @@ addLegend("topright", pal = pal, values = ~FGSC, title = "Species",  opacity = 1
 ```{r}
 
 library(htmltools)
-pal <- colorFactor("viridis", domain = c("15-ADON", "3-ADON", "NIV", "NA"))
+pal <- colorFactor("viridis", domain = c("15-ADON", "3-ADON", "NIV", "NX-2"))
 leaflet(data = sd) %>%
- addProviderTiles(providers$OpenStreetMap)  %>% 
-    addCircleMarkers(group = "Tri_genotype", radius = 7, fillOpacity = 0.8,  weight=1, color = NA, fillColor = ~pal(Tri_genotype), label = ~Tri_genotype) %>%
-addLegend("topright", pal = pal, values = ~Tri_genotype, title = "Species",  opacity = 1 ) %>%   
+addTiles(urlTemplate = "https://mts1.google.com/vt/lyrs=r&hl=en&src=app&x={x}&y={y}&z={z}&s=G", attribution = 'Google') %>% 
+    addCircleMarkers(group = "Tri_genotype", radius = 7, fillOpacity = 0.8,  weight=1, color = NA, fillColor = ~pal(Tri_genotype), label = ~FGSC) %>%
+addLegend("bottomleft", pal = pal, values = ~Tri_genotype, title = "Tri genotype",  opacity = 1 ) %>%   
  addEasyButton(easyButton(
     icon="fa-globe", title="Back to initial view",
     onClick=JS("function(btn, map){ map.setZoom(2); }"))) 
 
 
 ```
+
+### <i class="fa fa-map" aria-hidden="true"></i> Species map
+
+
+```{r}
+
+library(htmltools)
+pal <- colorFactor("viridis", domain = c("Fgra", "Fmer", "Fasi", "Fcor", "Faus", "Flou", "Fboo", "Fger", "Fbra", "Fboo x Fgra", "Faca", "Fuss", "Fvor"))
+leaflet(data = sd) %>%  
+  addTiles(urlTemplate = "https://mts1.google.com/vt/lyrs=r&hl=en&src=app&x={x}&y={y}&z={z}&s=G", attribution = 'Google') %>% 
+    addCircleMarkers(group = "FGSC", radius = 7, fillOpacity = 0.8,  weight=1, color = NA, fillColor = ~pal(FGSC), label = ~FGSC) %>%
+addLegend("bottomleft", pal = pal, values = ~FGSC, title = "Species",  opacity = 1 ) %>%   
+ addEasyButton(easyButton(
+    icon="fa-globe", title="Back to initial view",
+    onClick=JS("function(btn, map){ map.setZoom(2); }"))) 
+
+
+```
+
+
 
 ### <i class="fa fa-bar-chart" aria-hidden="true"></i> Tri genotype by species 
 
