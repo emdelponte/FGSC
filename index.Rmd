@@ -36,7 +36,7 @@ Sys.setlocale("LC_ALL", 'pt_BR.UTF-8')
 #fgsc<- read_excel_allsheets("fgsc-dat2.xlsx")
 #fgsc$`Machado et al 2015`
 #rbind(fgsc$`Machado et al 2015`, fgsc$`Machado et al 2017`)
-
+s1 <- read_excel("fgsc-dat4.xlsx", 1)
 s2 <- read_excel("fgsc-dat4.xlsx", 2)
 s3 <- read_excel("fgsc-dat4.xlsx", 3)
 s4 <- read_excel("fgsc-dat4.xlsx", 4)
@@ -63,6 +63,7 @@ s24 <- read_excel("fgsc-dat4.xlsx", 24)
 s25 <- read_excel("fgsc-dat4.xlsx", 25)
 s26 <- read_excel("fgsc-dat4.xlsx", 26)
 s27 <- read_excel("fgsc-dat4.xlsx", 27)
+s28 <- read_excel("fgsc-dat4.xlsx", 28)
 
 s29 <- read_excel("fgsc-dat4.xlsx", 29)
 
@@ -70,7 +71,12 @@ s30 <- read_excel("fgsc-dat4.xlsx", 30)
 s31 <- read_excel("fgsc-dat4.xlsx", 31)
 s32 <- read_excel("fgsc-dat4.xlsx", 32)
 s33 <- read_excel("fgsc-dat4.xlsx", 33)
-fgsc2 <- rbind(s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14, s15, s16, s19, s20, s21, s22, s23, s24, s25, s26, s27, s29, s30, s31, s32, s33)
+s34 <- read_excel("fgsc-dat4.xlsx", 34)
+s35 <- read_excel("fgsc-dat4.xlsx", 35)
+s36 <- read_excel("fgsc-dat4.xlsx", 36)
+s37 <- read_excel("fgsc-dat4.xlsx", 37)
+s38 <- read_excel("fgsc-dat4.xlsx", 38)
+fgsc2 <- rbind(s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14, s15, s16, s19, s20, s21, s22, s23, s24, s25, s26, s27, s28, s29, s30, s31, s32, s33, s34, s35, s36, s37, s38)
 fgsc2$Latitude <- round(jitter(fgsc2$Latitude, factor = 6),4)
 fgsc2$Longitude <- round(jitter(fgsc2$Longitude, factor = 6),4)
 
@@ -189,7 +195,7 @@ Column {}
 ```{r}
 library(viridis)
 library(leaflet)
-pal <- colorFactor("viridis", domain = c("15-ADON", "3-ADON", "NIV", "NX-2"))
+pal <- colorFactor("viridis", domain = c("15-ADON", "3-ADON", "DON", "DON/NIV", "NIV", "NX-2"))
 
 library(magrittr)
 leaflet(sd) %>% 
@@ -197,6 +203,7 @@ leaflet(sd) %>%
   
   addCircleMarkers(group = "Species", color = NA, fillColor = ~pal(Tri_genotype), radius = 5, fillOpacity = 0.9, label = ~FGSC) %>% 
 addLegend("bottomleft", pal = pal, values = ~Tri_genotype, title = "Tri genotype",  opacity = 1) %>%  
+  
 addEasyButton(easyButton(
     icon="fa-globe", title="Back to initial view",
     onClick=JS("function(btn, map){ map.setZoom(1); }"))) 
@@ -299,8 +306,9 @@ library(htmltools)
 pal <- colorFactor("viridis", domain = c("Fgra", "Fmer", "Fasi", "Fcor", "Faus", "Flou", "Fboo", "Fger", "Fbra", "Fboo x Fgra", "Faca", "Fuss", "Fvor"))
 leaflet(data = sd) %>%  
   addTiles(urlTemplate = "https://mts1.google.com/vt/lyrs=r&hl=en&src=app&x={x}&y={y}&z={z}&s=G", attribution = 'Google') %>% 
-    addCircleMarkers(group = "FGSC", radius = 7, fillOpacity = 0.8,  weight=1, color = NA, fillColor = ~pal(FGSC), label = ~FGSC) %>%
-addLegend("bottomleft", pal = pal, values = ~FGSC, title = "Species",  opacity = 1 ) %>%   
+   addCircleMarkers(
+  clusterOptions = markerClusterOptions()
+) %>%   
  addEasyButton(easyButton(
     icon="fa-globe", title="Back to initial view",
     onClick=JS("function(btn, map){ map.setZoom(2); }"))) 
