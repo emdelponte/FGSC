@@ -96,7 +96,9 @@ fgsc$FGSC <- revalue(fgsc$FGSC,
                                   "F. vorosii" = "Fvor", 
                        "F. acaciae-mearnsii" = "Faca", 
                        "F. boothii X F. graminearum hybrid" = "Fboo x Fgra",
-                       "F. brasilicum" = "Fbra"
+                       "F. brasilicum" = "Fbra",
+                       "F. aethiopicum" = "Faet"
+                       
                                   ))
 fgsc$Year <- as.numeric(fgsc$Year)
 fgsc <- fgsc %>% 
