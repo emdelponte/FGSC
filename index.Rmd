@@ -83,7 +83,7 @@ fgsc2$Longitude <- round(jitter(fgsc2$Longitude, factor = 6),4)
 fgsc <- fgsc2 %>% select(c(13,2,6,7, 8,9, 10, 14, 19, 20, 21))
 library(plyr)
 table(fgsc$FGSC)
-fgsc$FGSC <- revalue(fgsc$FGSC, 
+fgsc$FGSC2 <- revalue(fgsc$FGSC, 
                      c("F. graminearum" = "Fgra",
                             "F. meridionale" = "Fmer",
                               "F. cortaderiae" = "Fcor",
@@ -171,7 +171,7 @@ datatable(sd,
           extensions = c('Buttons', 'ColReorder'),
           escape = TRUE,
           rownames = FALSE, 
-          colnames = c('Code', 'Host', 'Country', 'Year', 'Lat', 'Long', 'FGSC', 'Tri genotype', 'Pub1'), 
+          colnames = c('Code', 'Host', 'Country', 'Year', 'Lat', 'Long', 'FGSC2', 'Tri genotype', 'Pub1'), 
          class = 'cell-border stripe',
                       options=list(dom = 'Bfrtip',
                                    buttons = c( 'excel', 'pdf'), deferRender=TRUE, 
@@ -238,7 +238,7 @@ sd %>%
       
           colors = viridis_pal(option = "D")(3)) %>% 
   layout(barmode = 'stack',
-         margin=list(l=40,r=40,t=40,b=80))
+         margin=list(l=40,r=40,t=40,b=120))
 
  #add_trace(x = ~FGSC)
 
@@ -305,12 +305,25 @@ addLegend("bottomleft", pal = pal, values = ~Tri_genotype, title = "Tri genotype
 ```{r}
 
 library(htmltools)
-pal <- colorFactor("viridis", domain = c("Fgra", "Fmer", "Fasi", "Fcor", "Faus", "Flou", "Fboo", "Fger", "Fbra", "Fboo x Fgra", "Faca", "Fuss", "Fvor"))
-leaflet(data = sd) %>%  
-  addTiles(urlTemplate = "https://mts1.google.com/vt/lyrs=r&hl=en&src=app&x={x}&y={y}&z={z}&s=G", attribution = 'Google') %>% 
-   addCircleMarkers(
-  clusterOptions = markerClusterOptions()
-) %>%   
+pal <- colorFactor("viridis", domain = c(
+  "F. graminearum",
+"F. meridionale" ,
+                              "F. cortaderiae" ,
+                                  "F. austroamericanum",
+                                  "F. asiaticum", 
+                                  "F. louisianense", 
+                                  "F. boothii",
+                                  "F. gerlachii", 
+                                  "F. ussurianum",
+                                  "F. vorosii", 
+                       "F. acaciae-mearnsii", 
+                       "F. boothii X F. graminearum hybrid",
+                       "F. brasilicum",
+                       "F. aethiopicum"))
+leaflet(data = sd) %>%
+addTiles(urlTemplate = "https://mts1.google.com/vt/lyrs=r&hl=en&src=app&x={x}&y={y}&z={z}&s=G", attribution = 'Google') %>% 
+    addCircleMarkers(group = "Tri_genotype", radius = 7, fillOpacity = 0.8,  weight=1, color = NA, fillColor = ~pal(FGSC), label = ~Tri_genotype) %>%
+addLegend("bottomleft", pal = pal, values = ~FGSC, title = "Tri genotype",  opacity = 1 ) %>%
  addEasyButton(easyButton(
     icon="fa-globe", title="Back to initial view",
     onClick=JS("function(btn, map){ map.setZoom(2); }"))) 
