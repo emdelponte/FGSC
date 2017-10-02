@@ -138,9 +138,9 @@ Column {}
 ### Filters
 <table class= "table">
 <tr>
-<td width=33%>
+<td width=35%>
 The **FGSC database** is a curated database of peer-reviewed information of *F. graminearum* species complex (FGSC) members strains. Apply the filters to update the table, plot and map. Backspace within each field to clean up your search.
-<br>
+<br><br>
 Last update: `r Sys.Date()`  
 <input type="button" value="Clean filters" onClick="window.location.reload()">
 
