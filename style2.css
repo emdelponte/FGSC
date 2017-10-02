@@ -1,14 +1,12 @@
-@import url('https://fonts.googleapis.com/css?family=Pragati+Narrow');
-@import url('https://fonts.googleapis.com/css?family=Ubuntu');
 
 .rev{
-font-family: 'Ubuntu', sans-serif;
+font-family: 'arial', sans-serif;
 font-size:18px;
 padding-bottom:5px;
 }
 body {
      font-size: 15px;
-     font-family: 'Pragati Narrow', sans-serif
+     font-family: 'arial', sans-serif
      }
 
 img {
