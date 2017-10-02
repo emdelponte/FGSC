@@ -206,7 +206,7 @@ Column {}
 ```{r}
 library(viridis)
 library(leaflet)
-pal <- colorFactor("viridis", domain = c("15-ADON", "3-ADON", "DON", "DON/NIV", "NIV", "NX-2"))
+pal <- colorFactor("Accent", domain = c("15-ADON", "3-ADON", "DON", "DON/NIV", "NIV", "NX-2"))
 
 library(magrittr)
 leaflet(sd) %>% 
@@ -294,12 +294,12 @@ Column {.tabset}
 
 
 ```{r}
-
+library(RColorBrewer)
 library(htmltools)
-pal <- colorFactor("viridis", domain = c("15-ADON", "3-ADON", "NIV", "NX-2"))
+pal <- colorFactor("Accent", domain = c("15-ADON", "3-ADON", "DON", "DON/NIV", "NIV", "NX-2"))
 leaflet(data = sd) %>%
 addTiles(urlTemplate = "https://mts1.google.com/vt/lyrs=r&hl=en&src=app&x={x}&y={y}&z={z}&s=G", attribution = 'Google') %>% 
-    addCircleMarkers(group = "Tri_genotype", radius = 7, fillOpacity = 0.8,  weight=1, color = NA, fillColor = ~pal(Tri_genotype), label = ~FGSC) %>%
+    addCircleMarkers(group = "Tri_genotype", radius = 7, fillOpacity = 0.8,  weight=1, color = NA, fillColor = ~pal(Tri_genotype), label = ~Tri_genotype) %>%
 addLegend("bottomleft", pal = pal, values = ~Tri_genotype, title = "Tri genotype",  opacity = 1 ) %>%   
  addEasyButton(easyButton(
     icon="fa-globe", title="Back to initial view",
@@ -314,7 +314,7 @@ addLegend("bottomleft", pal = pal, values = ~Tri_genotype, title = "Tri genotype
 ```{r}
 
 library(htmltools)
-pal <- colorFactor("viridis", domain = c(
+pal <- colorFactor("Accent", domain = c(
   "F. graminearum",
 "F. meridionale" ,
                               "F. cortaderiae" ,
@@ -328,7 +328,8 @@ pal <- colorFactor("viridis", domain = c(
                        "F. acaciae-mearnsii", 
                        "F. boothii X F. graminearum hybrid",
                        "F. brasilicum",
-                       "F. aethiopicum"))
+                       "F. aethiopicum", 
+"F. mesoamericanum"))
 leaflet(data = sd) %>%
 addTiles(urlTemplate = "https://mts1.google.com/vt/lyrs=r&hl=en&src=app&x={x}&y={y}&z={z}&s=G", attribution = 'Google') %>% 
     addCircleMarkers(group = "Tri_genotype", radius = 7, fillOpacity = 0.8,  weight=1, color = NA, fillColor = ~pal(FGSC), label = ~FGSC) %>%
