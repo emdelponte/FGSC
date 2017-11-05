@@ -1,0 +1,14 @@
+"0","```r
+library(networkD3)
+netD3 <- simpleNetwork(edge_df, zoom = T,
+              fontFamily = \"Arial\",
+              charge = -100,
+              textColour = \"black\",
+              linkDistance = 50,
+              nodeColour = \"black\",
+              opacity = 0.65
+             )
+netD3
+ saveNetwork(netD3, file = 'network-SAD.html')
+
+```"

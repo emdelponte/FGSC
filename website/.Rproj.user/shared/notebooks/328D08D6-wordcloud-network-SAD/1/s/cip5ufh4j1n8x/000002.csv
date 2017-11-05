@@ -1,0 +1,14 @@
+"0","```r
+library(wordcloud)
+png(\"SAD-authors.png\", width=12, height=12, units=\"in\", res=300)
+cloud<- wordcloud(author_table$Var1, author_table$Freq, c(4,.5), 1, random.order = F, colors=brewer.pal(5, \"Set1\"))
+dev.off()
+```"
+"1","null device 
+          1 
+"
+"0","```r
+cloud
+```"
+"1","NULL
+"

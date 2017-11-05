@@ -1,0 +1,6 @@
+"0","```r
+vars <- c(\"contributors\", \"titles\", \"volume\", \"issue\", \"pages\", \"dates\" )
+sad1 <- sad %>% 
+ select(one_of(vars))
+sad1$contributors <- gsub(\",\", \"\", sad1$contributors)
+```"

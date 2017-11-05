@@ -1,0 +1,29 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1509841999589.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "553A9E1D",
+    "lastKnownWriteTime" : 6,
+    "last_content_update" : 1509841999589,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "cacheKey" : "EF278438",
+        "caption" : "authors_net",
+        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=authors_net&cache_key=EF278438",
+        "displayedObservations" : 39,
+        "environment" : "",
+        "object" : "authors_net",
+        "preview" : 0,
+        "totalObservations" : 39,
+        "variables" : 14
+    },
+    "relative_order" : 6,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_dataframe"
+}

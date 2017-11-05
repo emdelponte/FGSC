@@ -1,0 +1,15 @@
+"0","```r
+#create the authors data in long format grouped by year
+authors <- sad2 %>% 
+ select(14, 2:9) %>% 
+ group_by(dates) %>% 
+ gather(author_order, name, 2:9) %>% 
+ ungroup() %>% 
+ filter(complete.cases(.)) %>% 
+ group_by(dates)
+# create the frequency table 
+author_table <- data.frame(table(authors$name))
+# remove the comma to clean up the author name
+author_table$Var1 <- gsub(',', '', author_table$Var1)
+author_table$Var1 <- gsub('', '', author_table$Var1)
+```"

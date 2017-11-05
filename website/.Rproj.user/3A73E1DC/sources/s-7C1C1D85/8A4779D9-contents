@@ -1,0 +1,171 @@
+---
+title: "Colonization rate by FGSC"
+author: ""
+date: ""
+output:
+  prettydoc::html_pretty:
+    theme: leonids
+    highlight: vignette
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+## Load pacakges
+
+```{r message=FALSE, warning=FALSE}
+library(tidyverse)
+library(readxl)
+library(agricolae)
+library(broom)
+library(ggthemes)
+library(plyr)
+detach(package:plyr)
+theme_set(theme_bw())
+
+```
+
+## Import data
+
+```{r message=FALSE, warning=FALSE}
+taxacol <- read_excel("taxa_col.xlsx")
+```
+
+## Visualize progress
+
+```{r}
+taxacol %>% 
+  mutate(all = above + below) %>% 
+  mutate(dia = dia*2) %>% 
+  filter(isol != "Fasi") %>% 
+    gather(position, ndis, 8:10) %>% 
+  group_by(cultivar, isol, temp,  dia) %>%
+  summarize(mean_ndis = mean(ndis/spikelets),
+            n = n(),
+            sd_ndis = sd(ndis/spikelets)/sqrt(n)) %>% 
+  ggplot(aes(dia, mean_ndis, color = factor(temp), group = temp))+
+           geom_point(position = position_dodge(width = 0.5))+
+  geom_errorbar(aes(ymin = mean_ndis - (qt(0.025, df = n-1)*sd_ndis), ymax = mean_ndis + (qt(0.025, df = n-1)*sd_ndis)), width=0.1, position = position_dodge(width = 0.7))+
+geom_line()+
+  facet_grid(cultivar ~ isol)+
+  theme_few()+
+scale_color_grey()+
+  labs(x = "Days after inoculation", y = "Diseased spikelets", color ="Temperature")
+  
+  
+```
+
+
+
+## Calculate AUDPC
+
+### Total
+
+```{r message=FALSE, warning=FALSE}
+audpc_all <- taxacol %>% 
+  mutate(all = above + below) %>% 
+    group_by(cultivar, isol, temp, rep, dia) %>% 
+  summarize(median_all = mean(all)) %>%
+  do(tidy(audpc(.$median_all, .$dia))) 
+names(audpc_all)[6] <- "all"
+
+```
+
+
+### Below
+
+```{r message=FALSE, warning=FALSE}
+audpc_below <- taxacol %>% 
+  select(-above) %>% 
+    group_by(cultivar, isol, temp, rep, dia) %>% 
+  summarize(median_below = mean(below)) %>%
+  do(tidy(audpc(.$median_below, .$dia))) 
+names(audpc_below)[6] <- "below"
+```
+
+### Above
+```{r message=FALSE, warning=FALSE}
+audpc_above <- taxacol %>% 
+  select (-below) %>% 
+    group_by(cultivar, isol, temp, rep, dia) %>% 
+  summarize(median_above = mean(above)) %>%
+  do(tidy(audpc(.$median_above, .$dia))) 
+names(audpc_above)[6] <- "above"
+```
+
+## Combine datasets
+
+```{r message=FALSE, warning=FALSE}
+audpc_all$below <- audpc_below$below
+audpc_all$above <- audpc_above$above
+
+```
+
+## Correlation between measures
+
+```{r message=FALSE, warning=FALSE}
+correl(audpc_all$all, audpc_all$below)
+correl(audpc_all$all, audpc_all$above)
+correl(audpc_all$below, audpc_all$above)
+
+```
+## Visualize data
+
+```{r message=FALSE, warning=FALSE}
+audpc_all %>% 
+  gather(variable, audpc, 6:8) %>% 
+  select(-5) %>% 
+  filter(isol != "Fasi") %>% 
+  group_by(cultivar, isol, temp, variable) %>% 
+  summarize (mean_audpc = mean(audpc),
+             n = n(),
+             sd_audpc = sd(audpc)/sqrt(n)) %>% 
+  filter(variable != "all") %>% 
+  ggplot(aes(temp, mean_audpc, color = variable, group = variable))+
+  geom_point(position = position_dodge(width = 0.9))+
+  geom_errorbar(aes(ymin = mean_audpc - sd_audpc, ymax = mean_audpc + sd_audpc), width=0.1, position = position_dodge(width = 0.9))+
+  geom_line()+
+  theme_few()+
+  scale_color_few()+
+  facet_grid(cultivar ~ isol)+
+  ylim(-0.1,25)+
+  labs( y = "AUDPC", x = "Temperature", color = "Position")
+
+
+```
+
+## Modeling temp x species effect
+
+```{r echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE}
+
+library(lme4)
+
+br18 <- audpc_all %>% 
+  filter (isol != "Fasi")
+  m_br18 <- lmer(below ~ cultivar*isol*temp + ( 1 | rep),
+               data = br18, REML= FALSE)
+library(car)
+Anova(m_br18)
+
+```
+
+## Visualize plots
+
+```{r message=FALSE, warning=FALSE}
+audpc_all %>% 
+  gather(variable, audpc, 6:8) %>% 
+  select(-5) %>% 
+  filter(variable == "all") %>% 
+  group_by(cultivar, isol, temp) %>%
+  summarize(mean_audpc = mean(audpc)) %>% 
+    ggplot(aes(reorder(isol, mean_audpc), mean_audpc, color = cultivar))+
+           geom_boxplot()+
+  theme_few()+
+  scale_color_few()
+  
+```
+
+
+

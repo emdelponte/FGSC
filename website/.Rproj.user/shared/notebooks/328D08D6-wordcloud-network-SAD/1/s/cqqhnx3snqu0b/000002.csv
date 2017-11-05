@@ -1,0 +1,470 @@
+"0","```r
+shortest.paths(net)
+
+```"
+"1","                        Albert I C L Noronha M A Martins R B
+Albert I C L                       0           1           1
+Noronha M A                        1           0           1
+Martins R B                        1           1           0
+                        Michereff S J Alves G C S Santos L C
+Albert I C L                        1         Inf        Inf
+Noronha M A                         1         Inf        Inf
+Martins R B                         1         Inf        Inf
+                        Duarte H S S Dias V Zambolim L
+Albert I C L                     Inf    Inf        Inf
+Noronha M A                      Inf    Inf        Inf
+Martins R B                      Inf    Inf        Inf
+                        Rocha M R Amorim L Bergamin Filho A
+Albert I C L                  Inf      Inf              Inf
+Noronha M A                   Inf      Inf              Inf
+Martins R B                   Inf      Inf              Inf
+                        Palazzo D A Bassanezi R B Godoy C V
+Albert I C L                    Inf           Inf       Inf
+Noronha M A                     Inf           Inf       Inf
+Martins R B                     Inf           Inf       Inf
+                        Torres G A M Andrade G C G Alfenas A C
+Albert I C L                     Inf             3           3
+Noronha M A                      Inf             2           2
+Martins R B                      Inf             3           3
+                        Mafia R G Maffia L A Gon<c3><a7>alves R C
+Albert I C L                    3          2             3
+Noronha M A                     2          1             2
+Martins R B                     3          2             3
+                        Angelotti F Scapin C R Tessmann D J
+Albert I C L                    Inf        Inf          Inf
+Noronha M A                     Inf        Inf          Inf
+Martins R B                     Inf        Inf          Inf
+                        Vida J B Oliveira R R Canteri M G
+Albert I C L                 Inf          Inf         Inf
+Noronha M A                  Inf          Inf         Inf
+Martins R B                  Inf          Inf         Inf
+                        Aquino A A Berger P G Rodrigues F A
+Albert I C L                   Inf        Inf           Inf
+Noronha M A                    Inf        Inf           Inf
+Martins R B                    Inf        Inf           Inf
+                        Hernandez J F R Miranda L M
+Albert I C L                        Inf         Inf
+Noronha M A                         Inf         Inf
+Martins R B                         Inf         Inf
+                        Barbosa M A G Mora-Aguilera G
+Albert I C L                        2               2
+Noronha M A                         2               2
+Martins R B                         2               2
+                        Barguil B M Oliveira S M A Belan L L
+Albert I C L                      1              1       Inf
+Noronha M A                       2              2       Inf
+Martins R B                       2              2       Inf
+                        Pozza E A Freitas M L O Souza R M
+Albert I C L                  Inf           Inf       Inf
+Noronha M A                   Inf           Inf       Inf
+Martins R B                   Inf           Inf       Inf
+                        Jesus Junior W C Oliveira J M
+Albert I C L                         Inf          Inf
+Noronha M A                          Inf          Inf
+Martins R B                          Inf          Inf
+                        Belasque J<c3><ba>nior J Sp<c3><b3>sito M B
+Albert I C L                          Inf         Inf
+Noronha M A                           Inf         Inf
+Martins R B                           Inf         Inf
+                        Ribeiro L M Braido R
+Albert I C L                    Inf      Inf
+Noronha M A                     Inf      Inf
+Martins R B                     Inf      Inf
+                        Gon<c3><a7>alves-Zuliani A M O Janeiro V
+Albert I C L                                Inf       Inf
+Noronha M A                                 Inf       Inf
+Martins R B                                 Inf       Inf
+                        Carvalho S A Bock C H Nunes W M C
+Albert I C L                     Inf      Inf         Inf
+Noronha M A                      Inf      Inf         Inf
+Martins R B                      Inf      Inf         Inf
+                        Nocchi P T R Buffara C R S Vieira R A
+Albert I C L                     Inf           Inf        Inf
+Noronha M A                      Inf           Inf        Inf
+Martins R B                      Inf           Inf        Inf
+                        Bogo A Bem B P Camochena R C Santos I
+Albert I C L               Inf     Inf           Inf      Inf
+Noronha M A                Inf     Inf           Inf      Inf
+Martins R B                Inf     Inf           Inf      Inf
+                        Mazaro S M Capucho A S Parreira D F
+Albert I C L                   Inf         Inf          Inf
+Noronha M A                    Inf         Inf          Inf
+Martins R B                    Inf         Inf          Inf
+                        Ferreira P A Lanza F E Costa R V
+Albert I C L                     Inf       Inf       Inf
+Noronha M A                      Inf       Inf       Inf
+Martins R B                      Inf       Inf       Inf
+                        Casela C R Vaz G R O Castillo S Y
+Albert I C L                   Inf       Inf          Inf
+Noronha M A                    Inf       Inf          Inf
+Martins R B                    Inf       Inf          Inf
+                        Rivera J F Hoyos L M Celoto M I B
+Albert I C L                   Inf       Inf          Inf
+Noronha M A                    Inf       Inf          Inf
+Martins R B                    Inf       Inf          Inf
+                        Papa M F S Chagas H A Basseto M A
+Albert I C L                   Inf        Inf         Inf
+Noronha M A                    Inf        Inf         Inf
+Martins R B                    Inf        Inf         Inf
+                        Rosa D D Zanotto M D Furtado E L
+Albert I C L                 Inf         Inf         Inf
+Noronha M A                  Inf         Inf         Inf
+Martins R B                  Inf         Inf         Inf
+                        Challiol M A May de Mio L L Cuquel F L
+Albert I C L                     Inf            Inf        Inf
+Noronha M A                      Inf            Inf        Inf
+Martins R B                      Inf            Inf        Inf
+                        Monteiro L B Serrat B M Motta A C V
+Albert I C L                     Inf        Inf         Inf
+Noronha M A                      Inf        Inf         Inf
+Martins R B                      Inf        Inf         Inf
+                        Ribeiro J<c3><ba>nior P J Citadin I
+Albert I C L                           Inf       Inf
+Noronha M A                            Inf       Inf
+Martins R B                            Inf       Inf
+                        Assmann A P Gouvea A Danner M A
+Albert I C L                    Inf      Inf        Inf
+Noronha M A                     Inf      Inf        Inf
+Martins R B                     Inf      Inf        Inf
+                        Malagi G Corr<c3><aa>a F M Bueno Filho J S S
+Albert I C L                 Inf        Inf               Inf
+Noronha M A                  Inf        Inf               Inf
+Martins R B                  Inf        Inf               Inf
+                        Carmo M G F Correia K C C<c3><a2>mara M P S
+Albert I C L                    Inf           2            2
+Noronha M A                     Inf           2            2
+Martins R B                     Inf           1            1
+                        Cust<c3><b3>dio A A P Guimar<c3><a3>es S S C
+Albert I C L                       Inf             Inf
+Noronha M A                        Inf             Inf
+Martins R B                        Inf             Inf
+                        Koshikumo E S M Hoyos J M A Souza P E
+Albert I C L                        Inf         Inf       Inf
+Noronha M A                         Inf         Inf       Inf
+Martins R B                         Inf         Inf       Inf
+                        Damasceno V F V Ferreira Filho P J
+Albert I C L                        Inf                Inf
+Noronha M A                         Inf                Inf
+Martins R B                         Inf                Inf
+                        Debona D Nascimento K J T Rezende D
+Albert I C L                 Inf              Inf       Inf
+Noronha M A                  Inf              Inf       Inf
+Martins R B                  Inf              Inf       Inf
+                        Rios J A Bernardeli A M A Silva L C
+Albert I C L                 Inf              Inf       Inf
+Noronha M A                  Inf              Inf       Inf
+Martins R B                  Inf              Inf       Inf
+                        Diaz C G Dolinski M A Silva J B
+Albert I C L                 Inf          Inf       Inf
+Noronha M A                  Inf          Inf       Inf
+Martins R B                  Inf          Inf       Inf
+                        Domiciano G P Moreira E N Duan J
+Albert I C L                      Inf         Inf    Inf
+Noronha M A                       Inf         Inf    Inf
+Martins R B                       Inf         Inf    Inf
+                        Zhao B Wang Y Yang W J<c3><ba>nior A F N
+Albert I C L               Inf    Inf    Inf          Inf
+Noronha M A                Inf    Inf    Inf          Inf
+Martins R B                Inf    Inf    Inf          Inf
+                        Rosado A W C Cardoso C R Paul P A
+Albert I C L                     Inf         Inf      Inf
+Noronha M A                      Inf         Inf      Inf
+Martins R B                      Inf         Inf      Inf
+                        Mizubuti E S G Fischer I H Alves S A M
+Albert I C L                       Inf         Inf         Inf
+Noronha M A                        Inf         Inf         Inf
+Martins R B                        Inf         Inf         Inf
+                        Almeida A M Arruda M C Bertani R M A
+Albert I C L                    Inf        Inf           Inf
+Noronha M A                     Inf        Inf           Inf
+Martins R B                     Inf        Inf           Inf
+                        Garcia M J M Silva J L Abreu M S
+Albert I C L                     Inf       Inf       Inf
+Noronha M A                      Inf       Inf       Inf
+Martins R B                      Inf       Inf       Inf
+                        Giglioti E A Carneiro S M T P G
+Albert I C L                     Inf                Inf
+Noronha M A                      Inf                Inf
+Martins R B                      Inf                Inf
+                        Iamauti M T Dalla Pria M Berger R D
+Albert I C L                    Inf          Inf        Inf
+Noronha M A                     Inf          Inf        Inf
+Martins R B                     Inf          Inf        Inf
+                        Koga Lucimara J Gomes A M A
+Albert I C L                        Inf           2
+Noronha M A                         Inf           2
+Martins R B                         Inf           2
+                        Mariano R L R Gonz<c3><a1>lez-Dom<c3><ad>nguez E
+Albert I C L                        2                    2
+Noronha M A                         2                    2
+Martins R B                         2                    1
+                        Del Ponte E M Garc<c3><ad>a-Jim<c3><a9>nez J
+Albert I C L                        2                2
+Noronha M A                         2                2
+Martins R B                         1                1
+                        Armengol J Hill G N Beresford R M
+Albert I C L                     2      Inf           Inf
+Noronha M A                      2      Inf           Inf
+Martins R B                      1      Inf           Inf
+                        Evans K J Juliatti F C Crato F F
+Albert I C L                  Inf          Inf       Inf
+Noronha M A                   Inf          Inf       Inf
+Martins R B                   Inf          Inf       Inf
+                        Couto K R Juliatti B C M Klosowski A C
+Albert I C L                  Inf            Inf           Inf
+Noronha M A                   Inf            Inf           Inf
+Martins R B                   Inf            Inf           Inf
+                        Ruaro L Bespalhok Filho J C Kowata L S
+Albert I C L                Inf                 Inf        Inf
+Noronha M A                 Inf                 Inf        Inf
+Martins R B                 Inf                 Inf        Inf
+                        Santos H A A Strapasson M Lage D C
+Albert I C L                     Inf          Inf      Inf
+Noronha M A                      Inf          Inf      Inf
+Martins R B                      Inf          Inf      Inf
+                        Marouelli W A Caf<c3><a9>-Filho A C
+Albert I C L                      Inf            Inf
+Noronha M A                       Inf            Inf
+Martins R B                       Inf            Inf
+                        Lazaroto A Konflanz V A
+Albert I C L                   Inf          Inf
+Noronha M A                    Inf          Inf
+Martins R B                    Inf          Inf
+                        Leite R M V B C Lenz G Balardin R S
+Albert I C L                        Inf    Inf          Inf
+Noronha M A                         Inf    Inf          Inf
+Martins R B                         Inf    Inf          Inf
+                        Corte G D Marques L N Costa I D
+Albert I C L                  Inf         Inf       Inf
+Noronha M A                   Inf         Inf       Inf
+Martins R B                   Inf         Inf       Inf
+                        Arru<c3><a9> A Stefanelo M S Zemolin C R
+Albert I C L                Inf           Inf         Inf
+Noronha M A                 Inf           Inf         Inf
+Martins R B                 Inf           Inf         Inf
+                        Librelon S S Souza E A Pereira R
+Albert I C L                     Inf       Inf       Inf
+Noronha M A                      Inf       Inf       Inf
+Martins R B                      Inf       Inf       Inf
+                        Abreu A F B Lima G S A Assun<c3><a7><c3><a3>o I P
+Albert I C L                    Inf          1            2
+Noronha M A                     Inf          1            2
+Martins R B                     Inf          1            1
+                        Santos H V Lima H E Nechet K L
+Albert I C L                     2      Inf        Inf
+Noronha M A                      2      Inf        Inf
+Martins R B                      1      Inf        Inf
+                        Vieira B A H Oliveira J R Queiroz E S
+Albert I C L                     Inf          Inf         Inf
+Noronha M A                      Inf          Inf         Inf
+Martins R B                      Inf          Inf         Inf
+                        OliveirA F L Maciel J L N
+Albert I C L                     Inf          Inf
+Noronha M A                      Inf          Inf
+Martins R B                      Inf          Inf
+                        Danelli A L D Boretto C Forcelini C A
+Albert I C L                      Inf       Inf           Inf
+Noronha M A                       Inf       Inf           Inf
+Martins R B                       Inf       Inf           Inf
+                        Moccellin R Martins M C Guerzoni R A
+Albert I C L                    Inf         Inf          Inf
+Noronha M A                     Inf         Inf          Inf
+Martins R B                     Inf         Inf          Inf
+                        C<c3><a2>mara G M S Mattiazzi P Louren<c3><a7>o S A
+Albert I C L                     Inf         Inf          Inf
+Noronha M A                      Inf         Inf          Inf
+Martins R B                      Inf         Inf          Inf
+                        Oliveira R A Floriani A M V
+Albert I C L                     Inf            Inf
+Noronha M A                      Inf            Inf
+Martins R B                      Inf            Inf
+                        Schuber J M Poltronieri A S Araujo M A
+Albert I C L                    Inf             Inf        Inf
+Noronha M A                     Inf             Inf        Inf
+Martins R B                     Inf             Inf        Inf
+                        Tratch R Deschamps C Biasi L A
+Albert I C L                 Inf         Inf       Inf
+Noronha M A                  Inf         Inf       Inf
+Martins R B                  Inf         Inf       Inf
+                        Mello S C M Takatsu A Lopes C A
+Albert I C L                    Inf       Inf       Inf
+Noronha M A                     Inf       Inf       Inf
+Martins R B                     Inf       Inf       Inf
+                        Menge D Makobe M Shomari S
+Albert I C L                Inf      Inf       Inf
+Noronha M A                 Inf      Inf       Inf
+Martins R B                 Inf      Inf       Inf
+                        Tiedemann A V Mesquini R M
+Albert I C L                      Inf          Inf
+Noronha M A                       Inf          Inf
+Martins R B                       Inf          Inf
+                        Schwan-Estrada K R F Zarate N A H
+Albert I C L                             Inf          Inf
+Noronha M A                              Inf          Inf
+Martins R B                              Inf          Inf
+                        Vieira M C Andrade D E G T
+Albert I C L                   Inf               2
+Noronha M A                    Inf               1
+Martins R B                    Inf               2
+                        Oliveira E P Xavier Filha M S
+Albert I C L                       2                2
+Noronha M A                        1                1
+Martins R B                        2                2
+                        Moreira P A A Melo E A Gusm<c3><a3>o L O
+Albert I C L                        2        1          1
+Noronha M A                         1        1          1
+Martins R B                         2        2          2
+                        Pedrosa R A Silva F V Nascimento A R P
+Albert I C L                      2         2                2
+Noronha M A                       1         1                2
+Martins R B                       1         1                2
+                        Nicoli A Cota L V Silva D D
+Albert I C L                 Inf      Inf       Inf
+Noronha M A                  Inf      Inf       Inf
+Martins R B                  Inf      Inf       Inf
+                        Guimar<c3><a3>es D P Landau E C Nunes C C
+Albert I C L                      Inf        Inf       Inf
+Noronha M A                       Inf        Inf       Inf
+Martins R B                       Inf        Inf       Inf
+                        Ortega-Acosta S A Velasco-Cruz C
+Albert I C L                          Inf            Inf
+Noronha M A                           Inf            Inf
+Martins R B                           Inf            Inf
+                        Hern<c3><a1>ndez-Morales J Ochoa-Martinez D L
+Albert I C L                            Inf                Inf
+Noronha M A                             Inf                Inf
+Martins R B                             Inf                Inf
+                        Hern<c3><a1>ndez-Ruiz J Passador M M
+Albert I C L                         Inf          Inf
+Noronha M A                          Inf          Inf
+Martins R B                          Inf          Inf
+                        Porcena A S Masson M V Pieri C
+Albert I C L                    Inf        Inf     Inf
+Noronha M A                     Inf        Inf     Inf
+Martins R B                     Inf        Inf     Inf
+                        Finkenauer E Paula P V A A Santos L A
+Albert I C L                     Inf           Inf        Inf
+Noronha M A                      Inf           Inf        Inf
+Martins R B                      Inf           Inf        Inf
+                        Chaves E Maciel M P Paula J C A
+Albert I C L                 Inf        Inf         Inf
+Noronha M A                  Inf        Inf         Inf
+Martins R B                  Inf        Inf         Inf
+                        Pedroso C Lage D A C Henz G P
+Albert I C L                  Inf        Inf      Inf
+Noronha M A                   Inf        Inf      Inf
+Martins R B                   Inf        Inf      Inf
+                        Pethybridge S J Nelson S C Price T
+Albert I C L                        Inf        Inf     Inf
+Noronha M A                         Inf        Inf     Inf
+Martins R B                         Inf        Inf     Inf
+                        Purvis M Pruitt H Ramos L H
+Albert I C L                 Inf      Inf       Inf
+Noronha M A                  Inf      Inf       Inf
+Martins R B                  Inf      Inf       Inf
+                        Islas J S S Renaud M S A
+Albert I C L                    Inf          Inf
+Noronha M A                     Inf          Inf
+Martins R B                     Inf          Inf
+                        Rodrigues J C V Nogueira N L
+Albert I C L                        Inf          Inf
+Noronha M A                         Inf          Inf
+Martins R B                         Inf          Inf
+                        Machado M A Sachs P J D Neves C S V J
+Albert I C L                    Inf         Inf           Inf
+Noronha M A                     Inf         Inf           Inf
+Martins R B                     Inf         Inf           Inf
+                        Sachs L G Salgado M Lima L M
+Albert I C L                  Inf       Inf      Inf
+Noronha M A                   Inf       Inf      Inf
+Martins R B                   Inf       Inf      Inf
+                        Pereira R T G Pfenning L Santos P H D
+Albert I C L                      Inf        Inf          Inf
+Noronha M A                       Inf        Inf          Inf
+Martins R B                       Inf        Inf          Inf
+                        Vivas M Silveira S F Silva J M
+Albert I C L                Inf          Inf       Inf
+Noronha M A                 Inf          Inf       Inf
+Martins R B                 Inf          Inf       Inf
+                        Terra C E P S Santos W F Alves M C
+Albert I C L                      Inf        Inf       Inf
+Noronha M A                       Inf        Inf       Inf
+Martins R B                       Inf        Inf       Inf
+                        Carvalho L G Rios G F A Fraga A C
+Albert I C L                     Inf        Inf       Inf
+Noronha M A                      Inf        Inf       Inf
+Martins R B                      Inf        Inf       Inf
+                        Schwanck A A Sep<c3><ba>lveda-Chavera G
+Albert I C L                       3                 Inf
+Noronha M A                        3                 Inf
+Martins R B                        2                 Inf
+                        Salvatierra-Mart<c3><ad>nez R Andia-Guardia R
+Albert I C L                               Inf             Inf
+Noronha M A                                Inf             Inf
+Martins R B                                Inf             Inf
+                        Silva S X B Laranjeira F F
+Albert I C L                      2              2
+Noronha M A                       2              2
+Martins R B                       2              2
+                        Soares A C F Soares R M Oliveira M C N
+Albert I C L                       2        Inf            Inf
+Noronha M A                        2        Inf            Inf
+Martins R B                        2        Inf            Inf
+                        Soto A T Mart<c3><ad>nez M H Alejo J C
+Albert I C L                 Inf          Inf       Inf
+Noronha M A                  Inf          Inf       Inf
+Martins R B                  Inf          Inf       Inf
+                        Hijo R R Aguilera G M Sousa S C R
+Albert I C L                 Inf          Inf         Inf
+Noronha M A                  Inf          Inf         Inf
+Martins R B                  Inf          Inf         Inf
+                        Santos G R Rodrigues A C Bonif<c3><a1>cio A
+Albert I C L                   Inf           Inf         Inf
+Noronha M A                    Inf           Inf         Inf
+Martins R B                    Inf           Inf         Inf
+                        Dalcin M S Spolti P Schneider L
+Albert I C L                   Inf        3           3
+Noronha M A                    Inf        3           3
+Martins R B                    Inf        2           2
+                        Sanhueza R M V Batzer J C Gleason M L
+Albert I C L                         3          3           3
+Noronha M A                          3          3           3
+Martins R B                          2          2           2
+                        Aquino R Sussel A A B Castro H A
+Albert I C L                 Inf          Inf        Inf
+Noronha M A                  Inf          Inf        Inf
+Martins R B                  Inf          Inf        Inf
+                        Teramoto A Aguiar R A Garcia R A
+Albert I C L                   Inf        Inf        Inf
+Noronha M A                    Inf        Inf        Inf
+Martins R B                    Inf        Inf        Inf
+                        Cunha M G Tumura K G Pizetta M
+Albert I C L                  Inf        Inf       Inf
+Noronha M A                   Inf        Inf       Inf
+Martins R B                   Inf        Inf       Inf
+                        Silva L L Valeriano R
+Albert I C L                  Inf         Inf
+Noronha M A                   Inf         Inf
+Martins R B                   Inf         Inf
+                        Barbosa Junior M P B Ferreira M A
+Albert I C L                             Inf          Inf
+Noronha M A                              Inf          Inf
+Martins R B                              Inf          Inf
+                        Silva C N Hata F T Scapim C A
+Albert I C L                  Inf      Inf        Inf
+Noronha M A                   Inf      Inf        Inf
+Martins R B                   Inf      Inf        Inf
+                        Fontes R V Pereira M G Yadav N V S
+Albert I C L                   Inf         Inf         Inf
+Noronha M A                    Inf         Inf         Inf
+Martins R B                    Inf         Inf         Inf
+                        Vos S M Wood B W Zavala Le<c3><b3>n M J
+Albert I C L                Inf      Inf             Inf
+Noronha M A                 Inf      Inf             Inf
+Martins R B                 Inf      Inf             Inf
+                        Crist<c3><b3>bal-Alejo J
+Albert I C L                          Inf
+Noronha M A                           Inf
+Martins R B                           Inf
+ [ reached getOption(\"max.print\") -- omitted 314 rows ]
+"

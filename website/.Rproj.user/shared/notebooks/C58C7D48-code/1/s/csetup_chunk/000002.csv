@@ -1,0 +1,8 @@
+"0","library(flexdashboard)"
+"0","library(readxl)"
+"0","library(tidyverse)"
+"0","library(crosstalk)"
+"0","library(plotly)"
+"0","library(viridis)"
+"0","library(gsheet)"
+"0","theme_set(theme_bw())"

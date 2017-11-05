@@ -1,0 +1,8 @@
+"0","```r
+# read an xml file 
+# Note: the \"<author>\"\" field was sub \"<author>;\" using a text editor
+library(tidyverse) # several useful packages
+library(XML)
+sad_xml<-xmlParse(\"conferido.xml\")
+sad <- xmlToDataFrame(nodes = getNodeSet(sad_xml, \"//record\"))
+```"

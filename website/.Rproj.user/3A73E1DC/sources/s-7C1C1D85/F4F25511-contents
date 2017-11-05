@@ -1,0 +1,131 @@
+---
+title: "Referências Bibliográficas em documentos acadêmicos no formato RMarkdown"
+author: "Emerson Del Ponte"
+date: "July 30 2017"
+bibliography: sad.bib
+csl: phytopathology.csl
+output: 
+  prettydoc::html_pretty:
+    theme: leonids
+    highlight: vignette
+---
+<style>
+td {font-size:14px}
+</style>
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library("citr")
+Sys.setlocale("LC_ALL", 'pt_BR.UTF-8')
+```
+
+## Textos acadêmicos em markdown
+
+Documentos acadêmicos como relatórios, monografias, dissertações, teses, ou mesmo artigos científicos podem ser escritos em linguagem de marcação `markdown`. O markdown, com extensão `.md` é uma linguagem de marcação (assim como é o formato html) mais simples de ser confeccionado comparado ao [LaTeX](hhttps://www.latex-project.org/) que é uma linguagem mais antiga usada para gerar textos para impressão profissional no formato PDF. Markdown, além de ser mais fácil do que LaTeX, é mais versátil e permite gerar saídas em html, com elementos estáticos ou interativos, para publicar na web. Ainda assim, permite gerar documentos em formato DOC ou em PDF de alta qualidade, desde que corretamente configurado.
+
+O formato RMarkdown é um híbrido por mesclar markdown e os códigos em R. A extensão do arquivo é Rmd. O software RStudio IDE é a plataforma ideal para criar um arquivo Rmd e incorporar elementos de textos, figuras, códigos, etc. Pode-se também  inserir [referências bibliográficas (vide tutorial no RStudio)](http://rmarkdown.rstudio.com/authoring_bibliographies_and_citations.html). Nesse caso, as referências ficam armazenadas em um arquivo externo (por exemplo, formato bibtex - extensão `.bib`) e devem ser inseridas no documento, com as marcações. Quando da renderização do documento para um dos formatos de saída (html ou pdf), a referência é inserida segundo estilo pré-definido. Veremos como criar um documento em RMarkdown com inserção de referências bibliográficas. 
+
+## Arquivos necessários
+
+Primeiramente deve-se dispor ou criar um arquivo da bibliografia no formato `.bib`. Há duas formas simples de se fazer isso, a primeira utilizando um programa de referências bibliográficas (EndNote, Mendeley, Zotero, etc.) e a segunda buscando as referências a partir do [DOI - Digital Object Identifier](https://www.doi.org/). Veremos cada uma delas.
+
+1.  Programa de referências
+
+Deve-se exportar a base para um arquivo `.bib` a partir de programas de organização de referências (Mendeley, Zotero, etc.). [ver arquivo bib](sad.bib). Abaixo um exemplo de como criar o arquivo no [Mendeley](https://www.mendeley.com/). [Veja nessa página](https://github.com/bbest/rmarkdown-example) um exemplo de como utilizar o programa Zotero.
+
+<video width="80%" controls align=center>
+  <source src="mendeley-to-bib.mp4" type="video/mp4">
+</video>
+ 
+
+2. Pacote CrossRef
+
+Um arquivo `.bib` pode ser alimentado automaticamente utilizando o plugin RStudio do pacote `CrossRef`que facilita a busca e inserção de uma referência no arquivo uma vez que se tenha o DOI. No exemplo, o arquivo atualizado será o [crossref.bib](crossref.bib).
+
+
+<video width="80%" controls align=center>
+  <source src="add-crossref.mp4" type="video/mp4">
+</video>
+
+
+Agora que já temos o arquivo com a bibliografia, o nome do mesmo deve ser informado no cabeçalho do arquivo Rmd da seguinte forma (no nosso exemplo, o arquivo é o sad.bib).
+
+```
+---
+bibliography: sad.bib
+---
+```
+
+
+## Estilo de citação e referência
+
+Pode-se definir o estilo de citação e referência, de acordo com uma norma de um periódico, por exemplo, que será utilizado no documento. Um arquivo externo de estilo tem a extensão `.csl`, o qual deve ser também deve ser indicado no cabeçalho. Uma lista completa de estilos pode ser encontrada no [repositório oficial de arquivos csl](https://github.com/citation-style-language/styles). Neste nosso exemplo, utilizamos uma folha de estilos da revista Phytopathology. [Ver  arquivo phytopathology.csl](phytopathology.csl)
+
+```
+---
+bibliography: sad.bib
+csl: phytopathology.csl
+---
+```
+
+## Inserção das referências
+
+Definidos o arquivo de referências e o estilo, as citações podem ser inseridas no texto pelo nome que identifica a referência (ver arquivo bib) precedido por @. Ex `@Domiciano2014`
+
+Uma forma facilitada é usar um **Addin** (do RStudio) do pacote `citer`. Veja o tutorial do pacote que ensina como instalar e utilizar o plugin [https://github.com/crsh/citr](https://github.com/crsh/citr).
+
+
+```
+library("citer")
+```
+
+Agora podemos inserir citações no texto conforme abaixo. 
+
+```
+Four phases in the evolution of SADs ..  
+into account [@Amorim1993; @Godoy1997; @Michereff2006a];
+III) a period beginning in ... accuracy[@Michereff2000]; 
+and IV) the current period when concordance analysis began 
+to substitute linear regression in SAD research [@Spolti2011],
+and the effect of the SADs on the accuracy components are 
+tested formally comparing unaided and aided estimates by a
+sample of raters [@Yadav2013]. 
+```
+
+<video width="80%" controls align=center>
+  <source src="insert-ref-citer.mp4" type="video/mp4">
+</video>
+
+
+O código acima irá gerar o seguinte html depois que for renderizado (knit).
+
+
+> Four phases in the evolution of SADs ..  into account [@Amorim1993; @Godoy1997; @Michereff2006a]; III) a period beginning in .. in accuracy[@Michereff2000]; and IV) the current period when concordance analysis began to substitute linear regression in SAD research [@Spolti2011], and the effect of the SADs on the accuracy components are tested formally comparing unaided and aided estimates by a sample of raters [@Yadav2013]. 
+
+
+
+## Lista de referências
+
+A lista de referências é inserida no final do documento. Note que as referências bibliográficas presevervaram a acentuação do idiomo Português. Isso é devido a configuração da linguagem do sistema. No caso do idioma em português, usou-se o `pt_BR.UFT-8`. Pode-se digitar o comando  no console ou em um `chunk` de código. 
+
+```
+Sys.setlocale("LC_ALL", 'pt_BR.UTF-8')
+```
+
+ 
+Mais informações sobre uso de Markdown em publicações acadêmicas:
+
+- [Academic writing with markdown](http://dylanstorey.com/2015/12/Academic_Writing_With_Markdown.html)
+
+- [An R Markdown Template for Academic Manuscripts](http://svmiller.com/blog/2016/02/svm-r-markdown-manuscript/)
+
+- [Writing technical papers with markdown ](http://blog.kdheepak.com/writing-papers-with-markdown.html)
+
+- [Academic markdown and citations](http://www.chriskrycho.com/2015/academic-markdown-and-citations.html)
+    
+- Video: Academic writing in Markdown (https://www.youtube.com/watch?v=hpAJMSS8pvs)    
+    
+
+## Bibliografia citada neste exemplo 
+
+

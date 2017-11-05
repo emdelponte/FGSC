@@ -1,0 +1,270 @@
+---
+title: "Soybean Rust Brazil"
+author: ""
+date: ""
+output:
+  html_document:
+    theme: united
+    toc: yes
+    toc_float:
+      collapsed: no
+      smooth_scroll: no
+---
+<style type="text/css">
+body {
+font-size: 18px;
+line-height:26px
+}
+p{line-height:26px; margin-bottom:10px}
+pre {font-size:16px}
+
+</style>
+
+
+## Import and prepare data
+
+The data are stored in two separate excel files and created two data frames. In the `sbr_all` dataframe, an observation represents a replicate of a treament within a trial. The `sbr_meta` dataframe contains the metadata for the trial level, so each observation is a trial.
+
+Note: I am using a binary `xlsx` file and not a text `csv` file because names of the municipalities are not imported correctly when reading `csv` files. 
+
+```{r message=FALSE, warning=FALSE, include=FALSE}
+# setting locale to load characters in PT language
+Sys.setlocale("LC_ALL", 'pt_BR.UTF-8')
+```
+
+```{r message=FALSE, warning=FALSE, paged.print=FALSE}
+library(tidyverse)
+library(viridis)
+library(readxl)
+library(ggthemes)
+```
+
+
+```{r echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE}
+theme_set(theme_bw())
+sbr_all <- read_excel("data-all.xlsx")
+sbr_meta <- read_excel("data-meta.xlsx")
+```
+
+Let's use `left_join` function of `dplyr` to join two data frames of different number of rows so that the meta data is autocompleted for all rows within a same trial. 
+
+```{r}
+sbr_all2 <- sbr_all %>% 
+left_join(sbr_meta, by = "trial") %>% 
+  filter(ai != "CHECK") %>% 
+glimpse()
+```
+
+
+## Treatment means
+
+Let's summarize the severity and yield data by treatment within a trial. 
+
+```{r message=FALSE, warning=FALSE}
+sbr_all3 <- sbr_all2 %>% 
+  group_by(trial, year, group, ai, prev, location, state, region, climate, lat, lon, elev, das_oct1,sprays, sev_check, yld_check) %>%   
+  summarize(mean_sev = mean(sev), mean_yld = mean(yld))
+```
+
+## Calculate control efficacy (C) and yield responses (D and Yr)
+
+The percent reduction in disease from using fungicide, aka control efficacy (C), can be calculated based on the ratio of disease in the fungicide treated and the non-treated check. The yield response is calculated in two ways, the first (D) is the mean difference between yield in the fungicide treated and the non-treated check; and the second (Yr) is the relative (percent) increase in yield.
+
+```{r message=FALSE, warning=FALSE}
+sbr_all4 <- sbr_all3 %>% 
+  mutate(C = (1-(mean_sev / sev_check))*100,
+         D = mean_yld - yld_check,
+         Yr = ((mean_yld / yld_check)-1)*100)
+```
+
+## Frequency of C, D and Yr
+
+```{r message=FALSE, warning=FALSE}
+sbr_all4 %>% 
+  ggplot(aes(C))+
+  geom_histogram(bins = 20)
+```
+
+```{r message=FALSE, warning=FALSE}
+sbr_all4 %>% 
+  ggplot(aes(D))+
+  geom_histogram(bins = 20)
+```
+
+
+```{r message=FALSE, warning=FALSE}
+sbr_all4 %>% 
+  ggplot(aes(Yr))+
+  geom_histogram(bins = 20)
+```
+
+## Tebuconazole 
+
+We will focus now on a single active ingredient, which has shown the greatest decline in fungicide perfomance (Dalla Lana et al. 2018). Let's subset and create a new one called `tebu` using `filter`. Because three states (MA, TO and SC) are not represented in at least five years, they were excluded from the analysis.
+
+```{r message=FALSE, warning=FALSE}
+tebu <- sbr_all4 %>% 
+filter(ai == "tebuconazole") %>% 
+filter (state != "MA" & state != "TO" & state != "SC") 
+```
+
+### Trends C, D and Yr over time
+
+Firstly, we want to see the the overall trend across all trials over the years.
+
+```{r message=FALSE, warning=FALSE}
+tebu %>% 
+  ggplot(aes(year, C))+
+  geom_jitter(width=0.1, shape = 1)+
+  geom_smooth(span = 0.7, se = T, color = "grey50")+
+  theme(legend.position = "right")
+
+tebu %>% 
+  ggplot(aes(year, D))+
+  geom_jitter(width=0.1, shape = 1)+
+  ylim(0,2000)+
+  geom_smooth(span = 0.7, se = T, color = "grey50")+
+  theme(legend.position = "right")
+
+tebu %>% 
+  ggplot(aes(year, Yr))+
+  geom_jitter(width=0.1, shape = 1)+
+  ylim(0,200)+
+  geom_smooth(span = 0.7, se = T, color = "grey50")+
+  theme(legend.position = "right")
+
+
+```
+
+Now let's separate the plots by states.
+
+```{r message=FALSE, warning=FALSE}
+tebu %>% 
+  ggplot(aes(year, C, color = state, group = state))+
+  geom_jitter(width=0.1)+
+  geom_smooth(span = 1)+
+  facet_wrap(~state)+
+  theme(legend.position = "none")
+
+tebu %>% 
+  ggplot(aes(year, D, color = state, group = state))+
+  geom_jitter(width=0.1)+
+  geom_smooth(span = 1)+
+  ylim(0,2000)+
+  facet_wrap(~state)+
+  theme(legend.position = "none")
+
+tebu %>% 
+  ggplot(aes(year, Yr, color = state, group = state))+
+  geom_jitter(width=0.1)+
+  geom_smooth(span = 1)+
+  ylim(0,200)+
+  facet_wrap(~state)+
+  theme(legend.position = "none")
+```
+
+
+### Segmented regression 
+
+The segmented, also known as piece-wise regression will be used to estimate the break-point, or when there was change in the trend. The `segmented` package is used here to estimate the break-point.
+
+```{r}
+library(segmented)
+lm_tebu_D <- lm(D ~ year, data = tebu)
+lm_tebu_Dseg <- segmented(lm_tebu_D)
+
+lm_tebu_C <- lm(C ~ year, data = tebu)
+lm_tebu_Cseg <- segmented(lm_tebu_C)
+
+lm_tebu_Yr <- lm(Yr ~ year, data = tebu)
+lm_tebu_Yrseg <- segmented(lm_tebu_Yr)
+```
+
+```{r}
+summary(lm_tebu_Cseg)
+confint(lm_tebu_Cseg)
+slope(lm_tebu_Cseg)
+plot(lm_tebu_Cseg, conf.level=0.95, shade=TRUE)
+points(lm_tebu_Cseg, link=F, col=2)
+
+summary(lm_tebu_Dseg)
+confint(lm_tebu_Dseg)
+slope(lm_tebu_Dseg)
+plot(lm_tebu_Dseg, conf.level=0.95, shade=TRUE)
+points(lm_tebu_Dseg, link=F, col=2)
+
+summary(lm_tebu_Yrseg)
+confint(lm_tebu_Yrseg)
+slope(lm_tebu_Yrseg)
+plot(lm_tebu_Yrseg, conf.level=0.95, shade=TRUE)
+points(lm_tebu_Yrseg, link=F, col=2)
+
+```
+
+
+### Spatial variation
+
+```{r}
+
+library(maps)
+brazil_map <- map_data("world", "brazil")
+tebu %>% 
+  ggplot() + 
+geom_polygon(data = brazil_map,  
+             aes(x=long, y = lat, group = group), 
+             fill = NA, color = "black") + 
+  coord_fixed()+
+  geom_point(aes(y = lat, x = lon, color = C))+
+  scale_color_viridis()+
+  facet_wrap(~ year, ncol = 5)+
+  theme_minimal()+
+  ggsave("Figs/maps_Cyear.png", width=10, height=8)
+
+tebu %>% 
+  ggplot() + 
+  geom_polygon(data = brazil_map,  
+             aes(x=long, y = lat, group = group), 
+             fill = NA, color = "black") + 
+  coord_fixed()+
+  geom_point(aes(y = lat, x = lon, color = D))+
+  scale_color_viridis()+
+  facet_wrap(~ year, ncol = 5)+
+  theme_minimal()+
+  ggsave("Figs/maps_Dyear.png", width=10, height=8)
+
+
+
+tebu %>% 
+  ggplot() + 
+geom_polygon(data = brazil_map,  
+             aes(x=long, y = lat, group = group), 
+             fill = NA, color = "black") + 
+  coord_fixed()+
+  geom_point(aes(y = lat, x = lon, color = Yr))+
+  scale_color_viridis()+
+  facet_wrap(~ year, ncol = 5)+
+  theme_minimal()+
+  ggsave("Figs/maps_Yryear.png", width=10, height=8)
+```
+
+
+## Animated map
+
+```{r  , message=FALSE, warning=FALSE}
+library(gganimate)
+p <- tebu %>% 
+  filter(C > 0) %>% 
+  ggplot()+ 
+geom_polygon(data = brazil_map,  
+             aes(x=long, y = lat, group = group), 
+             fill = NA, color = "black") + 
+  coord_fixed()+
+  geom_point(aes(y = lat, x = lon, color = C, size = -C,  frame = year))+
+  scale_color_gradient(low='darkred', high='green')+
+  theme_minimal()
+gganimate(p)
+
+
+```
+
+

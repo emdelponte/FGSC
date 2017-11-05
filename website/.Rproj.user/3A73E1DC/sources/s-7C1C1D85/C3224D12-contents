@@ -1,0 +1,86 @@
+---
+title: ""
+author: ""
+date: ""
+output:
+  html_document:
+    theme: flatly
+    toc: yes
+    toc_float:
+      collapsed: no
+      smooth_scroll: no
+    css: style.css
+---
+
+
+
+**Global analysis and online database of the *Fusarium graminearum* species complex members and chemotypes**
+
+
+Emerson M. Del Ponte, Gláucia M. Moreira  
+Departamento de Fitopatologia, Universidade Federal de Viçosa, Viçosa MG Brazil 
+
+Todd J. Ward
+
+Cees Waalwijk
+
+Sebastian A. Steinglen
+
+Dinorah Pan
+
+Silvana Vero
+
+Zhang Hao
+
+Sofia N. Chulze
+
+Dauri J. Tessmann
+
+Antonio Moretti  
+
+
+
+
+## Abstract
+
+
+
+Key words  
+
+
+
+
+
+
+## Introduction
+
+
+The surge of the *F. graminearum* species complex (Abedi-Tizaki and Zafari 2017)
+
+Trichothecene genotypes
+
+Methods for accurate ID of species and genotypes
+
+Surveys across the continents 
+
+Similar databases 
+
+
+Objectives
+
+- Conduct a systematic review systematic review of literature reporting FGSC members
+- Collect ID and metadata, including geography, at the isolate-level
+- Summarize global distribution of species and trichothecene genotypes
+Build an online database for searching and visualizing FGSC data
+
+
+## Material and Methods
+
+## Results
+
+## Discussion
+
+
+## References
+Abedi-Tizaki, M., and Zafari, D. 2017. Geographic distribution of phylogenetic species of the Fusarium graminearum species complex and their 8-ketotrichothecene chemotypes on wheat spikes in Iran. Mycotoxin Res. 33:245–259.
+

@@ -1,0 +1,7 @@
+"0","authors %>% "
+"0","  filter(n > 2) %>% "
+"0","  ggplot(aes(reorder(name, n), n))+"
+"0","  geom_col()+"
+"0","  scale_y_continuous(breaks=seq(0,30,3),  expand=c(0.01, 0))+"
+"0","  coord_flip()+"
+"0","  labs(x = ""Author"", y = ""Frequency"", title =""Articles per author"")"

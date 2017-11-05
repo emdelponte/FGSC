@@ -1,0 +1,5 @@
+"0","```r
+get.edgelist(net)
+edge_df <- as.data.frame(get.edgelist(net))
+colnames(edge_df) <- c(\"from\", \"to\")
+```"

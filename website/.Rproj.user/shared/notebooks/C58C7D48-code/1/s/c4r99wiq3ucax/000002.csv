@@ -1,0 +1,4 @@
+"0","year <- articles %>% "
+"0","  select(year) %>% "
+"0","  group_by(year) %>% "
+"0","  tally(sort = T) "

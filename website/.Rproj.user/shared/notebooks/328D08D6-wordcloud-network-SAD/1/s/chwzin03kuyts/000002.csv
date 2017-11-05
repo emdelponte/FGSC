@@ -1,0 +1,12 @@
+"0","```r
+library(network)
+library(intergraph)
+net_stat <- asNetwork(net)
+jpeg(\"network_statnet2.jpeg\",  width = 1500 , height = 1500, units=\"px\", pointsize=24, quality=100)
+set.seed(21)
+plot.network(net_stat, vertex.cex= 0.5 + 0.2*log(graph.strength(net)), label =ifelse(degree(net)>19,V(net)$name,NA), label.bg = \"white\", label.col = \"black\", edge.col = \"#b3e0ff\", label.cex = 1,  displaylabels = TRUE, vertex.col = \"#00ace6\", jitter = TRUE, vertices.last=T, use.len=T, use.curve=T, edge.len = 1, boxed.labels=F, label.border=\"grey\", pad=1)
+dev.off()
+```"
+"1","null device 
+          1 
+"

@@ -1,0 +1,9 @@
+"0","```r
+# generate the list of authors per study
+library(purrr)
+sad4 <- sad3 %>% select (1:8)
+sad_list <- flatten(by_row(sad4, ..f = function(x) flatten_chr(x), .labels = FALSE))
+sad_list <- lapply(sad_list, function(x) x[!is.na(x)])
+# create the edge list
+sad_edge_list <- t(do.call(cbind, lapply(sad_list[sapply(sad_list, length) >= 2], combn, 2)))
+```"
