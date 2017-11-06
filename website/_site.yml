@@ -12,13 +12,10 @@ navbar:
     - text: "Data analysis"
       icon: fa fa-file-code-o 
       href: code.html
-    - text: "Plots"
-      icon: fa-bar-chart 
-      href: plots.html
-    - text: "Read the article"
+    - text: "Manuscript"
       icon: fa fa-file-text-o 
-      href: article.html
+      href: article.html 
       
   right:
     - icon: fa-github-square 
-      href: https://github.com/emdelponte/paper-FHB-Brazil-meta-analysis
+      href: https://github.com/emdelponte/FGSC
