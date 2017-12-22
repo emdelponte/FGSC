@@ -9,9 +9,10 @@
 <meta name="generator" content="pandoc" />
 
 
+<meta name="author" content="" />
 
 
-<title></title>
+<title>code.utf8</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -24,11 +25,8 @@
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <script src="site_libs/navigation-1.1/codefolding.js"></script>
-<link href="site_libs/highlightjs-1.1/default.css" rel="stylesheet" />
-<script src="site_libs/highlightjs-1.1/highlight.js"></script>
-<script src="site_libs/htmlwidgets-0.9/htmlwidgets.js"></script>
-<script src="site_libs/d3-4.5.0/d3.min.js"></script>
-<script src="site_libs/forceNetwork-binding-0.4/forceNetwork.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 <link href="site_libs/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" />
 
 <style type="text/css">code{white-space: pre;}</style>
@@ -38,10 +36,12 @@
   }
 </style>
 <script type="text/javascript">
-if (window.hljs && document.readyState && document.readyState === "complete") {
-   window.setTimeout(function() {
-      hljs.initHighlighting();
-   }, 0);
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
 }
 </script>
 
@@ -74,7 +74,7 @@ h6 {
 }
 </style>
 
-<link rel="stylesheet" href="style.css" type="text/css" />
+<link rel="stylesheet" href="style.css" />
 
 </head>
 
@@ -350,47 +350,47 @@ div.tocify {
 </div>
 
 
-<div id="bibliographic-analysis" class="section level1">
+<section id="bibliographic-analysis" class="level1">
 <h1>Bibliographic analysis</h1>
-<p>Bibliographic data were obtained from peer-reviewed articles (n = 39) which were indexed as a bibliographic source for the information on the FGSC isolates in our database. The indexed articles were published from 2000 to 2017. Follows a summary for these data.</p>
-<div id="articles-per-year" class="section level2">
+<p>Bibliographic data were obtained from peer-reviewed articles (n = 65) which were indexed as a bibliographic source for the information on the FGSC isolates in our database. The indexed articles were published from 2000 to 2017. Follows a summary for these data.</p>
+<section id="articles-per-year" class="level2">
 <h2>Articles per year</h2>
-<p>The number of articles published per year ranged from 1 to 6. The year with most number of articles was 2011</p>
+<p>The number of articles published per year ranged from 1 to 11. The year with most number of articles was 2011</p>
 <pre class="r"><code>articles %&gt;% 
   ggplot(aes(year))+
-  geom_bar()+
+  geom_bar(aes(fill = factor(pub_order)))+
   scale_y_continuous(breaks=seq(0, 11, 1), expand=c(0.02, 0))+
   scale_x_continuous(breaks=seq(2000, 2017))+
   labs(y = &quot;Number of articles&quot;, x = &quot;Published year&quot;, title = &quot;Articles per year&quot;)</code></pre>
 <p><img src="code_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
-</div>
-<div id="journals" class="section level2">
+</section>
+<section id="journals" class="level2">
 <h2>Journals</h2>
-<p>The articles were published in 15 scientific journals. The journal with most number of publications was Fungal Genetics and Biology with 9 articles, followed by International Journal of Food Microbiology (6 articles) and Plant Pathology (5 articles).</p>
+<p>The articles were published in 28 scientific journals. The journal with most number of publications was Fungal Genetics and Biology with 9 articles, followed by International Journal of Food Microbiology (6 articles) and Plant Pathology (6 articles).</p>
 <pre class="r"><code>articles %&gt;% 
   ggplot(aes(reorder(journal_name, journal_name, function(x) length(x))))+
-  geom_bar()+
+  geom_bar(aes(fill = factor(pub_order)))+
   scale_y_continuous(breaks=seq(0,10), expand=c(0.01, 0))+
   coord_flip()+
   labs(y = &quot;Number of articles&quot;, x = &quot;&quot;, title = &quot;Articles per journal&quot;)</code></pre>
 <p><img src="code_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
-</div>
-<div id="authorship" class="section level2">
+</section>
+<section id="authorship" class="level2">
 <h2>Authorship</h2>
-<div id="country-affiliations" class="section level3">
+<section id="country-affiliations" class="level3">
 <h3>Country affiliations</h3>
-<p>For each article, the countries reported in the affiliations of the authors were indexed. We recorded the country name only once per article regardless of the number of authors from a same country. There were 21 unique countries, and the three most unique occurrences were US, Argentina and Brazil.</p>
+<p>For each article, the countries reported in the affiliations of the authors were indexed. We recorded the country name only once per article regardless of the number of authors from a same country. There were 25 unique countries, and the three most unique occurrences were United States, Argentina and Brazil.</p>
 <pre class="r"><code>articles %&gt;% 
   gather(code, country, 25:30) %&gt;% 
   filter(country != &quot;NA&quot;) %&gt;% 
   ggplot(aes(reorder(country, country, function(x) length(x))))+
-  geom_bar()+
+  geom_bar(aes(fill = factor(pub_order)))+
   scale_y_continuous(breaks=seq(0,30,2), expand=c(0.01, 0))+
   coord_flip()+
   labs(y = &quot;Number of articles&quot;, x = &quot;&quot;, title = &quot;Articles per country&quot; )</code></pre>
 <p><img src="code_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
-</div>
-<div id="number-of-authors" class="section level3">
+</section>
+<section id="number-of-authors" class="level3">
 <h3>Number of authors</h3>
 <pre class="r"><code>authors &lt;- articles %&gt;% 
   gather(author, name, 6:19) %&gt;% 
@@ -398,31 +398,31 @@ div.tocify {
   filter(name != &quot;NA&quot;) %&gt;% 
   group_by(name) %&gt;% 
   tally(sort = T) </code></pre>
-<p>There were 159 unique authors in the collection of 39 indexed articles. Let’s see the list of 20 most prolific authors and a frequency plot for authors who have published at least three articles.</p>
+<p>There were 263 unique authors in the collection of 65 indexed articles. Let’s see the list of 20 most prolific authors and a frequency plot for authors who have published at least three articles.</p>
 <pre class="r"><code>head(authors, 20)</code></pre>
 <pre><code>## # A tibble: 20 x 2
 ##            name     n
 ##           &lt;chr&gt; &lt;int&gt;
-##  1      Ward TJ    23
-##  2  O’Donnell K    11
+##  1      Ward TJ    24
+##  2  O&#39;Donnell K    11
 ##  3 Del Ponte EM    10
 ##  4   Kistler HC    10
 ##  5    Chulze SN     6
-##  6       Aoki T     5
-##  7      Gale LR     5
+##  6      Gale LR     6
+##  7       Aoki T     5
 ##  8   Reynoso MM     5
 ##  9  Tessmann DJ     5
 ## 10     Gomes LB     4
 ## 11   Ramirez ML     4
 ## 12     Silva CN     4
-## 13    Astolfi P     3
-## 14     Clear RM     3
-## 15    Geiser DM     3
-## 16   Nicolli CP     3
-## 17        Pan D     3
-## 18   Waalwijk C     3
-## 19         Xu J     3
-## 20   Bettucci L     2</code></pre>
+## 13   Waalwijk C     4
+## 14         Xu J     4
+## 15    Astolfi P     3
+## 16 Boutigny A-L     3
+## 17     Clear RM     3
+## 18    Geiser DM     3
+## 19        Lee T     3
+## 20    Leslie JF     3</code></pre>
 <pre class="r"><code>authors %&gt;% 
   filter(n &gt; 2) %&gt;% 
   ggplot(aes(reorder(name, n), n))+
@@ -431,18 +431,13 @@ div.tocify {
   coord_flip()+
   labs(x = &quot;&quot;, y = &quot;Frequency&quot;, title =&quot;Articles per author&quot;)</code></pre>
 <p><img src="code_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
-</div>
-<div id="wordcloud" class="section level3">
+</section>
+<section id="wordcloud" class="level3">
 <h3>Wordcloud</h3>
 <p>A wordcloud is an alternative way to visualize the frequency of articles for all authors. The size of the name is relative to the number of articles.</p>
-<pre class="r"><code>library(wordcloud)
-#png(&quot;FGSC-authors.png&quot;, width=12, height=12, units=&quot;in&quot;, res=300)
-wordcloud(authors$name, authors$n, c(4,.5), 1, random.order = F, colors=brewer.pal(8, &quot;Dark2&quot;))</code></pre>
-<p><img src="code_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
-<pre class="r"><code>#dev.off()</code></pre>
-</div>
-</div>
-<div id="scholarly-collaborative-network" class="section level2">
+</section>
+</section>
+<section id="scholarly-collaborative-network" class="level2">
 <h2>Scholarly collaborative network</h2>
 <p>A network analysis was conducted to identify the connections among the authors and the scientific communities. For such, we need to build an edge list, or all pairs of occurrences of two authors in a same publication. Let’s see below the first 10 pairs or authors. The whole list has almost one thousand pairs.</p>
 <pre class="r"><code>library(purrr)
@@ -457,16 +452,16 @@ author_edge_list &lt;- t(do.call(cbind, lapply(author_list[sapply(author_list, l
 
 author_edge_list[1:10, ]</code></pre>
 <pre><code>##       [,1]          [,2]        
-##  [1,] &quot;O’Donnell K&quot; &quot;Kistler HC&quot;
-##  [2,] &quot;O’Donnell K&quot; &quot;Tacke BK&quot;  
-##  [3,] &quot;O’Donnell K&quot; &quot;Casper HH&quot; 
+##  [1,] &quot;O&#39;Donnell K&quot; &quot;Kistler HC&quot;
+##  [2,] &quot;O&#39;Donnell K&quot; &quot;Tacke BK&quot;  
+##  [3,] &quot;O&#39;Donnell K&quot; &quot;Casper HH&quot; 
 ##  [4,] &quot;Kistler HC&quot;  &quot;Tacke BK&quot;  
 ##  [5,] &quot;Kistler HC&quot;  &quot;Casper HH&quot; 
 ##  [6,] &quot;Tacke BK&quot;    &quot;Casper HH&quot; 
-##  [7,] &quot;O’Donnell K&quot; &quot;Ward TJ&quot;   
-##  [8,] &quot;O’Donnell K&quot; &quot;Geiser DM&quot; 
-##  [9,] &quot;O’Donnell K&quot; &quot;Kistler HC&quot;
-## [10,] &quot;O’Donnell K&quot; &quot;Aoki T&quot;</code></pre>
+##  [7,] &quot;O&#39;Donnell K&quot; &quot;Ward TJ&quot;   
+##  [8,] &quot;O&#39;Donnell K&quot; &quot;Geiser DM&quot; 
+##  [9,] &quot;O&#39;Donnell K&quot; &quot;Kistler HC&quot;
+## [10,] &quot;O&#39;Donnell K&quot; &quot;Aoki T&quot;</code></pre>
 <p>Within an authorship network, co-authors (same article) are linked together. Authors from this group can be connected to authors in another publication whenever they are co-authors in another article. Therefore, two articles can be linked by a common author. Each author is then considered a <strong>node</strong> in the network and the connections between them are the <strong>edges</strong>. There are several statistics to calculate in a network analysis.</p>
 <p>For now, let’s visualize the authorship network and the community structure which was defined via a function that tries to find densely connected subgraphs, also called communities, via random walk algorithm. The idea is that short random walks tend to stay in the same community. In the network below, there are 15 communities or subgraphs which are represented by distinct colors.</p>
 <pre class="r"><code># igraph
@@ -478,7 +473,7 @@ between &lt;- data.frame(round(betweenness(net), 1))
 page &lt;- data.frame(page_rank(net)$vector)
 close &lt;-data.frame(round(closeness(net), 10))
 eigen &lt;- data.frame(round(evcent(net)$vector, 5))</code></pre>
-<div id="network-graph" class="section level3">
+<section id="network-graph" class="level3">
 <h3>Network graph</h3>
 <pre class="r"><code>library(network)
 library(intergraph)
@@ -496,28 +491,13 @@ par(mar=c(0,0,0,0))
 plot.network(net_stat, vertex.cex= 0.05 + 0.25*log(graph.strength(net)), label =ifelse(degree(net)&gt;24,V(net)$name,NA), label.bg = &quot;NA&quot;, label.col = &quot;black&quot;, edge.col = &quot;lightgray&quot;, edge.lty = 0.5, label.cex = 0.7,  displaylabels = TRUE, vertex.col = membership(wc), jitter = T, edge.len = 0.2, boxed.labels=T, label.border=&quot;NA&quot;, pad=1.2)</code></pre>
 <p><img src="code_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
 <pre class="r"><code>#dev.off()</code></pre>
-</div>
-<div id="interactive-network-graph" class="section level3">
+</section>
+<section id="interactive-network-graph" class="level3">
 <h3>Interactive network graph</h3>
 <p>An interactive graph allows to navigate and visualize the connection among the authors. We use a function of the <code>networkD3</code> package to build the plot.</p>
 <p><a href="network-FGSC.html">Open the network in another page</a></p>
-<pre class="r"><code>library(networkD3)
-netD3 &lt;- simpleNetwork(edge_df, zoom = T,
-              fontFamily = &quot;Arial&quot;,
-              fontSize = 13,
-              charge = -200,
-              linkColour = &quot;lightgrey&quot;,
-              linkDistance = 80,
-              nodeColour = &quot;black&quot;,
-              opacity = 1
-              
-             )
-netD3</code></pre>
-<div id="htmlwidget-3b1bd44874f095fe016b" style="width:672px;height:480px;" class="forceNetwork html-widget"></div>
-<script type="application/json" data-for="htmlwidget-3b1bd44874f095fe016b">{"x":{"links":{"source":[96,96,96,69,69,128,96,96,96,96,150,69,150,69,51,69,150,47,69,150,69,69,109,109,109,109,109,111,111,111,111,40,40,40,134,134,75,150,5,47,69,51,123,123,123,96,150,150,69,150,150,150,150,96,5,69,51,5,5,5,96,69,51,47,47,47,96,69,69,69,69,96,51,51,51,96,126,126,96,135,96,96,96,96,96,96,96,96,96,96,150,69,150,150,150,150,150,69,5,0,0,0,0,69,69,69,69,69,5,5,5,5,98,98,98,68,68,15,57,150,47,57,57,57,57,57,57,150,47,65,65,65,65,65,65,150,150,150,150,150,150,150,47,47,47,47,47,47,132,132,132,132,132,92,92,92,92,88,88,88,71,71,64,150,150,96,150,150,150,150,150,150,32,96,32,32,123,32,51,32,96,113,113,123,113,51,113,96,96,96,96,96,96,45,123,45,51,45,123,103,51,103,123,51,123,51,52,51,119,119,119,119,119,7,7,7,7,110,110,110,117,117,90,155,150,5,69,96,150,5,69,96,150,69,96,69,96,96,148,148,148,148,148,150,148,50,50,50,50,150,50,129,129,129,150,129,19,19,150,19,42,150,42,150,31,150,7,7,7,7,7,7,115,115,115,115,34,118,118,118,34,53,53,34,120,34,34,150,16,16,16,96,16,150,150,150,96,150,139,139,96,139,44,96,44,96,73,96,47,150,96,47,47,69,150,96,58,58,69,96,150,150,69,96,96,96,86,69,69,109,111,111,109,109,134,114,114,114,114,114,150,35,35,35,35,150,54,54,54,150,145,145,150,107,150,150,150,47,116,69,5,116,116,96,150,150,69,150,150,150,96,47,69,5,47,47,96,69,5,18,18,96,69,69,69,96,5,5,96,93,96,96,111,109,29,7,7,7,109,111,111,111,111,109,109,109,109,29,29,29,131,34,34,11,11,11,109,111,11,29,156,156,109,111,156,29,1,109,111,1,29,109,111,99,29,109,109,109,111,111,29,157,157,157,157,157,157,157,140,140,140,140,140,140,149,149,149,149,149,27,27,27,27,152,152,152,152,152,158,101,101,101,22,22,87,115,53,120,131,125,125,34,115,115,115,115,115,34,53,53,53,53,34,120,120,120,34,131,131,34,43,34,34,137,137,137,150,137,49,49,150,49,104,150,104,150,112,150,150,16,16,16,150,150,150,9,9,61,25,25,25,25,25,3,3,3,3,36,36,36,106,106,102,76,18,76,76,76,150,76,69,18,151,151,151,150,151,69,18,18,18,150,18,69,37,37,150,37,69,83,150,83,69,150,2,69,150,69,69,121,121,121,121,121,105,105,105,105,77,77,77,84,84,21,150,12,96,12,12,12,150,96,150,150,150,96,39,39,39,96,96,96,59,59,143,34,150,34,34,34,34,34,150,53,122,122,120,131,150,150,150,150,150,53,53,53,53,94,120,131,120,131,120,150,53,34,150,150,34,32,96,67,67,67,52,69,67,150,96,32,32,32,32,69,32,150,96,96,96,96,96,96,96,82,82,52,69,82,150,136,52,69,136,150,52,69,130,150,69,52,150,69,69,150,80,94,34,150,94,34,150,34,150,150,25,34,101,25,34,101,36,34,34,101,66,66,29,32,66,66,66,66,149,150,108,29,32,108,108,108,108,149,150,29,32,13,13,13,13,149,150,29,29,29,29,29,29,150,32,32,32,32,32,150,33,33,33,149,150,38,38,149,150,74,149,150,149,150,150,150,120,122,72,131,34,150,150,150,150,150,120,120,120,34,122,131,34,131,34,34,101,101,111,133,101,22,111,133,87,111,133,22,111,111,133,157,157,157,157,157,157,157,157,157,157,157,157,17,152,17,17,17,17,17,41,17,17,149,152,78,78,78,78,78,41,78,78,149,152,152,152,152,152,152,152,152,149,153,153,153,153,41,153,153,149,55,55,55,41,55,55,149,56,56,41,56,56,149,63,41,63,63,149,41,28,28,149,41,41,149,142,149,149,94,80,80,150,34,94,94,150,34,89,150,34,150,34,150,154,154,29,100,29,29],"target":[69,128,24,128,24,24,150,51,69,5,51,150,5,51,5,5,47,10,47,10,150,10,111,40,134,75,29,40,134,75,29,134,75,29,75,29,29,123,123,123,123,123,126,135,144,123,5,47,150,51,126,135,144,150,47,5,5,126,135,144,5,47,47,126,135,144,47,51,126,135,144,69,126,135,144,51,135,144,126,144,135,144,150,0,69,5,98,68,15,70,0,150,5,98,68,15,70,0,0,98,68,15,70,5,98,68,15,70,98,68,15,70,68,15,70,15,70,70,65,57,57,132,92,88,71,64,60,65,65,132,92,88,71,64,60,47,132,92,88,71,64,60,132,92,88,71,64,60,92,88,71,64,60,88,71,64,60,71,64,60,64,60,60,32,113,150,45,103,123,52,51,95,113,32,45,103,32,52,32,95,113,45,103,113,52,113,95,45,103,123,52,51,95,103,45,52,45,95,103,52,103,95,52,123,95,52,95,95,7,110,117,90,34,110,117,90,34,117,90,34,90,34,34,46,155,155,155,155,46,46,46,46,5,150,150,5,5,69,50,129,19,42,31,148,85,129,19,42,31,50,85,19,42,31,129,85,42,31,19,85,31,42,85,31,85,85,115,118,53,120,131,34,118,53,120,131,115,53,120,131,118,120,131,53,131,120,131,16,139,44,73,16,147,139,44,73,150,147,44,73,139,147,73,44,147,73,147,147,58,47,47,86,48,47,58,58,86,48,58,150,86,48,150,86,48,69,48,86,48,111,134,29,134,29,29,35,54,145,107,26,114,54,145,107,26,35,145,107,26,54,107,26,145,26,107,26,116,116,18,116,116,93,23,116,47,18,150,5,93,23,150,18,47,47,93,23,47,18,18,93,23,18,5,93,23,69,93,23,5,23,93,23,7,7,7,4,131,34,111,29,4,131,34,29,4,131,34,4,131,34,4,4,131,156,1,99,11,11,133,11,1,99,156,156,133,156,99,1,1,133,1,99,99,133,99,111,133,29,133,29,133,140,149,27,152,152,158,41,149,27,152,152,158,41,27,152,152,158,41,152,152,158,41,152,158,41,158,41,41,22,87,14,87,14,14,125,125,125,125,43,81,125,53,120,131,43,81,115,120,131,43,81,53,131,43,81,120,43,81,131,81,43,81,49,104,112,137,146,104,112,49,146,112,104,146,112,146,146,16,9,61,62,9,61,62,61,62,62,3,36,106,102,124,36,106,102,124,106,102,124,102,124,124,151,76,37,83,2,76,79,76,151,37,83,2,151,79,151,37,83,2,18,79,18,83,2,37,79,37,2,83,79,83,2,79,2,79,150,79,105,77,84,21,91,77,84,21,91,84,21,91,21,91,91,12,39,12,59,143,138,39,150,59,143,138,39,59,143,138,59,143,138,143,138,138,122,34,53,94,72,120,131,122,122,94,72,122,122,53,94,72,120,131,94,72,120,131,72,94,94,72,72,131,53,8,53,8,34,8,67,67,82,136,130,67,67,20,67,32,82,136,130,52,32,20,32,82,136,130,52,69,20,150,136,130,82,82,20,82,130,136,136,20,136,130,130,20,130,52,20,52,20,150,20,89,80,80,80,89,89,89,94,94,34,36,25,25,124,36,36,124,101,124,124,108,13,66,66,33,38,74,97,66,66,13,108,108,33,38,74,97,108,108,13,13,33,38,74,97,13,13,32,33,38,74,97,149,29,33,38,74,97,149,32,38,74,97,33,33,74,97,38,38,97,74,74,97,97,149,72,72,72,30,72,72,120,122,30,131,34,122,30,131,120,30,122,122,30,30,131,87,22,101,101,14,87,87,87,14,22,22,14,133,14,14,17,78,152,153,55,56,63,28,41,142,141,149,78,17,153,55,56,63,28,17,142,141,17,78,153,55,56,63,28,78,142,141,78,153,55,56,63,28,41,142,141,152,55,56,63,28,153,142,141,153,56,63,28,55,142,141,55,63,28,56,142,141,56,28,63,142,141,63,28,142,141,28,142,141,41,141,142,141,80,89,6,80,80,89,6,94,94,6,89,89,6,6,34,100,127,154,127,100,127],"value":[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],"colour":["lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey","lightgrey"]},"nodes":{"name":["Aberra D","Abod A","Abramova S","Albuquerque DR","Alves TCA","Aoki T","Arruda R","Astolfi P","Badiale-Furlong E","Ballois N","Balmas V","Barros G","Bec S","Belzile F","Bettucci L","Bjørnstad Å","Boutigny A-L","Brankovics B","Broz K","Brule-Babel A","Busman M","Cacciola OS","Calero N","Carter J","Casper HH","Castañares E","Catalan CAN","Chen W","Chen WQ","Chulze SN","Ciliato ML","Clear R","Clear RM","Cowger C","Del Ponte EM","Díaz CG","Dinolfo MI","Dong Y","Elmer W","Farman M","Farnochi MC","Feng J","Fernando WGD","Ferreira FD","Flett B","Gaba D","Gagkaeva T","Gale LR","Gale SW","Garmendia G","Gauthier V","Geiser DM","Gilbert J","Gomes LB","Gonzalez V","Guo C","Guo JG","H. Suga","Harrison SA","Hershman D","Hyakumachi M","Iancu G","Ioos R","Jin SL","Kageyama K","Karugia GW","Kelly A","Kelly AC","Kimura M","Kistler HC","Klemsdal SS","Koizumi S","Kuhnem PR","Lamprecht SC","Lee T","Leslie JF","Liang JM","Logrieco AF","Luo W","Ma ZH","Machado FJ","Machinski Junior M","McCormick S","McCormick SP","Meca G","Miedaner T","Milus EA","Mionetto A","Miyasaka A","Möller PA","Moraes MG","Moretti A","Nakajima T","Nicholson P","Nicolli CP","Nowicki TW","O’Donnell K","Obanor F","Orwig N","Oviedo MS","Palazzini JM","Pan D","Patriarca A","Patrick S","Pereyra S","Petruzzella AL","Pinto VF","Ploper LD","Proctor RH","Ramirez ML","Reartes DS","Reynoso MM","Rodríguez-Haralambides A","Rooney AP","Sampietro DA","Santos J dos","Sarver BAJ","Schmale III DG","Schneider L","Scoz LB","Silva CN","Somma S","Spolti P","Starkey DE","Stenglein SA","Stumpf R","Suga H","Sulyok M","Tacke BK","Tamburic-Ilincic L","Tekauz A","Tessmann DJ","Tomimura K","Torres A","Torres AM","Tóth B","Turkington TK","Umpiérrez-Failache M","Vaillancourt LJ","Van Coller GJ","Van der Lee T","Van der Lee TAJ","Van Diepeningen AD","Van Sanford D","Varga J","Vattuone MA","Vero S","Viljoen A","von der Ohe C","Waalwijk C","Ward TJ","Xayamongkhon H","Xu J","Xu JS","Yerkovich N","Yli-Mattila T","Zanon MSA","Zhang H","Zhang Y"],"group":[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],"nodesize":[8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8]},"options":{"NodeID":"name","Group":"group","colourScale":"d3.scaleOrdinal(['black'])","fontSize":13,"fontFamily":"Arial","clickTextSize":32.5,"linkDistance":80,"linkWidth":"'1.5px'.toString()","charge":-200,"opacity":1,"zoom":true,"legend":false,"arrows":false,"nodesize":true,"radiusCalculation":"d.nodesize","bounded":false,"opacityNoHover":1,"clickAction":null}},"evals":[],"jsHooks":[]}</script>
-<pre class="r"><code> saveNetwork(netD3, file = &#39;network-FGSC.html&#39;)</code></pre>
-</div>
-<div id="statistics" class="section level3">
+</section>
+<section id="statistics" class="level3">
 <h3>Statistics</h3>
 <p>There are several statistics to compute at the network, node and edge level.</p>
 <pre class="r"><code>library(broom)
@@ -567,11 +547,11 @@ ms &lt;- membership(wc)
 
 # clustering edge betweenness
 eb &lt;- cluster_edge_betweenness(net)</code></pre>
-<div id="network-transitivity" class="section level4">
+<section id="network-transitivity" class="level4">
 <h4>Network transitivity</h4>
-<p>Transitivity, also know as clustering coefficient, is the mean probability that two author with a common author are themselves co-authors. In our study the transivity was <strong>0.4058955</strong>, meaning that, on average, the chance that two scholars that share a common collaborator wrote a paper together is almost 50%.</p>
-</div>
-<div id="node-degree" class="section level4">
+<p>Transitivity, also know as clustering coefficient, is the mean probability that two author with a common author are themselves co-authors. In our study the transivity was <strong>0.4355265</strong>, meaning that, on average, the chance that two scholars that share a common collaborator wrote a paper together is almost 50%.</p>
+</section>
+<section id="node-degree" class="level4">
 <h4>Node degree</h4>
 <p>Individually, authors can be highly connected or influential. The degree of a node is a basic structural property that quantify the number of adjacents nodes or edges. Let’s see the 25 authors with most degree.</p>
 <pre class="r"><code>deg2</code></pre>
@@ -579,57 +559,57 @@ eb &lt;- cluster_edge_betweenness(net)</code></pre>
 ## # Groups:   names [20]
 ##           names     x
 ##           &lt;chr&gt; &lt;dbl&gt;
-##  1      Ward TJ   147
-##  2  O’Donnell K    73
+##  1      Ward TJ   155
+##  2  O&#39;Donnell K    73
 ##  3   Kistler HC    63
 ##  4 Del Ponte EM    53
-##  5      Gale LR    35
+##  5      Gale LR    40
 ##  6       Aoki T    34
 ##  7    Chulze SN    34
-##  8  Tessmann DJ    32
-##  9   Waalwijk C    29
+##  8   Waalwijk C    33
+##  9  Tessmann DJ    32
 ## 10     Clear RM    28
-## 11   Reynoso MM    26
-## 12     Silva CN    26
-## 13         Xu J    26
+## 11         Xu J    28
+## 12   Reynoso MM    26
+## 13     Silva CN    26
 ## 14     Gomes LB    23
 ## 15    Geiser DM    22
-## 16   Ramirez ML    21
-## 17      Zhang H    19
-## 18       Feng J    19
-## 19   Starkey DE    18
-## 20    Gilbert J    18</code></pre>
-</div>
-<div id="betweenness" class="section level4">
+## 16        Lee T    22
+## 17   Ramirez ML    21
+## 18      Zhang H    19
+## 19       Feng J    19
+## 20   Starkey DE    18</code></pre>
+</section>
+<section id="betweenness" class="level4">
 <h4>Betweenness</h4>
 <p>Betweenness is a centrality measure based on the shortest paths. The betweenness centrality for each vertex is the number of these shortest paths that pass through the vertex. It represents the degree of which nodes stand between each other.</p>
 <pre class="r"><code>bet2</code></pre>
 <pre><code>## # A tibble: 20 x 2
 ## # Groups:   names [20]
-##           names           x
-##           &lt;chr&gt;       &lt;dbl&gt;
-##  1      Ward TJ 0.674926655
-##  2 Del Ponte EM 0.179977641
-##  3   Waalwijk C 0.166121100
-##  4    Chulze SN 0.143483454
-##  5  O’Donnell K 0.036701148
-##  6   Reynoso MM 0.028009723
-##  7   Kistler HC 0.024488268
-##  8  Tessmann DJ 0.021541567
-##  9     Clear RM 0.018964054
-## 10        Pan D 0.014888707
-## 11 Castañares E 0.011851971
-## 12   Dinolfo MI 0.011851971
-## 13 Stenglein SA 0.011851971
-## 14     Gomes LB 0.008618301
-## 15     Silva CN 0.008602486
-## 16      Gale LR 0.005759838
-## 17   Ramirez ML 0.005515855
-## 18    Astolfi P 0.005420178
-## 19     Torres A 0.003656851
-## 20       Aoki T 0.001706114</code></pre>
-</div>
-<div id="page-rank" class="section level4">
+##           names          x
+##           &lt;chr&gt;      &lt;dbl&gt;
+##  1      Ward TJ 0.50040999
+##  2    Chulze SN 0.12771492
+##  3   Waalwijk C 0.12498611
+##  4 Del Ponte EM 0.08546149
+##  5   Proctor RH 0.06764320
+##  6        Lee T 0.06197537
+##  7    Leslie JF 0.05586265
+##  8  Nicholson P 0.04496797
+##  9     Carter J 0.04496797
+## 10         Qu B 0.04381270
+## 11  O&#39;Donnell K 0.02581468
+## 12 Lamprecht SC 0.01912784
+## 13   Reynoso MM 0.01724145
+## 14   Kistler HC 0.01533469
+## 15     Clear RM 0.01336565
+## 16         Xu J 0.01312626
+## 17   Nakajima T 0.01282710
+## 18   Miedaner T 0.01281039
+## 19 &quot;T\xcc_th B&quot; 0.01263490
+## 20      Varga J 0.01263490</code></pre>
+</section>
+<section id="page-rank" class="level4">
 <h4>Page rank</h4>
 <p>This is the Google PageRank for the specified vertices.</p>
 <pre class="r"><code>rank2</code></pre>
@@ -637,28 +617,28 @@ eb &lt;- cluster_edge_betweenness(net)</code></pre>
 ## # Groups:   names [20]
 ##           names           x
 ##           &lt;chr&gt;       &lt;dbl&gt;
-##  1      Ward TJ 0.070376862
-##  2  O’Donnell K 0.033535439
-##  3   Kistler HC 0.028570534
-##  4 Del Ponte EM 0.024982399
-##  5    Chulze SN 0.018083780
-##  6      Gale LR 0.016264448
-##  7       Aoki T 0.015193662
-##  8  Tessmann DJ 0.014424560
-##  9   Reynoso MM 0.013706558
-## 10   Waalwijk C 0.012993447
-## 11     Clear RM 0.012801797
-## 12     Silva CN 0.011730034
-## 13         Xu J 0.011529714
-## 14   Ramirez ML 0.011064089
-## 15     Gomes LB 0.010646632
-## 16    Geiser DM 0.009849566
-## 17    Astolfi P 0.008914403
-## 18      Zhang H 0.008613745
-## 19       Feng J 0.008613745
-## 20    Gilbert J 0.008420847</code></pre>
-</div>
-<div id="eigenvector" class="section level4">
+##  1      Ward TJ 0.045883899
+##  2  O&#39;Donnell K 0.020686621
+##  3   Kistler HC 0.017473055
+##  4 Del Ponte EM 0.015094536
+##  5      Gale LR 0.011109492
+##  6    Chulze SN 0.011102391
+##  7   Waalwijk C 0.010511925
+##  8       Aoki T 0.009293707
+##  9         Xu J 0.008927799
+## 10  Tessmann DJ 0.008751203
+## 11   Reynoso MM 0.008237556
+## 12     Clear RM 0.008030011
+## 13        Lee T 0.007829693
+## 14     Silva CN 0.007119990
+## 15   Ramirez ML 0.006655178
+## 16   Proctor RH 0.006620350
+## 17     Gomes LB 0.006461811
+## 18    Leslie JF 0.006303741
+## 19         Qu B 0.006074953
+## 20    Geiser DM 0.006069158</code></pre>
+</section>
+<section id="eigenvector" class="level4">
 <h4>Eigenvector</h4>
 <p>Thi is a measure of the influence of a node (author) in a network. It assigns relative scores to all nodes in the network based on the concept that connections to high-scoring nodes contribute more to the score of the node in question than equal connections to low-scoring nodes.</p>
 <pre class="r"><code>eigen2</code></pre>
@@ -667,27 +647,27 @@ eb &lt;- cluster_edge_betweenness(net)</code></pre>
 ##           names         x
 ##           &lt;chr&gt;     &lt;dbl&gt;
 ##  1      Ward TJ 1.0000000
-##  2  O’Donnell K 0.8043925
-##  3   Kistler HC 0.7565331
-##  4       Aoki T 0.5050982
-##  5      Gale LR 0.4288645
-##  6    Geiser DM 0.3125364
-##  7 Del Ponte EM 0.2908980
-##  8     Clear RM 0.2402735
-##  9   Starkey DE 0.2226066
-## 10    Gilbert J 0.1961811
-## 11       Broz K 0.1884915
-## 12  Tessmann DJ 0.1801839
-## 13     Silva CN 0.1659007
-## 14   Nicolli CP 0.1575871
-## 15     Gomes LB 0.1534801
-## 16       Tóth B 0.1339170
-## 17       Suga H 0.1339170
-## 18      Varga J 0.1339170
-## 19   Sarver BAJ 0.1223979
-## 20     Carter J 0.1223979</code></pre>
-</div>
-<div id="closeness" class="section level4">
+##  2  O&#39;Donnell K 0.7944170
+##  3   Kistler HC 0.7477319
+##  4       Aoki T 0.4995948
+##  5      Gale LR 0.4424985
+##  6    Geiser DM 0.3082141
+##  7 Del Ponte EM 0.2846272
+##  8     Clear RM 0.2356288
+##  9   Starkey DE 0.2198637
+## 10    Gilbert J 0.1921813
+## 11       Broz K 0.1859635
+## 12  Tessmann DJ 0.1755247
+## 13     Silva CN 0.1617421
+## 14       Suga H 0.1565706
+## 15   Nicolli CP 0.1545932
+## 16     Gomes LB 0.1497292
+## 17  Klemsdal SS 0.1473756
+## 18      Varga J 0.1382425
+## 19 &quot;T\xcc_th B&quot; 0.1382425
+## 20  Nicholson P 0.1272304</code></pre>
+</section>
+<section id="closeness" class="level4">
 <h4>Closeness</h4>
 <p>Cloness centrality measures how many steps is required to access every other vertex from a given vertex.</p>
 <pre class="r"><code>close2</code></pre>
@@ -695,30 +675,30 @@ eb &lt;- cluster_edge_betweenness(net)</code></pre>
 ## # Groups:   names [20]
 ##           names            x
 ##           &lt;chr&gt;        &lt;dbl&gt;
-##  1      Ward TJ 0.0008598452
-##  2    Chulze SN 0.0008090615
-##  3 Del Ponte EM 0.0008032129
-##  4     Clear RM 0.0007961783
-##  5   Waalwijk C 0.0007955449
-##  6  Tessmann DJ 0.0007936508
-##  7  O’Donnell K 0.0007892660
-##  8      Kelly A 0.0007861635
-##  9   Proctor RH 0.0007861635
-## 10    Belzile F 0.0007861635
-## 11     Cowger C 0.0007861635
-## 12      Elmer W 0.0007861635
-## 13        Lee T 0.0007861635
-## 14     Obanor F 0.0007861635
-## 15   Kistler HC 0.0007849294
-## 16     Gomes LB 0.0007824726
-## 17     Silva CN 0.0007824726
-## 18   Nicolli CP 0.0007800312
-## 19     Spolti P 0.0007788162
-## 20    Kuhnem PR 0.0007788162</code></pre>
-</div>
-</div>
-</div>
-</div>
+##  1      Ward TJ 8.974244e-05
+##  2    Chulze SN 8.896006e-05
+##  3   Waalwijk C 8.879418e-05
+##  4     Clear RM 8.875477e-05
+##  5   Proctor RH 8.875477e-05
+##  6        Lee T 8.870753e-05
+##  7      Kelly A 8.862891e-05
+##  8    Belzile F 8.862891e-05
+##  9     Cowger C 8.862891e-05
+## 10      Elmer W 8.862891e-05
+## 11     Obanor F 8.862891e-05
+## 12 Del Ponte EM 8.860535e-05
+## 13  O&#39;Donnell K 8.855043e-05
+## 14  Tessmann DJ 8.848774e-05
+## 15   Kistler HC 8.846426e-05
+## 16      Gale LR 8.837045e-05
+## 17       Aoki T 8.831582e-05
+## 18  Nicholson P 8.830802e-05
+## 19     Carter J 8.830802e-05
+## 20     Gomes LB 8.827684e-05</code></pre>
+</section>
+</section>
+</section>
+</section>
 
 
 

@@ -16,57 +16,57 @@ output:
 
 ```{r setup, include=FALSE}
 
-library(flexdashboard)
+library(here)
 library(readxl)
 library(tidyverse)
 library(crosstalk)
 library(plotly)
 library(viridis)
 library(gsheet)
-theme_set(theme_bw())
+theme_set(theme_grey())
+Sys.setlocale("LC_ALL", 'pt_BR.UTF-8')
 
 ```
 
-```{r load data, message=FALSE, warning=FALSE, include=FALSE}
-Sys.setlocale("LC_ALL", 'pt_BR.UTF-8')
+```{r load data, eval=FALSE, message=FALSE, warning=FALSE, include=FALSE}
 # carrega os dados com lat e long
-s1 <- read_excel("fgsc-dat4.xlsx", 1)
-s2 <- read_excel("fgsc-dat4.xlsx", 2)
-s3 <- read_excel("fgsc-dat4.xlsx", 3)
-s4 <- read_excel("fgsc-dat4.xlsx", 4)
-s5 <- read_excel("fgsc-dat4.xlsx", 5)
-s6 <- read_excel("fgsc-dat4.xlsx", 6)
-s7 <- read_excel("fgsc-dat4.xlsx", 7)
-s8 <- read_excel("fgsc-dat4.xlsx", 8)
-s9 <- read_excel("fgsc-dat4.xlsx", 9)
-s10 <- read_excel("fgsc-dat4.xlsx", 10)
-s11 <- read_excel("fgsc-dat4.xlsx", 11)
-s12 <- read_excel("fgsc-dat4.xlsx", 12)
-s13 <- read_excel("fgsc-dat4.xlsx", 13)
-s14 <- read_excel("fgsc-dat4.xlsx", 14)
-s15 <- read_excel("fgsc-dat4.xlsx", 15)
-s16 <- read_excel("fgsc-dat4.xlsx", 16)
-s19 <- read_excel("fgsc-dat4.xlsx", 19)
-s20 <- read_excel("fgsc-dat4.xlsx", 20)
-s21 <- read_excel("fgsc-dat4.xlsx", 21)
-s22 <- read_excel("fgsc-dat4.xlsx", 22)
-s23 <- read_excel("fgsc-dat4.xlsx", 23)
-s24 <- read_excel("fgsc-dat4.xlsx", 24)
-s25 <- read_excel("fgsc-dat4.xlsx", 25)
-s26 <- read_excel("fgsc-dat4.xlsx", 26)
-s27 <- read_excel("fgsc-dat4.xlsx", 27)
-s28 <- read_excel("fgsc-dat4.xlsx", 28)
-s29 <- read_excel("fgsc-dat4.xlsx", 29)
-s30 <- read_excel("fgsc-dat4.xlsx", 30)
-s31 <- read_excel("fgsc-dat4.xlsx", 31)
-s32 <- read_excel("fgsc-dat4.xlsx", 32)
-s33 <- read_excel("fgsc-dat4.xlsx", 33)
-s34 <- read_excel("fgsc-dat4.xlsx", 34)
-s35 <- read_excel("fgsc-dat4.xlsx", 35)
-s36 <- read_excel("fgsc-dat4.xlsx", 36)
-s37 <- read_excel("fgsc-dat4.xlsx", 37)
-s38 <- read_excel("fgsc-dat4.xlsx", 38)
-s39 <- read_excel("fgsc-dat4.xlsx", 39)
+s1 <- read_excel(here("data", "fgsc-dat4.xlsx"), 1)
+s2 <- read_excel(here("data", "fgsc-dat4.xlsx"), 2)
+s3 <- read_excel(here("data", "fgsc-dat4.xlsx"), 3)
+s4 <- read_excel(here("data", "fgsc-dat4.xlsx"), 4)
+s5 <- read_excel(here("data", "fgsc-dat4.xlsx"), 5)
+s6 <- read_excel(here("data", "fgsc-dat4.xlsx"), 6)
+s7 <- read_excel(here("data", "fgsc-dat4.xlsx"), 7)
+s8 <- read_excel(here("data", "fgsc-dat4.xlsx"), 8)
+s9 <- read_excel(here("data", "fgsc-dat4.xlsx"), 9)
+s10 <- read_excel(here("data", "fgsc-dat4.xlsx"), 10)
+s11 <- read_excel(here("data", "fgsc-dat4.xlsx"), 11)
+s12 <- read_excel(here("data", "fgsc-dat4.xlsx"), 12)
+s13 <- read_excel(here("data", "fgsc-dat4.xlsx"), 13)
+s14 <- read_excel(here("data", "fgsc-dat4.xlsx"), 14)
+s15 <- read_excel(here("data", "fgsc-dat4.xlsx"), 15)
+s16 <- read_excel(here("data", "fgsc-dat4.xlsx"), 16)
+s19 <- read_excel(here("data", "fgsc-dat4.xlsx"), 19)
+s20 <- read_excel(here("data", "fgsc-dat4.xlsx"), 20)
+s21 <- read_excel(here("data", "fgsc-dat4.xlsx"), 21)
+s22 <- read_excel(here("data", "fgsc-dat4.xlsx"), 22)
+s23 <- read_excel(here("data", "fgsc-dat4.xlsx"), 23)
+s24 <- read_excel(here("data", "fgsc-dat4.xlsx"), 24)
+s25 <- read_excel(here("data", "fgsc-dat4.xlsx"), 25)
+s26 <- read_excel(here("data", "fgsc-dat4.xlsx"), 26)
+s27 <- read_excel(here("data", "fgsc-dat4.xlsx"), 27)
+s28 <- read_excel(here("data", "fgsc-dat4.xlsx"), 28)
+s29 <- read_excel(here("data", "fgsc-dat4.xlsx"), 29)
+s30 <- read_excel(here("data", "fgsc-dat4.xlsx"), 30)
+s31 <- read_excel(here("data", "fgsc-dat4.xlsx"), 31)
+s32 <- read_excel(here("data", "fgsc-dat4.xlsx"), 32)
+s33 <- read_excel(here("data", "fgsc-dat4.xlsx"), 33)
+s34 <- read_excel(here("data", "fgsc-dat4.xlsx"), 34)
+s35 <- read_excel(here("data", "fgsc-dat4.xlsx"), 35)
+s36 <- read_excel(here("data", "fgsc-dat4.xlsx"), 36)
+s37 <- read_excel(here("data", "fgsc-dat4.xlsx"), 37)
+s38 <- read_excel(here("data", "fgsc-dat4.xlsx"), 38)
+s39 <- read_excel(here("data", "fgsc-dat4.xlsx"), 39)
 fgsc2 <- rbind(s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14, s15, s16, s19, s20, s21, s22, s23, s24, s25, s26, s27, s28, s29, s30, s31, s32, s33, s34, s35, s36, s37, s38, s39)
 fgsc2$Latitude <- round(jitter(fgsc2$Latitude, factor = 6),4)
 fgsc2$Longitude <- round(jitter(fgsc2$Longitude, factor = 6),4)
@@ -79,17 +79,18 @@ fgsc <- fgsc %>%  filter(FGSC != 30) %>%  filter(FGSC != "F. cerealis") %>% filt
 fgsc$Host <- revalue(fgsc$Host, 
                      c("oat" = "Oat",  "corn" = "Maize","wheat" = "Wheat", "barley" = "Barley"))
 fgsc$Tri_genotype <- revalue(fgsc$Tri_genotype, c("NX2" = "NX-2"))
+write.csv(fgsc, here("data", "data-fgsc.csv"))
 
 ```
 
 
 ```{r include=FALSE}
 # load the article database
-library(gsheet)
-articles <-
- gsheet2tbl('https://docs.google.com/spreadsheets/d/1rAC_U5upuDPHCSLi9kieb4R5tztHVJGW84aQOf6z7Lk/edit?usp=sharing') 
-articles <- articles %>% 
-  filter (pub_order == 1)
+#library(gsheet)
+#articles <-
+# gsheet2tbl('https://docs.google.com/spreadsheets/d/1rAC_U5upuDPHCSLi9kieb4R5tztHVJGW84aQOf6z7Lk/edit?usp=sharing') 
+#articles <- articles 
+articles <- read_csv(here("data", "articles-reviewed.csv"))
 
 ```
 
@@ -111,7 +112,7 @@ The number of articles published per year ranged from `r min(year$n)` to `r max(
 ```{r message=FALSE, warning=FALSE, paged.print=TRUE}
 articles %>% 
   ggplot(aes(year))+
-  geom_bar()+
+  geom_bar(aes(fill = factor(pub_order)))+
   scale_y_continuous(breaks=seq(0, 11, 1), expand=c(0.02, 0))+
   scale_x_continuous(breaks=seq(2000, 2017))+
   labs(y = "Number of articles", x = "Published year", title = "Articles per year")
@@ -134,7 +135,7 @@ The articles were published in `r nrow(journal)` scientific journals. The journa
 ```{r message=FALSE, warning=FALSE, paged.print=TRUE}
 articles %>% 
   ggplot(aes(reorder(journal_name, journal_name, function(x) length(x))))+
-  geom_bar()+
+  geom_bar(aes(fill = factor(pub_order)))+
   scale_y_continuous(breaks=seq(0,10), expand=c(0.01, 0))+
   coord_flip()+
   labs(y = "Number of articles", x = "", title = "Articles per journal")
@@ -176,7 +177,7 @@ articles %>%
   gather(code, country, 25:30) %>% 
   filter(country != "NA") %>% 
   ggplot(aes(reorder(country, country, function(x) length(x))))+
-  geom_bar()+
+  geom_bar(aes(fill = factor(pub_order)))+
   scale_y_continuous(breaks=seq(0,30,2), expand=c(0.01, 0))+
   coord_flip()+
   labs(y = "Number of articles", x = "", title = "Articles per country" )
@@ -220,7 +221,7 @@ authors %>%
 
 A wordcloud is an alternative way to visualize the frequency of articles for all authors. The size of the name is relative to the number of articles.
 
-```{r message=FALSE, warning=FALSE, paged.print=FALSE}
+```{r eval=FALSE, message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
 library(wordcloud)
 #png("FGSC-authors.png", width=12, height=12, units="in", res=300)
 wordcloud(authors$name, authors$n, c(4,.5), 1, random.order = F, colors=brewer.pal(8, "Dark2"))
@@ -300,7 +301,7 @@ edge_df <- as.data.frame(get.edgelist(net))
 colnames(edge_df) <- c("from", "to")
 ```
 
-```{r message=FALSE,  warning=FALSE, paged.print=FALSE}
+```{r eval=FALSE, message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
 library(networkD3)
 netD3 <- simpleNetwork(edge_df, zoom = T,
               fontFamily = "Arial",

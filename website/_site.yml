@@ -1,21 +1,25 @@
-name: "my-website"
-output_dir: "."
+name: my-website
+output_dir: '.'
 navbar:
-  title: "FGSC global database"
+  title: FGSC global database
   left:
-    - text: "Home"
-      icon: fa fa-home 
-      href: index.html
-    - text: "Datasets"
-      icon: fa fa-table 
-      href: data.html
-    - text: "Data analysis"
-      icon: fa fa-file-code-o 
-      href: code.html
-    - text: "Manuscript"
-      icon: fa fa-file-text-o 
-      href: article.html 
-      
+  - text: Home
+    icon: fa fa-home
+    href: index.html
+  - text: Datasets
+    icon: fa fa-table
+    href: data.html
+  - text: Data analysis
+    icon: fa fa-file-code-o
+    href: code.html
+  - text: Manuscript
+    icon: fa fa-file-text-o
+    href: article.html
   right:
-    - icon: fa-github-square 
-      href: https://github.com/emdelponte/FGSC
+  - icon: fa-github-square
+    href: https://github.com/emdelponte/FGSC
+output:
+  html_document:
+    lib_dir: site_libs
+    self_contained: no
+

@@ -21,3 +21,6 @@ purrrlyr
 igraph
 network
 intergraph
+stringr
+forcats
+here
