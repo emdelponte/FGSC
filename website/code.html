@@ -352,26 +352,26 @@ div.tocify {
 
 <section id="bibliographic-analysis" class="level1">
 <h1>Bibliographic analysis</h1>
-<p>Bibliographic data were obtained from peer-reviewed articles (n = 65) which were indexed as a bibliographic source for the information on the FGSC isolates in our database. The indexed articles were published from 2000 to 2017. Follows a summary for these data.</p>
+<p>Bibliographic data were obtained from peer-reviewed articles (n = 75) which were indexed as a bibliographic source for the information on the FGSC isolates in our database. The indexed articles were published from 2000 to 2017. Follows a summary for these data.</p>
 <section id="articles-per-year" class="level2">
 <h2>Articles per year</h2>
-<p>The number of articles published per year ranged from 1 to 11. The year with most number of articles was 2011</p>
-<pre class="r"><code>articles %&gt;% 
-  ggplot(aes(year))+
-  geom_bar(aes(fill = factor(pub_order)))+
-  scale_y_continuous(breaks=seq(0, 11, 1), expand=c(0.02, 0))+
-  scale_x_continuous(breaks=seq(2000, 2017))+
+<p>The number of articles published per year ranged from 1 to 12. The year with most number of articles was 2011</p>
+<pre class="r"><code>articles %&gt;%
+  ggplot(aes(year)) +
+  geom_bar(aes(fill = factor(pub_order))) +
+  scale_y_continuous(breaks = seq(0, 11, 1), expand = c(0.02, 0)) +
+  scale_x_continuous(breaks = seq(2000, 2017)) +
   labs(y = &quot;Number of articles&quot;, x = &quot;Published year&quot;, title = &quot;Articles per year&quot;)</code></pre>
 <p><img src="code_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
 </section>
 <section id="journals" class="level2">
 <h2>Journals</h2>
-<p>The articles were published in 28 scientific journals. The journal with most number of publications was Fungal Genetics and Biology with 9 articles, followed by International Journal of Food Microbiology (6 articles) and Plant Pathology (6 articles).</p>
-<pre class="r"><code>articles %&gt;% 
-  ggplot(aes(reorder(journal_name, journal_name, function(x) length(x))))+
-  geom_bar(aes(fill = factor(pub_order)))+
-  scale_y_continuous(breaks=seq(0,10), expand=c(0.01, 0))+
-  coord_flip()+
+<p>The articles were published in 30 scientific journals. The journal with most number of publications was Fungal Genetics and Biology with 9 articles, followed by Plant Pathology (9 articles) and Plant Disease (7 articles).</p>
+<pre class="r"><code>articles %&gt;%
+  ggplot(aes(reorder(journal_name, journal_name, function(x) length(x)))) +
+  geom_bar(aes(fill = factor(pub_order))) +
+  scale_y_continuous(breaks = seq(0, 10), expand = c(0.01, 0)) +
+  coord_flip() +
   labs(y = &quot;Number of articles&quot;, x = &quot;&quot;, title = &quot;Articles per journal&quot;)</code></pre>
 <p><img src="code_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
 </section>
@@ -379,71 +379,71 @@ div.tocify {
 <h2>Authorship</h2>
 <section id="country-affiliations" class="level3">
 <h3>Country affiliations</h3>
-<p>For each article, the countries reported in the affiliations of the authors were indexed. We recorded the country name only once per article regardless of the number of authors from a same country. There were 25 unique countries, and the three most unique occurrences were United States, Argentina and Brazil.</p>
-<pre class="r"><code>articles %&gt;% 
-  gather(code, country, 25:30) %&gt;% 
-  filter(country != &quot;NA&quot;) %&gt;% 
-  ggplot(aes(reorder(country, country, function(x) length(x))))+
-  geom_bar(aes(fill = factor(pub_order)))+
-  scale_y_continuous(breaks=seq(0,30,2), expand=c(0.01, 0))+
-  coord_flip()+
-  labs(y = &quot;Number of articles&quot;, x = &quot;&quot;, title = &quot;Articles per country&quot; )</code></pre>
+<p>For each article, the countries reported in the affiliations of the authors were indexed. We recorded the country name only once per article regardless of the number of authors from a same country. There were 27 unique countries, and the three most unique occurrences were United States, China and Argentina.</p>
+<pre class="r"><code>articles %&gt;%
+  gather(code, country, 25:30) %&gt;%
+  filter(country != &quot;NA&quot;) %&gt;%
+  ggplot(aes(reorder(country, country, function(x) length(x)))) +
+  geom_bar(aes(fill = factor(pub_order))) +
+  scale_y_continuous(breaks = seq(0, 30, 2), expand = c(0.01, 0)) +
+  coord_flip() +
+  labs(y = &quot;Number of articles&quot;, x = &quot;&quot;, title = &quot;Articles per country&quot;)</code></pre>
 <p><img src="code_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
 </section>
 <section id="number-of-authors" class="level3">
 <h3>Number of authors</h3>
-<pre class="r"><code>authors &lt;- articles %&gt;% 
-  gather(author, name, 6:19) %&gt;% 
-  select(author, name) %&gt;% 
-  filter(name != &quot;NA&quot;) %&gt;% 
-  group_by(name) %&gt;% 
-  tally(sort = T) </code></pre>
-<p>There were 263 unique authors in the collection of 65 indexed articles. Let’s see the list of 20 most prolific authors and a frequency plot for authors who have published at least three articles.</p>
+<pre class="r"><code>authors &lt;- articles %&gt;%
+  gather(author, name, 6:19) %&gt;%
+  select(author, name) %&gt;%
+  filter(name != &quot;NA&quot;) %&gt;%
+  group_by(name) %&gt;%
+  tally(sort = T)</code></pre>
+<p>There were 313 unique authors in the collection of 75 indexed articles. Let’s see the list of 20 most prolific authors and a frequency plot for authors who have published at least three articles.</p>
 <pre class="r"><code>head(authors, 20)</code></pre>
 <pre><code>## # A tibble: 20 x 2
 ##            name     n
 ##           &lt;chr&gt; &lt;int&gt;
 ##  1      Ward TJ    24
-##  2  O&#39;Donnell K    11
-##  3 Del Ponte EM    10
-##  4   Kistler HC    10
+##  2 Del Ponte EM    10
+##  3   Kistler HC    10
+##  4  O’Donnell K    10
 ##  5    Chulze SN     6
 ##  6      Gale LR     6
 ##  7       Aoki T     5
 ##  8   Reynoso MM     5
 ##  9  Tessmann DJ     5
-## 10     Gomes LB     4
-## 11   Ramirez ML     4
-## 12     Silva CN     4
-## 13   Waalwijk C     4
+## 10   Waalwijk C     5
+## 11     Gomes LB     4
+## 12   Ramirez ML     4
+## 13     Silva CN     4
 ## 14         Xu J     4
 ## 15    Astolfi P     3
 ## 16 Boutigny A-L     3
 ## 17     Clear RM     3
 ## 18    Geiser DM     3
-## 19        Lee T     3
-## 20    Leslie JF     3</code></pre>
-<pre class="r"><code>authors %&gt;% 
-  filter(n &gt; 2) %&gt;% 
-  ggplot(aes(reorder(name, n), n))+
-  geom_col()+
-  scale_y_continuous(breaks=seq(0,30,3),  expand=c(0.01, 0))+
-  coord_flip()+
-  labs(x = &quot;&quot;, y = &quot;Frequency&quot;, title =&quot;Articles per author&quot;)</code></pre>
+## 19    Gilbert J     3
+## 20        Lee T     3</code></pre>
+<pre class="r"><code>authors %&gt;%
+  filter(n &gt; 2) %&gt;%
+  ggplot(aes(reorder(name, n), n)) +
+  geom_col() +
+  scale_y_continuous(breaks = seq(0, 30, 3), expand = c(0.01, 0)) +
+  coord_flip() +
+  labs(x = &quot;&quot;, y = &quot;Frequency&quot;, title = &quot;Articles per author&quot;)</code></pre>
 <p><img src="code_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
 </section>
 <section id="wordcloud" class="level3">
 <h3>Wordcloud</h3>
-<p>A wordcloud is an alternative way to visualize the frequency of articles for all authors. The size of the name is relative to the number of articles.</p>
+<p>A word-cloud is an alternative way to visualize the frequency of articles for all authors. The size of the name is relative to the number of articles.</p>
 </section>
 </section>
 <section id="scholarly-collaborative-network" class="level2">
 <h2>Scholarly collaborative network</h2>
-<p>A network analysis was conducted to identify the connections among the authors and the scientific communities. For such, we need to build an edge list, or all pairs of occurrences of two authors in a same publication. Let’s see below the first 10 pairs or authors. The whole list has almost one thousand pairs.</p>
+<p>A network analysis was conducted to identify the connections among the authors and the scientific communities. For such, we need to build an edge list, or all pairs of occurrences of two authors in a same publication. Let’s see first 10 pairs or authors. The whole list has almost one thousand pairs.</p>
 <pre class="r"><code>library(purrr)
 library(purrrlyr)
 
-authors_net &lt;- articles %&gt;% select (6:19)
+authors_net &lt;- articles %&gt;% select(6:19)
 author_list &lt;- flatten(by_row(authors_net, ..f = function(x) flatten_chr(x), .labels = FALSE))
 author_list &lt;- lapply(author_list, function(x) x[!is.na(x)])
 
@@ -452,26 +452,26 @@ author_edge_list &lt;- t(do.call(cbind, lapply(author_list[sapply(author_list, l
 
 author_edge_list[1:10, ]</code></pre>
 <pre><code>##       [,1]          [,2]        
-##  [1,] &quot;O&#39;Donnell K&quot; &quot;Kistler HC&quot;
-##  [2,] &quot;O&#39;Donnell K&quot; &quot;Tacke BK&quot;  
-##  [3,] &quot;O&#39;Donnell K&quot; &quot;Casper HH&quot; 
+##  [1,] &quot;O’Donnell K&quot; &quot;Kistler HC&quot;
+##  [2,] &quot;O’Donnell K&quot; &quot;Tacke BK&quot;  
+##  [3,] &quot;O’Donnell K&quot; &quot;Casper HH&quot; 
 ##  [4,] &quot;Kistler HC&quot;  &quot;Tacke BK&quot;  
 ##  [5,] &quot;Kistler HC&quot;  &quot;Casper HH&quot; 
 ##  [6,] &quot;Tacke BK&quot;    &quot;Casper HH&quot; 
-##  [7,] &quot;O&#39;Donnell K&quot; &quot;Ward TJ&quot;   
-##  [8,] &quot;O&#39;Donnell K&quot; &quot;Geiser DM&quot; 
-##  [9,] &quot;O&#39;Donnell K&quot; &quot;Kistler HC&quot;
-## [10,] &quot;O&#39;Donnell K&quot; &quot;Aoki T&quot;</code></pre>
-<p>Within an authorship network, co-authors (same article) are linked together. Authors from this group can be connected to authors in another publication whenever they are co-authors in another article. Therefore, two articles can be linked by a common author. Each author is then considered a <strong>node</strong> in the network and the connections between them are the <strong>edges</strong>. There are several statistics to calculate in a network analysis.</p>
-<p>For now, let’s visualize the authorship network and the community structure which was defined via a function that tries to find densely connected subgraphs, also called communities, via random walk algorithm. The idea is that short random walks tend to stay in the same community. In the network below, there are 15 communities or subgraphs which are represented by distinct colors.</p>
+##  [7,] &quot;O’Donnell K&quot; &quot;Ward TJ&quot;   
+##  [8,] &quot;O’Donnell K&quot; &quot;Geiser DM&quot; 
+##  [9,] &quot;O’Donnell K&quot; &quot;Kistler HC&quot;
+## [10,] &quot;O’Donnell K&quot; &quot;Aoki T&quot;</code></pre>
+<p>Within an authorship network, co-authors (co-occurrence in an article) are linked together. Authors from this group can be connected to authors from another publication whenever they are co-authors in another article. Therefore, two articles can be linked by a common author. Each author is then considered a <strong>node</strong> in the network and the connections between them are the <strong>edges</strong>. There are several statistics to calculate in a network analysis.</p>
+<p>For now, let’s visualize the authorship network and the community structure which was defined via a function that tries to find densely connected sub-graphs, also called communities, via random walk algorithm. The idea is that short random walks tend to stay in the same community. In the network below, there are 26 communities or sub-graphs which are represented by distinct colors.</p>
 <pre class="r"><code># igraph
 library(igraph)
-net=graph.edgelist(as.matrix(author_edge_list), directed=FALSE)
+net &lt;- graph.edgelist(as.matrix(author_edge_list), directed = FALSE)
 degree &lt;- data.frame(degree(net))
-#summary(degree$degree.net.)
+# summary(degree$degree.net.)
 between &lt;- data.frame(round(betweenness(net), 1))
 page &lt;- data.frame(page_rank(net)$vector)
-close &lt;-data.frame(round(closeness(net), 10))
+close &lt;- data.frame(round(closeness(net), 10))
 eigen &lt;- data.frame(round(evcent(net)$vector, 5))</code></pre>
 <section id="network-graph" class="level3">
 <h3>Network graph</h3>
@@ -485,57 +485,69 @@ mod &lt;- modularity(wc)
 ms &lt;- membership(wc)
 
 net_stat &lt;- asNetwork(net)
-#png(&quot;network1.png&quot;, res = 600,  width = 4000 , height = 4000, units=&quot;px&quot;)
+png(&quot;network1.png&quot;, res = 600, width = 4000, height = 4000, units = &quot;px&quot;)
 set.seed(1003)
-par(mar=c(0,0,0,0))
-plot.network(net_stat, vertex.cex= 0.05 + 0.25*log(graph.strength(net)), label =ifelse(degree(net)&gt;24,V(net)$name,NA), label.bg = &quot;NA&quot;, label.col = &quot;black&quot;, edge.col = &quot;lightgray&quot;, edge.lty = 0.5, label.cex = 0.7,  displaylabels = TRUE, vertex.col = membership(wc), jitter = T, edge.len = 0.2, boxed.labels=T, label.border=&quot;NA&quot;, pad=1.2)</code></pre>
-<p><img src="code_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
-<pre class="r"><code>#dev.off()</code></pre>
+par(mar = c(0, 0, 0, 0))
+plot.network(net_stat, vertex.cex = 0.05 + 0.25 * log(graph.strength(net)), label = ifelse(degree(net) &gt; 24, V(net)$name, NA), label.bg = &quot;NA&quot;, label.col = &quot;black&quot;, edge.col = &quot;lightgray&quot;, edge.lty = 0.5, label.cex = 0.7, displaylabels = TRUE, vertex.col = membership(wc), jitter = T, edge.len = 0.2, boxed.labels = T, label.border = &quot;NA&quot;, pad = 1.2)
+dev.off()</code></pre>
+<pre><code>## quartz_off_screen 
+##                 2</code></pre>
+<p><img src="network1.png" /></p>
 </section>
 <section id="interactive-network-graph" class="level3">
 <h3>Interactive network graph</h3>
 <p>An interactive graph allows to navigate and visualize the connection among the authors. We use a function of the <code>networkD3</code> package to build the plot.</p>
 <p><a href="network-FGSC.html">Open the network in another page</a></p>
 </section>
-<section id="statistics" class="level3">
-<h3>Statistics</h3>
+<section id="network-statistics" class="level3">
+<h3>Network statistics</h3>
 <p>There are several statistics to compute at the network, node and edge level.</p>
 <pre class="r"><code>library(broom)
 
 # Transitivity
 trans &lt;- transitivity(net, type = &quot;global&quot;)
 
-# Degree 
+# Degree
 deg &lt;- degree(net)
-deg &lt;- tidy(deg) 
-deg2 &lt;- deg %&gt;% group_by(names) %&gt;% 
-  arrange(desc(x)) %&gt;% head(20)
+deg &lt;- tidy(deg)
+deg2 &lt;- deg %&gt;%
+  group_by(names) %&gt;%
+  arrange(desc(x)) %&gt;%
+  head(20)
 
 # Betweenness
 bet &lt;- betweenness(net, normalized = TRUE, directed = FALSE)
-bet &lt;- tidy(bet) 
-bet2 &lt;- bet %&gt;% group_by(names) %&gt;% 
-  arrange(desc(x)) %&gt;%  head(20)
+bet &lt;- tidy(bet)
+bet2 &lt;- bet %&gt;%
+  group_by(names) %&gt;%
+  arrange(desc(x)) %&gt;%
+  head(20)
 
 
 # Eigenvector centrality
 eigen &lt;- eigen_centrality(net)
-eigen1 &lt;- tidy(eigen$vector) 
-eigen2 &lt;- eigen1 %&gt;% group_by(names) %&gt;% 
-  arrange(desc(x)) %&gt;%  head(20)
+eigen1 &lt;- tidy(eigen$vector)
+eigen2 &lt;- eigen1 %&gt;%
+  group_by(names) %&gt;%
+  arrange(desc(x)) %&gt;%
+  head(20)
 
 
 # Page rank centrality
 rank &lt;- page.rank(net)
-rank1 &lt;- tidy(rank$vector) 
-rank2 &lt;- rank1 %&gt;% group_by(names) %&gt;% 
-  arrange(desc(x)) %&gt;%  head(20)
+rank1 &lt;- tidy(rank$vector)
+rank2 &lt;- rank1 %&gt;%
+  group_by(names) %&gt;%
+  arrange(desc(x)) %&gt;%
+  head(20)
 
 # Closeness centrality
 close &lt;- closeness(net)
-close1 &lt;- tidy(close) 
-close2 &lt;- close1 %&gt;% group_by(names) %&gt;% 
-  arrange(desc(x)) %&gt;%  head(20)
+close1 &lt;- tidy(close)
+close2 &lt;- close1 %&gt;%
+  group_by(names) %&gt;%
+  arrange(desc(x)) %&gt;%
+  head(20)
 
 # Clusters
 wc &lt;- cluster_walktrap(net)
@@ -549,24 +561,24 @@ ms &lt;- membership(wc)
 eb &lt;- cluster_edge_betweenness(net)</code></pre>
 <section id="network-transitivity" class="level4">
 <h4>Network transitivity</h4>
-<p>Transitivity, also know as clustering coefficient, is the mean probability that two author with a common author are themselves co-authors. In our study the transivity was <strong>0.4355265</strong>, meaning that, on average, the chance that two scholars that share a common collaborator wrote a paper together is almost 50%.</p>
+<p>Transitivity, also know as clustering coefficient, is the mean probability that two author with a common author are themselves co-authors. In our study the transitivity was <strong>0.454745</strong>, meaning that, on average, the chance that two scholars that share a common collaborator wrote a paper together is almost 50%.</p>
 </section>
 <section id="node-degree" class="level4">
 <h4>Node degree</h4>
-<p>Individually, authors can be highly connected or influential. The degree of a node is a basic structural property that quantify the number of adjacents nodes or edges. Let’s see the 25 authors with most degree.</p>
+<p>Individually, authors can be highly connected or influential. The degree of a node is a basic structural property that quantify the number of adjacent nodes or edges. Let’s see the 25 authors with most degree.</p>
 <pre class="r"><code>deg2</code></pre>
 <pre><code>## # A tibble: 20 x 2
 ## # Groups:   names [20]
 ##           names     x
 ##           &lt;chr&gt; &lt;dbl&gt;
 ##  1      Ward TJ   155
-##  2  O&#39;Donnell K    73
+##  2  O’Donnell K    65
 ##  3   Kistler HC    63
 ##  4 Del Ponte EM    53
-##  5      Gale LR    40
-##  6       Aoki T    34
-##  7    Chulze SN    34
-##  8   Waalwijk C    33
+##  5   Waalwijk C    42
+##  6      Gale LR    40
+##  7       Aoki T    34
+##  8    Chulze SN    34
 ##  9  Tessmann DJ    32
 ## 10     Clear RM    28
 ## 11         Xu J    28
@@ -576,9 +588,9 @@ eb &lt;- cluster_edge_betweenness(net)</code></pre>
 ## 15    Geiser DM    22
 ## 16        Lee T    22
 ## 17   Ramirez ML    21
-## 18      Zhang H    19
-## 19       Feng J    19
-## 20   Starkey DE    18</code></pre>
+## 18    Gilbert J    21
+## 19      Zhang H    19
+## 20       Feng J    19</code></pre>
 </section>
 <section id="betweenness" class="level4">
 <h4>Betweenness</h4>
@@ -588,115 +600,327 @@ eb &lt;- cluster_edge_betweenness(net)</code></pre>
 ## # Groups:   names [20]
 ##           names          x
 ##           &lt;chr&gt;      &lt;dbl&gt;
-##  1      Ward TJ 0.50040999
-##  2    Chulze SN 0.12771492
-##  3   Waalwijk C 0.12498611
-##  4 Del Ponte EM 0.08546149
-##  5   Proctor RH 0.06764320
-##  6        Lee T 0.06197537
-##  7    Leslie JF 0.05586265
-##  8  Nicholson P 0.04496797
-##  9     Carter J 0.04496797
-## 10         Qu B 0.04381270
-## 11  O&#39;Donnell K 0.02581468
-## 12 Lamprecht SC 0.01912784
-## 13   Reynoso MM 0.01724145
-## 14   Kistler HC 0.01533469
-## 15     Clear RM 0.01336565
-## 16         Xu J 0.01312626
-## 17   Nakajima T 0.01282710
-## 18   Miedaner T 0.01281039
-## 19 &quot;T\xcc_th B&quot; 0.01263490
-## 20      Varga J 0.01263490</code></pre>
+##  1      Ward TJ 0.46444840
+##  2   Waalwijk C 0.14515624
+##  3    Chulze SN 0.10929691
+##  4 Del Ponte EM 0.06886068
+##  5         Qu B 0.06035122
+##  6   Proctor RH 0.05665286
+##  7        Lee T 0.05089043
+##  8  Nicholson P 0.04843763
+##  9     Carter J 0.04843763
+## 10    Leslie JF 0.04586116
+## 11     Obanor F 0.03592629
+## 12     Balmas V 0.03091764
+## 13     Cowger C 0.02077665
+## 14  O’Donnell K 0.01933610
+## 15   Kistler HC 0.01726926
+## 16    Gilbert J 0.01577634
+## 17 Lamprecht SC 0.01564432
+## 18     Clear RM 0.01489494
+## 19   Reynoso MM 0.01376417
+## 20         Xu J 0.01069338</code></pre>
 </section>
 <section id="page-rank" class="level4">
 <h4>Page rank</h4>
-<p>This is the Google PageRank for the specified vertices.</p>
+<p>This is the Google Page Rank for the specified vertices.</p>
 <pre class="r"><code>rank2</code></pre>
 <pre><code>## # A tibble: 20 x 2
 ## # Groups:   names [20]
 ##           names           x
 ##           &lt;chr&gt;       &lt;dbl&gt;
-##  1      Ward TJ 0.045883899
-##  2  O&#39;Donnell K 0.020686621
-##  3   Kistler HC 0.017473055
-##  4 Del Ponte EM 0.015094536
-##  5      Gale LR 0.011109492
-##  6    Chulze SN 0.011102391
-##  7   Waalwijk C 0.010511925
-##  8       Aoki T 0.009293707
-##  9         Xu J 0.008927799
-## 10  Tessmann DJ 0.008751203
-## 11   Reynoso MM 0.008237556
-## 12     Clear RM 0.008030011
-## 13        Lee T 0.007829693
-## 14     Silva CN 0.007119990
-## 15   Ramirez ML 0.006655178
-## 16   Proctor RH 0.006620350
-## 17     Gomes LB 0.006461811
-## 18    Leslie JF 0.006303741
-## 19         Qu B 0.006074953
-## 20    Geiser DM 0.006069158</code></pre>
+##  1      Ward TJ 0.039368199
+##  2  O’Donnell K 0.015978973
+##  3   Kistler HC 0.015082257
+##  4 Del Ponte EM 0.012780863
+##  5   Waalwijk C 0.011485610
+##  6    Chulze SN 0.009507381
+##  7      Gale LR 0.009488601
+##  8       Aoki T 0.008020326
+##  9         Xu J 0.007559847
+## 10  Tessmann DJ 0.007410570
+## 11         Li W 0.007213149
+## 12     Clear RM 0.007062686
+## 13   Reynoso MM 0.006973799
+## 14        Lee T 0.006748515
+## 15     Silva CN 0.006027441
+## 16    Gilbert J 0.005898407
+## 17   Proctor RH 0.005715540
+## 18   Ramirez ML 0.005638330
+## 19     Gomes LB 0.005469690
+## 20       Wang X 0.005394739</code></pre>
 </section>
 <section id="eigenvector" class="level4">
 <h4>Eigenvector</h4>
-<p>Thi is a measure of the influence of a node (author) in a network. It assigns relative scores to all nodes in the network based on the concept that connections to high-scoring nodes contribute more to the score of the node in question than equal connections to low-scoring nodes.</p>
+<p>This is a measure of the influence of a node (author) in a network. It assigns relative scores to all nodes in the network based on the concept that connections to high-scoring nodes contribute more to the score of the node in question than equal connections to low-scoring nodes.</p>
 <pre class="r"><code>eigen2</code></pre>
 <pre><code>## # A tibble: 20 x 2
 ## # Groups:   names [20]
 ##           names         x
 ##           &lt;chr&gt;     &lt;dbl&gt;
 ##  1      Ward TJ 1.0000000
-##  2  O&#39;Donnell K 0.7944170
-##  3   Kistler HC 0.7477319
-##  4       Aoki T 0.4995948
-##  5      Gale LR 0.4424985
-##  6    Geiser DM 0.3082141
-##  7 Del Ponte EM 0.2846272
-##  8     Clear RM 0.2356288
-##  9   Starkey DE 0.2198637
-## 10    Gilbert J 0.1921813
-## 11       Broz K 0.1859635
-## 12  Tessmann DJ 0.1755247
-## 13     Silva CN 0.1617421
-## 14       Suga H 0.1565706
-## 15   Nicolli CP 0.1545932
-## 16     Gomes LB 0.1497292
-## 17  Klemsdal SS 0.1473756
-## 18      Varga J 0.1382425
-## 19 &quot;T\xcc_th B&quot; 0.1382425
-## 20  Nicholson P 0.1272304</code></pre>
+##  2   Kistler HC 0.7336540
+##  3  O’Donnell K 0.7297043
+##  4       Aoki T 0.4817978
+##  5      Gale LR 0.4516409
+##  6    Geiser DM 0.3120499
+##  7 Del Ponte EM 0.3061535
+##  8     Clear RM 0.2412272
+##  9   Starkey DE 0.2237164
+## 10    Gilbert J 0.1960101
+## 11  Tessmann DJ 0.1915728
+## 12       Broz K 0.1898425
+## 13     Silva CN 0.1760557
+## 14   Nicolli CP 0.1648052
+## 15     Gomes LB 0.1626336
+## 16       Suga H 0.1605684
+## 17       Tóth B 0.1408556
+## 18      Varga J 0.1408556
+## 19  Nicholson P 0.1293217
+## 20     Carter J 0.1293217</code></pre>
 </section>
 <section id="closeness" class="level4">
 <h4>Closeness</h4>
-<p>Cloness centrality measures how many steps is required to access every other vertex from a given vertex.</p>
+<p>Closeness centrality measures how many steps is required to access every other vertex from a given vertex.</p>
 <pre class="r"><code>close2</code></pre>
 <pre><code>## # A tibble: 20 x 2
 ## # Groups:   names [20]
 ##           names            x
 ##           &lt;chr&gt;        &lt;dbl&gt;
-##  1      Ward TJ 8.974244e-05
-##  2    Chulze SN 8.896006e-05
-##  3   Waalwijk C 8.879418e-05
-##  4     Clear RM 8.875477e-05
-##  5   Proctor RH 8.875477e-05
-##  6        Lee T 8.870753e-05
-##  7      Kelly A 8.862891e-05
-##  8    Belzile F 8.862891e-05
-##  9     Cowger C 8.862891e-05
-## 10      Elmer W 8.862891e-05
-## 11     Obanor F 8.862891e-05
-## 12 Del Ponte EM 8.860535e-05
-## 13  O&#39;Donnell K 8.855043e-05
-## 14  Tessmann DJ 8.848774e-05
-## 15   Kistler HC 8.846426e-05
-## 16      Gale LR 8.837045e-05
-## 17       Aoki T 8.831582e-05
-## 18  Nicholson P 8.830802e-05
-## 19     Carter J 8.830802e-05
-## 20     Gomes LB 8.827684e-05</code></pre>
+##  1      Ward TJ 5.565759e-05
+##  2    Chulze SN 5.530973e-05
+##  3   Waalwijk C 5.527305e-05
+##  4     Clear RM 5.523946e-05
+##  5   Proctor RH 5.523031e-05
+##  6        Lee T 5.521201e-05
+##  7     Obanor F 5.520287e-05
+##  8     Cowger C 5.519373e-05
+##  9      Kelly A 5.518155e-05
+## 10    Belzile F 5.518155e-05
+## 11      Elmer W 5.518155e-05
+## 12 Del Ponte EM 5.511160e-05
+## 13   Kistler HC 5.510249e-05
+## 14  O’Donnell K 5.509945e-05
+## 15  Tessmann DJ 5.506608e-05
+## 16      Gale LR 5.505395e-05
+## 17  Nicholson P 5.502669e-05
+## 18     Carter J 5.502669e-05
+## 19       Aoki T 5.501761e-05
+## 20     Gomes LB 5.498433e-05</code></pre>
 </section>
 </section>
+</section>
+<section id="number-of-strains" class="level2">
+<h2>Number of strains</h2>
+<p>A different number of strains were analyzed in each of the 75 reviewed articles. The total number of identified strains was 2.096810^{4}.</p>
+<pre class="r"><code>n_strains_no &lt;- articles %&gt;%
+  filter(pub_order == &quot;no&quot;) %&gt;%
+  select(n_isolates) %&gt;%
+  sum()
+
+
+n_strains_yes &lt;- articles %&gt;%
+  filter(pub_order == &quot;yes&quot;) %&gt;%
+  select(n_isolates) %&gt;%
+  sum()
+
+prop_indexed &lt;- n_strains_yes / (n_strains_yes + n_strains_no) * 100</code></pre>
+<p>The total number of indexed strains in the database was 1.054910^{4} and non indexed was 1.041910^{4}. The percentage of indexed strains is 50.3.</p>
+<p>Let’s have a look at the distribution across the studies. For the cases the strains are used in more than one study, the count is subtracted from the second article and then the count does not reflect the total number of strains for some studies. There is one plot for the non indexed and indexed strains.</p>
+<pre class="r"><code>articles %&gt;%
+  ggplot(aes(n_isolates)) +
+  geom_histogram(color = &quot;white&quot;) +
+  facet_wrap(~pub_order)</code></pre>
+<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="code_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
+<p>Another visualization is via box plots.</p>
+<pre class="r"><code>articles %&gt;%
+  ggplot(aes(pub_order, n_isolates)) +
+  geom_boxplot()</code></pre>
+<p><img src="code_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
+<pre class="r"><code>fgsc &lt;- read_csv(here(&quot;data&quot;, &quot;data-fgsc.csv&quot;))</code></pre>
+<pre><code>## Warning: Missing column names filled in: &#39;X1&#39; [1]</code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   X1 = col_integer(),
+##   `Collection code` = col_character(),
+##   Host = col_character(),
+##   Country = col_character(),
+##   Year = col_integer(),
+##   Latitude = col_double(),
+##   Longitude = col_double(),
+##   FGSC = col_character(),
+##   Tri_genotype = col_character(),
+##   Pub1 = col_character(),
+##   Pub2 = col_character(),
+##   Pub3 = col_character(),
+##   FGSC2 = col_character()
+## )</code></pre>
+</section>
+<section id="strains-by-species" class="level2">
+<h2>Strains by species</h2>
+<pre class="r"><code>fgsc %&gt;%
+  select(FGSC) %&gt;%
+  group_by(FGSC) %&gt;%
+  tally(sort = T)</code></pre>
+<pre><code>## # A tibble: 14 x 2
+##                                  FGSC     n
+##                                 &lt;chr&gt; &lt;int&gt;
+##  1                     F. graminearum  9495
+##  2                     F. meridionale   554
+##  3                       F. asiaticum   399
+##  4                         F. boothii   208
+##  5                     F. cortaderiae   127
+##  6                     F. aethiopicum    22
+##  7                F. austroamericanum    13
+##  8                F. acaciae-mearnsii    10
+##  9                      F. ussurianum    10
+## 10                         F. vorosii    10
+## 11                      F. brasilicum     5
+## 12 F. boothii X F. graminearum hybrid     3
+## 13                       F. gerlachii     3
+## 14                  F. mesoamericanum     1</code></pre>
+</section>
+<section id="strains-by-host" class="level2">
+<h2>Strains by host</h2>
+<pre class="r"><code>fgsc %&gt;%
+  select(Host) %&gt;%
+  group_by(Host) %&gt;%
+  tally(sort = T)</code></pre>
+<pre><code>## # A tibble: 19 x 2
+##                Host     n
+##               &lt;chr&gt; &lt;int&gt;
+##  1            Wheat  8739
+##  2            Maize  1285
+##  3           Barley   592
+##  4             Rice    89
+##  5              Oat    45
+##  6          Soybean    40
+##  7      Durum wheat    28
+##  8      Wheat durum    12
+##  9         Ryegrass    10
+## 10              Rye     5
+## 11  Non-host (soil)     4
+## 12  Acacia mearnsii     3
+## 13             &lt;NA&gt;     2
+## 14     Arundo donax     1
+## 15           Banana     1
+## 16 Herbaceours vine     1
+## 17         Polypore     1
+## 18     Sweet potato     1
+## 19          unknown     1</code></pre>
+</section>
+<section id="strains-by-tri-genotype" class="level2">
+<h2>Strains by Tri genotype</h2>
+<pre class="r"><code>fgsc %&gt;%
+  select(Tri_genotype) %&gt;%
+  group_by(Tri_genotype) %&gt;%
+  tally(sort = T)</code></pre>
+<pre><code>## # A tibble: 6 x 2
+##   Tri_genotype     n
+##          &lt;chr&gt; &lt;int&gt;
+## 1      15-ADON  7492
+## 2       3-ADON  2235
+## 3          NIV  1064
+## 4         NX-2    31
+## 5          DON    22
+## 6      DON/NIV    16</code></pre>
+</section>
+<section id="strains-by-country" class="level2">
+<h2>Strains by Country</h2>
+<pre class="r"><code>fgsc %&gt;%
+  select(Country) %&gt;%
+  group_by(Country) %&gt;%
+  tally(sort = T)</code></pre>
+<pre><code>## # A tibble: 21 x 2
+##          Country     n
+##            &lt;chr&gt; &lt;int&gt;
+##  1        Canada  4805
+##  2        Brazil  1560
+##  3 United States  1321
+##  4         China   568
+##  5  South Africa   568
+##  6        France   427
+##  7     Argentina   420
+##  8       Uruguay   396
+##  9   Netherlands   251
+## 10        Russia   196
+## # ... with 11 more rows</code></pre>
+<pre class="r"><code>fgsc2 &lt;- fgsc %&gt;% 
+  filter(Tri_genotype == &quot;15-ADON&quot; |
+         Tri_genotype == &quot;3-ADON&quot; |
+         Tri_genotype == &quot;NIV&quot;) %&gt;% 
+  select(Host, Tri_genotype, FGSC2 ) %&gt;% 
+  filter(FGSC2 == &quot;Fgra&quot; | 
+           FGSC2 == &quot;Fmer&quot; | 
+           FGSC2 == &quot;Fasi&quot; |
+           FGSC2 == &quot;Fcor&quot; | 
+           FGSC2 == &quot;Fboo&quot; |
+           FGSC2 == &quot;Faus&quot;) %&gt;% 
+  filter(Host == &quot;Wheat&quot; |
+           Host == &quot;Rice&quot; |
+           Host == &quot;Barley&quot;|
+           Host == &quot;Maize&quot; 
+  )</code></pre>
+<pre class="r"><code>library(FactoMineR) 
+
+attach(fgsc2)
+data_mca = data.frame(Host, Tri_genotype, FGSC2)
+head(data_mca)</code></pre>
+<pre><code>##    Host Tri_genotype FGSC2
+## 1 Wheat      15-ADON  Fgra
+## 2 Wheat      15-ADON  Fgra
+## 3 Wheat      15-ADON  Fgra
+## 4 Wheat      15-ADON  Fgra
+## 5 Wheat      15-ADON  Fgra
+## 6 Wheat      15-ADON  Fgra</code></pre>
+<pre class="r"><code>cats&lt;- apply(data_mca, 2, function(x) nlevels(as.factor(x))) #enumera as categorias
+cats</code></pre>
+<pre><code>##         Host Tri_genotype        FGSC2 
+##            4            3            6</code></pre>
+<pre class="r"><code>mca1 &lt;- MCA(data_mca, graph = TRUE)</code></pre>
+<p><img src="code_files/figure-html/unnamed-chunk-33-1.png" width="672" /><img src="code_files/figure-html/unnamed-chunk-33-2.png" width="672" /><img src="code_files/figure-html/unnamed-chunk-33-3.png" width="672" /></p>
+<pre class="r"><code>mca1</code></pre>
+<pre><code>## **Results of the Multiple Correspondence Analysis (MCA)**
+## The analysis was performed on 10588 individuals, described by 3 variables
+## *The results are available in the following objects:
+## 
+##    name              description                       
+## 1  &quot;$eig&quot;            &quot;eigenvalues&quot;                     
+## 2  &quot;$var&quot;            &quot;results for the variables&quot;       
+## 3  &quot;$var$coord&quot;      &quot;coord. of the categories&quot;        
+## 4  &quot;$var$cos2&quot;       &quot;cos2 for the categories&quot;         
+## 5  &quot;$var$contrib&quot;    &quot;contributions of the categories&quot; 
+## 6  &quot;$var$v.test&quot;     &quot;v-test for the categories&quot;       
+## 7  &quot;$ind&quot;            &quot;results for the individuals&quot;     
+## 8  &quot;$ind$coord&quot;      &quot;coord. for the individuals&quot;      
+## 9  &quot;$ind$cos2&quot;       &quot;cos2 for the individuals&quot;        
+## 10 &quot;$ind$contrib&quot;    &quot;contributions of the individuals&quot;
+## 11 &quot;$call&quot;           &quot;intermediate results&quot;            
+## 12 &quot;$call$marge.col&quot; &quot;weights of columns&quot;              
+## 13 &quot;$call$marge.li&quot;  &quot;weights of rows&quot;</code></pre>
+<pre class="r"><code>res.mca = MCA(data_mca, graph=FALSE)
+plot(mca1)</code></pre>
+<p><img src="code_files/figure-html/unnamed-chunk-33-4.png" width="672" /></p>
+<pre class="r"><code>library(&quot;factoextra&quot;)</code></pre>
+<pre><code>## Welcome! Related Books: `Practical Guide To Cluster Analysis in R` at https://goo.gl/13EFCZ</code></pre>
+<pre class="r"><code>eig.val &lt;- get_eigenvalue(res.mca)
+head(eig.val)</code></pre>
+<pre><code>##       eigenvalue variance.percent cumulative.variance.percent
+## Dim.1  0.7297787        21.893361                    21.89336
+## Dim.2  0.4880484        14.641453                    36.53481
+## Dim.3  0.3735133        11.205398                    47.74021
+## Dim.4  0.3431866        10.295598                    58.03581
+## Dim.5  0.3335062        10.005186                    68.04100
+## Dim.6  0.3299714         9.899143                    77.94014</code></pre>
+<pre class="r"><code>fviz_screeplot(res.mca, addlabels = TRUE, ylim = c(0, 45))</code></pre>
+<p><img src="code_files/figure-html/unnamed-chunk-33-5.png" width="672" /></p>
+<pre class="r"><code>p &lt;- fviz_mca_biplot(res.mca,  label = &quot;var&quot;, repel = F,
+               col.var = &quot;contrib&quot;,
+                # Avoid text overlapping (slow if many point)
+               ggtheme = theme_minimal())
+p + scale_color_viridis()</code></pre>
+<p><img src="code_files/figure-html/unnamed-chunk-33-6.png" width="672" /></p>
 </section>
 </section>
 

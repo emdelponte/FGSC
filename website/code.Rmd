@@ -24,8 +24,7 @@ library(plotly)
 library(viridis)
 library(gsheet)
 theme_set(theme_grey())
-Sys.setlocale("LC_ALL", 'pt_BR.UTF-8')
-
+Sys.setlocale("LC_ALL", "pt_BR.UTF-8")
 ```
 
 ```{r load data, eval=FALSE, message=FALSE, warning=FALSE, include=FALSE}
@@ -68,30 +67,30 @@ s37 <- read_excel(here("data", "fgsc-dat4.xlsx"), 37)
 s38 <- read_excel(here("data", "fgsc-dat4.xlsx"), 38)
 s39 <- read_excel(here("data", "fgsc-dat4.xlsx"), 39)
 fgsc2 <- rbind(s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14, s15, s16, s19, s20, s21, s22, s23, s24, s25, s26, s27, s28, s29, s30, s31, s32, s33, s34, s35, s36, s37, s38, s39)
-fgsc2$Latitude <- round(jitter(fgsc2$Latitude, factor = 6),4)
-fgsc2$Longitude <- round(jitter(fgsc2$Longitude, factor = 6),4)
-fgsc <- fgsc2 %>% select(c(13,2,6,7, 8,9, 10, 14, 19, 20, 21))
+fgsc2$Latitude <- round(jitter(fgsc2$Latitude, factor = 6), 4)
+fgsc2$Longitude <- round(jitter(fgsc2$Longitude, factor = 6), 4)
+fgsc <- fgsc2 %>% select(c(13, 2, 6, 7, 8, 9, 10, 14, 19, 20, 21))
 library(plyr)
 table(fgsc$FGSC)
-fgsc$FGSC2 <- revalue(fgsc$FGSC,  c("F. graminearum" = "Fgra", "F. meridionale" = "Fmer", "F. cortaderiae" = "Fcor", "F. austroamericanum" = "Faus","F. asiaticum" = "Fasi", "F. louisianense" = "Flou", "F. boothii" = "Fboo", "F. gerlachii" = "Fger", "F. ussurianum" = "Fuss","F. vorosii" = "Fvor", "F. acaciae-mearnsii" = "Faca", "F. boothii X F. graminearum" = "Fboo x Fgra", "F. brasilicum" = "Fbra","F. aethiopicum" = "Faet"))
+fgsc$FGSC2 <- revalue(fgsc$FGSC, c("F. graminearum" = "Fgra", "F. meridionale" = "Fmer", "F. cortaderiae" = "Fcor", "F. austroamericanum" = "Faus", "F. asiaticum" = "Fasi", "F. louisianense" = "Flou", "F. boothii" = "Fboo", "F. gerlachii" = "Fger", "F. ussurianum" = "Fuss", "F. vorosii" = "Fvor", "F. acaciae-mearnsii" = "Faca", "F. boothii X F. graminearum" = "Fboo x Fgra", "F. brasilicum" = "Fbra", "F. aethiopicum" = "Faet"))
 fgsc$Year <- as.numeric(fgsc$Year)
-fgsc <- fgsc %>%  filter(FGSC != 30) %>%  filter(FGSC != "F. cerealis") %>% filter(FGSC != "F. culmorum") 
-fgsc$Host <- revalue(fgsc$Host, 
-                     c("oat" = "Oat",  "corn" = "Maize","wheat" = "Wheat", "barley" = "Barley"))
+fgsc <- fgsc %>% filter(FGSC != 30) %>% filter(FGSC != "F. cerealis") %>% filter(FGSC != "F. culmorum")
+fgsc$Host <- revalue(
+  fgsc$Host,
+  c("oat" = "Oat", "corn" = "Maize", "wheat" = "Wheat", "barley" = "Barley")
+)
 fgsc$Tri_genotype <- revalue(fgsc$Tri_genotype, c("NX2" = "NX-2"))
 write.csv(fgsc, here("data", "data-fgsc.csv"))
-
 ```
 
 
 ```{r include=FALSE}
 # load the article database
-#library(gsheet)
-#articles <-
-# gsheet2tbl('https://docs.google.com/spreadsheets/d/1rAC_U5upuDPHCSLi9kieb4R5tztHVJGW84aQOf6z7Lk/edit?usp=sharing') 
-#articles <- articles 
-articles <- read_csv(here("data", "articles-reviewed.csv"))
-
+# library(gsheet)
+# articles <-
+# gsheet2tbl('https://docs.google.com/spreadsheets/d/1rAC_U5upuDPHCSLi9kieb4R5tztHVJGW84aQOf6z7Lk/edit?usp=sharing')
+# articles <- articles
+articles <- read_excel(here("data", "articles-reviewed.xlsx"))
 ```
 
 # Bibliographic analysis
@@ -101,56 +100,56 @@ Bibliographic data were obtained from peer-reviewed articles (n = `r nrow(articl
 ## Articles per year
 
 ```{r include=FALSE}
-year <- articles %>% 
-  select(year) %>% 
-  group_by(year) %>% 
-  tally(sort = T) 
+year <- articles %>%
+  select(year) %>%
+  group_by(year) %>%
+  tally(sort = T)
 ```
 
 The number of articles published per year ranged from `r min(year$n)` to `r max(year$n)`. The year with most number of articles was `r year[1,1]`
 
 ```{r message=FALSE, warning=FALSE, paged.print=TRUE}
-articles %>% 
-  ggplot(aes(year))+
-  geom_bar(aes(fill = factor(pub_order)))+
-  scale_y_continuous(breaks=seq(0, 11, 1), expand=c(0.02, 0))+
-  scale_x_continuous(breaks=seq(2000, 2017))+
+articles %>%
+  ggplot(aes(year)) +
+  geom_bar(aes(fill = factor(pub_order))) +
+  scale_y_continuous(breaks = seq(0, 11, 1), expand = c(0.02, 0)) +
+  scale_x_continuous(breaks = seq(2000, 2017)) +
   labs(y = "Number of articles", x = "Published year", title = "Articles per year")
-  
 ```
 
 
 ## Journals
 
 ```{r include=FALSE}
-journal <- articles %>% 
-  select(journal_name) %>% 
-  group_by(journal_name) %>% 
-  tally(sort = T) 
+journal <- articles %>%
+  select(journal_name) %>%
+  group_by(journal_name) %>%
+  tally(sort = T)
+journal
 ```
 
 The articles were published in `r nrow(journal)` scientific journals. The journal with most number of publications was `r journal[1,1]` with `r max(journal$n)` articles, followed by `r journal[2,1]` (`r journal[2,2]` articles) and `r journal[3,1]` (`r journal[3,2]` articles).
 
 
 ```{r message=FALSE, warning=FALSE, paged.print=TRUE}
-articles %>% 
-  ggplot(aes(reorder(journal_name, journal_name, function(x) length(x))))+
-  geom_bar(aes(fill = factor(pub_order)))+
-  scale_y_continuous(breaks=seq(0,10), expand=c(0.01, 0))+
-  coord_flip()+
+articles %>%
+  ggplot(aes(reorder(journal_name, journal_name, function(x) length(x)))) +
+  geom_bar(aes(fill = factor(pub_order))) +
+  scale_y_continuous(breaks = seq(0, 10), expand = c(0.01, 0)) +
+  coord_flip() +
   labs(y = "Number of articles", x = "", title = "Articles per journal")
 ```
 
 
 
 ```{r eval=FALSE, include=FALSE}
-library(rcrossref)
-articles %>% 
-  group_by(article_ID, DOI) %>% 
-  do(cr_citation_count(doi = DOI))
-#for (i in articles$DOI){
+# library(rcrossref)
+# articles %>%
+# group_by(article_ID, DOI) %>%
+#  do(cr_citation_count(doi = DOI))
+# for (i in articles$DOI){
 #  print(cr_citation_count(doi = i))
-#}
+# }
 ```
 
 
@@ -161,26 +160,26 @@ articles %>%
 
 
 ```{r include=FALSE}
-countries <- articles %>% 
-  gather(code, country, 25:30) %>% 
+countries <- articles %>%
+  gather(code, country, 25:30) %>%
   filter(country != "NA") %>%
-  select(country) %>% 
-  group_by(country) %>% 
-  tally(sort = T) 
+  select(country) %>%
+  group_by(country) %>%
+  tally(sort = T)
 ```
 
 
 For each article, the countries reported in the affiliations of the authors were indexed. We recorded the country name only once per article regardless of the number of authors from a same country. There were `r nrow(countries)` unique countries, and the three most unique occurrences were `r countries[1,1]`, `r countries[2,1]` and `r countries[3,1]`.  
 
 ```{r message=FALSE, warning=FALSE, paged.print=TRUE}
-articles %>% 
-  gather(code, country, 25:30) %>% 
-  filter(country != "NA") %>% 
-  ggplot(aes(reorder(country, country, function(x) length(x))))+
-  geom_bar(aes(fill = factor(pub_order)))+
-  scale_y_continuous(breaks=seq(0,30,2), expand=c(0.01, 0))+
-  coord_flip()+
-  labs(y = "Number of articles", x = "", title = "Articles per country" )
+articles %>%
+  gather(code, country, 25:30) %>%
+  filter(country != "NA") %>%
+  ggplot(aes(reorder(country, country, function(x) length(x)))) +
+  geom_bar(aes(fill = factor(pub_order))) +
+  scale_y_continuous(breaks = seq(0, 30, 2), expand = c(0.01, 0)) +
+  coord_flip() +
+  labs(y = "Number of articles", x = "", title = "Articles per country")
 ```
 
 
@@ -189,12 +188,12 @@ articles %>%
 
 
 ```{r message=FALSE, warning=FALSE, paged.print=TRUE}
-authors <- articles %>% 
-  gather(author, name, 6:19) %>% 
-  select(author, name) %>% 
-  filter(name != "NA") %>% 
-  group_by(name) %>% 
-  tally(sort = T) 
+authors <- articles %>%
+  gather(author, name, 6:19) %>%
+  select(author, name) %>%
+  filter(name != "NA") %>%
+  group_by(name) %>%
+  tally(sort = T)
 ```
 
 There were `r nrow(authors)` unique authors in the collection of `r nrow(articles)` indexed articles. Let's see the list of 20 most prolific authors and a frequency plot for authors who have published at least three articles.
@@ -208,38 +207,37 @@ head(authors, 20)
 
 
 ```{r}
-authors %>% 
-  filter(n > 2) %>% 
-  ggplot(aes(reorder(name, n), n))+
-  geom_col()+
-  scale_y_continuous(breaks=seq(0,30,3),  expand=c(0.01, 0))+
-  coord_flip()+
-  labs(x = "", y = "Frequency", title ="Articles per author")
+authors %>%
+  filter(n > 2) %>%
+  ggplot(aes(reorder(name, n), n)) +
+  geom_col() +
+  scale_y_continuous(breaks = seq(0, 30, 3), expand = c(0.01, 0)) +
+  coord_flip() +
+  labs(x = "", y = "Frequency", title = "Articles per author")
 ```
 
 ### Wordcloud 
 
-A wordcloud is an alternative way to visualize the frequency of articles for all authors. The size of the name is relative to the number of articles.
+A word-cloud is an alternative way to visualize the frequency of articles for all authors. The size of the name is relative to the number of articles.
 
 ```{r eval=FALSE, message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
 library(wordcloud)
-#png("FGSC-authors.png", width=12, height=12, units="in", res=300)
-wordcloud(authors$name, authors$n, c(4,.5), 1, random.order = F, colors=brewer.pal(8, "Dark2"))
-#dev.off()
-
+# png("FGSC-authors.png", width=12, height=12, units="in", res=300)
+wordcloud(authors$name, authors$n, c(4, .5), 1, random.order = F, colors = brewer.pal(8, "Dark2"))
+# dev.off()
 ```
 
 
 ## Scholarly collaborative network 
 
-A network analysis was conducted to identify the connections among the authors and the scientific communities. For such, we need to build an edge list, or all pairs of occurrences of two authors in a same publication. Let's see below the first 10 pairs or authors. The whole list has almost one thousand pairs.
+A network analysis was conducted to identify the connections among the authors and the scientific communities. For such, we need to build an edge list, or all pairs of occurrences of two authors in a same publication. Let's see first 10 pairs or authors. The whole list has almost one thousand pairs.
 
 
 ```{r echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE}
 library(purrr)
 library(purrrlyr)
 
-authors_net <- articles %>% select (6:19)
+authors_net <- articles %>% select(6:19)
 author_list <- flatten(by_row(authors_net, ..f = function(x) flatten_chr(x), .labels = FALSE))
 author_list <- lapply(author_list, function(x) x[!is.na(x)])
 
@@ -247,23 +245,22 @@ author_list <- lapply(author_list, function(x) x[!is.na(x)])
 author_edge_list <- t(do.call(cbind, lapply(author_list[sapply(author_list, length) >= 2], combn, 2)))
 
 author_edge_list[1:10, ]
-
 ```
 
-Within an authorship network, co-authors (same article) are linked together. Authors from this group can be connected to authors in another publication whenever they are co-authors in another article. Therefore, two articles can be linked by a common author. Each author is then considered a **node** in the network and the connections between them are the **edges**. There are several statistics to calculate in a network analysis. 
+Within an authorship network, co-authors (co-occurrence in an article) are linked together. Authors from this group can be connected to authors from another publication whenever they are co-authors in another article. Therefore, two articles can be linked by a common author. Each author is then considered a **node** in the network and the connections between them are the **edges**. There are several statistics to calculate in a network analysis. 
 
-For now, let's visualize the authorship network and the community structure which was defined via a function that tries to find densely connected subgraphs, also called communities, via random walk algorithm. The idea is that short random walks tend to stay in the same community. In the network below, there are 15 communities or subgraphs which are represented by distinct colors.
+For now, let's visualize the authorship network and the community structure which was defined via a function that tries to find densely connected sub-graphs, also called communities, via random walk algorithm. The idea is that short random walks tend to stay in the same community. In the network below, there are 26 communities or sub-graphs which are represented by distinct colors.
 
 
 ```{r echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE}
 # igraph
 library(igraph)
-net=graph.edgelist(as.matrix(author_edge_list), directed=FALSE)
+net <- graph.edgelist(as.matrix(author_edge_list), directed = FALSE)
 degree <- data.frame(degree(net))
-#summary(degree$degree.net.)
+# summary(degree$degree.net.)
 between <- data.frame(round(betweenness(net), 1))
 page <- data.frame(page_rank(net)$vector)
-close <-data.frame(round(closeness(net), 10))
+close <- data.frame(round(closeness(net), 10))
 eigen <- data.frame(round(evcent(net)$vector, 5))
 ```
 
@@ -280,13 +277,14 @@ mod <- modularity(wc)
 ms <- membership(wc)
 
 net_stat <- asNetwork(net)
-#png("network1.png", res = 600,  width = 4000 , height = 4000, units="px")
+png("network1.png", res = 600, width = 4000, height = 4000, units = "px")
 set.seed(1003)
-par(mar=c(0,0,0,0))
-plot.network(net_stat, vertex.cex= 0.05 + 0.25*log(graph.strength(net)), label =ifelse(degree(net)>24,V(net)$name,NA), label.bg = "NA", label.col = "black", edge.col = "lightgray", edge.lty = 0.5, label.cex = 0.7,  displaylabels = TRUE, vertex.col = membership(wc), jitter = T, edge.len = 0.2, boxed.labels=T, label.border="NA", pad=1.2)
-#dev.off()
+par(mar = c(0, 0, 0, 0))
+plot.network(net_stat, vertex.cex = 0.05 + 0.25 * log(graph.strength(net)), label = ifelse(degree(net) > 24, V(net)$name, NA), label.bg = "NA", label.col = "black", edge.col = "lightgray", edge.lty = 0.5, label.cex = 0.7, displaylabels = TRUE, vertex.col = membership(wc), jitter = T, edge.len = 0.2, boxed.labels = T, label.border = "NA", pad = 1.2)
+dev.off()
 ```
 
+![](network1.png)
 
 ### Interactive network graph
 
@@ -303,22 +301,22 @@ colnames(edge_df) <- c("from", "to")
 
 ```{r eval=FALSE, message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
 library(networkD3)
-netD3 <- simpleNetwork(edge_df, zoom = T,
-              fontFamily = "Arial",
-              fontSize = 13,
-              charge = -200,
-              linkColour = "lightgrey",
-              linkDistance = 80,
-              nodeColour = "black",
-              opacity = 1
-              
-             )
+netD3 <- simpleNetwork(
+  edge_df, zoom = T,
+  fontFamily = "Arial",
+  fontSize = 13,
+  charge = -200,
+  linkColour = "lightgrey",
+  linkDistance = 80,
+  nodeColour = "black",
+  opacity = 1
+)
 netD3
- saveNetwork(netD3, file = 'network-FGSC.html')
+saveNetwork(netD3, file = "network-FGSC.html")
 ```
 
 
-### Statistics
+### Network statistics
 
 There are several statistics to compute at the network, node and edge level. 
 
@@ -328,37 +326,47 @@ library(broom)
 # Transitivity
 trans <- transitivity(net, type = "global")
 
-# Degree 
+# Degree
 deg <- degree(net)
-deg <- tidy(deg) 
-deg2 <- deg %>% group_by(names) %>% 
-  arrange(desc(x)) %>% head(20)
+deg <- tidy(deg)
+deg2 <- deg %>%
+  group_by(names) %>%
+  arrange(desc(x)) %>%
+  head(20)
 
 # Betweenness
 bet <- betweenness(net, normalized = TRUE, directed = FALSE)
-bet <- tidy(bet) 
-bet2 <- bet %>% group_by(names) %>% 
-  arrange(desc(x)) %>%  head(20)
+bet <- tidy(bet)
+bet2 <- bet %>%
+  group_by(names) %>%
+  arrange(desc(x)) %>%
+  head(20)
 
 
 # Eigenvector centrality
 eigen <- eigen_centrality(net)
-eigen1 <- tidy(eigen$vector) 
-eigen2 <- eigen1 %>% group_by(names) %>% 
-  arrange(desc(x)) %>%  head(20)
+eigen1 <- tidy(eigen$vector)
+eigen2 <- eigen1 %>%
+  group_by(names) %>%
+  arrange(desc(x)) %>%
+  head(20)
 
 
 # Page rank centrality
 rank <- page.rank(net)
-rank1 <- tidy(rank$vector) 
-rank2 <- rank1 %>% group_by(names) %>% 
-  arrange(desc(x)) %>%  head(20)
+rank1 <- tidy(rank$vector)
+rank2 <- rank1 %>%
+  group_by(names) %>%
+  arrange(desc(x)) %>%
+  head(20)
 
 # Closeness centrality
 close <- closeness(net)
-close1 <- tidy(close) 
-close2 <- close1 %>% group_by(names) %>% 
-  arrange(desc(x)) %>%  head(20)
+close1 <- tidy(close)
+close2 <- close1 %>%
+  group_by(names) %>%
+  arrange(desc(x)) %>%
+  head(20)
 
 # Clusters
 wc <- cluster_walktrap(net)
@@ -375,11 +383,11 @@ eb <- cluster_edge_betweenness(net)
 
 #### Network transitivity
 
-Transitivity, also know as clustering coefficient, is the mean probability that two author with a common author are themselves co-authors. In our study the transivity was **`r trans`**, meaning that, on average, the chance that two scholars that share a common collaborator wrote a paper together is almost 50%.
+Transitivity, also know as clustering coefficient, is the mean probability that two author with a common author are themselves co-authors. In our study the transitivity was **`r trans`**, meaning that, on average, the chance that two scholars that share a common collaborator wrote a paper together is almost 50%.
 
 #### Node degree
 
-Individually, authors can be highly connected or influential. The degree of a node is a basic structural property that quantify the number of adjacents nodes or edges. Let's see the 25 authors with most degree.
+Individually, authors can be highly connected or influential. The degree of a node is a basic structural property that quantify the number of adjacent nodes or edges. Let's see the 25 authors with most degree.
 
 ```{r}
 deg2
@@ -395,14 +403,14 @@ bet2
 
 #### Page rank
 
-This is the  Google PageRank for the specified vertices.
+This is the  Google Page Rank for the specified vertices.
 ```{r}
 rank2
 ```
 
 #### Eigenvector
 
-Thi is a measure of the influence of a node (author) in a network. It assigns relative scores to all nodes in the network based on the concept that connections to high-scoring nodes contribute more to the score of the node in question than equal connections to low-scoring nodes.
+This is a measure of the influence of a node (author) in a network. It assigns relative scores to all nodes in the network based on the concept that connections to high-scoring nodes contribute more to the score of the node in question than equal connections to low-scoring nodes.
 
 
 ```{r}
@@ -411,12 +419,147 @@ eigen2
 
 #### Closeness
 
-Cloness centrality measures how many steps is required to access every other vertex from a given vertex.
+Closeness centrality measures how many steps is required to access every other vertex from a given vertex.
 
 
 
 ```{r}
 close2
+```
+
+## Number of strains
+
+A different number of strains were analyzed in each of the `r nrow(articles)` reviewed articles. The total number of identified strains was `r round(sum(articles$n_isolates),1)`.   
+
+```{r}
+n_strains_no <- articles %>%
+  filter(pub_order == "no") %>%
+  select(n_isolates) %>%
+  sum()
+
+
+n_strains_yes <- articles %>%
+  filter(pub_order == "yes") %>%
+  select(n_isolates) %>%
+  sum()
+
+prop_indexed <- n_strains_yes / (n_strains_yes + n_strains_no) * 100
+```
+
+The total number of indexed strains in the database was `r n_strains_yes` and non indexed was `r signif(n_strains_no)`. The percentage of indexed strains is `r round(prop_indexed,1)`.  
+
+Let's have a look at the distribution across the studies. For the cases the strains are used in more than one study, the count is subtracted from the second article and then the count does not reflect the total number of strains for some studies. There is one plot for the non indexed and indexed strains.
+
+```{r}
+articles %>%
+  ggplot(aes(n_isolates)) +
+  geom_histogram(color = "white") +
+  facet_wrap(~pub_order)
+```
+
+Another visualization is via box plots.
+
+```{r}
+articles %>%
+  ggplot(aes(pub_order, n_isolates)) +
+  geom_boxplot()
+```
+
+```{r}
+fgsc <- read_csv(here("data", "data-fgsc.csv"))
+```
+
+
+## Strains by species
+
+```{r}
+fgsc %>%
+  select(FGSC) %>%
+  group_by(FGSC) %>%
+  tally(sort = T)
+```
+
+
+
+## Strains by host
+
+```{r}
+fgsc %>%
+  select(Host) %>%
+  group_by(Host) %>%
+  tally(sort = T)
+```
+
+
+
+## Strains by Tri genotype
+
+```{r}
+fgsc %>%
+  select(Tri_genotype) %>%
+  group_by(Tri_genotype) %>%
+  tally(sort = T)
+```
+
+
+## Strains by Country
+
+```{r}
+fgsc %>%
+  select(Country) %>%
+  group_by(Country) %>%
+  tally(sort = T)
+```
+
+
+
+
+```{r}
+fgsc2 <- fgsc %>% 
+  filter(Tri_genotype == "15-ADON" |
+         Tri_genotype == "3-ADON" |
+         Tri_genotype == "NIV") %>% 
+  select(Host, Tri_genotype, FGSC2 ) %>% 
+  filter(FGSC2 == "Fgra" | 
+           FGSC2 == "Fmer" | 
+           FGSC2 == "Fasi" |
+           FGSC2 == "Fcor" | 
+           FGSC2 == "Fboo" |
+           FGSC2 == "Faus") %>% 
+  filter(Host == "Wheat" |
+           Host == "Rice" |
+           Host == "Barley"|
+           Host == "Maize" 
+  )
+```
+
+
+
+```{r}
+
+library(FactoMineR) 
+
+attach(fgsc2)
+data_mca = data.frame(Host, Tri_genotype, FGSC2)
+head(data_mca)
+cats<- apply(data_mca, 2, function(x) nlevels(as.factor(x))) #enumera as categorias
+cats
+mca1 <- MCA(data_mca, graph = TRUE)
+mca1
+res.mca = MCA(data_mca, graph=FALSE)
+plot(mca1)
+library("factoextra")
+eig.val <- get_eigenvalue(res.mca)
+head(eig.val)
+fviz_screeplot(res.mca, addlabels = TRUE, ylim = c(0, 45))
+
+p <- fviz_mca_biplot(res.mca,  label = "var", repel = F,
+               col.var = "contrib",
+                # Avoid text overlapping (slow if many point)
+               ggtheme = theme_minimal())
+p + scale_color_viridis()
+
+
 ```
 
 
