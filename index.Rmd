@@ -23,98 +23,19 @@ library(viridis)
 
 ```{r load data, include=FALSE}
 Sys.setlocale("LC_ALL", 'pt_BR.UTF-8')
-# carrega os dados com lat e long
 
-  
-#read_excel_allsheets <- function(filename) {
-#    sheets <- readxl::excel_sheets(filename)
-#    x <-    lapply(sheets, function(X) readxl::read_excel(filename, sheet = X))
-#    names(x) <- sheets
-#    x
-#}
-
-#fgsc<- read_excel_allsheets("fgsc-dat2.xlsx")
-#fgsc$`Machado et al 2015`
-#rbind(fgsc$`Machado et al 2015`, fgsc$`Machado et al 2017`)
-s1 <- read_excel("fgsc-dat4.xlsx", 1)
-s2 <- read_excel("fgsc-dat4.xlsx", 2)
-s3 <- read_excel("fgsc-dat4.xlsx", 3)
-s4 <- read_excel("fgsc-dat4.xlsx", 4)
-s5 <- read_excel("fgsc-dat4.xlsx", 5)
-s6 <- read_excel("fgsc-dat4.xlsx", 6)
-s7 <- read_excel("fgsc-dat4.xlsx", 7)
-s8 <- read_excel("fgsc-dat4.xlsx", 8)
-s9 <- read_excel("fgsc-dat4.xlsx", 9)
-s10 <- read_excel("fgsc-dat4.xlsx", 10)
-s11 <- read_excel("fgsc-dat4.xlsx", 11)
-s12 <- read_excel("fgsc-dat4.xlsx", 12)
-s13 <- read_excel("fgsc-dat4.xlsx", 13)
-s14 <- read_excel("fgsc-dat4.xlsx", 14)
-s15 <- read_excel("fgsc-dat4.xlsx", 15)
-s16 <- read_excel("fgsc-dat4.xlsx", 16)
-
-s19 <- read_excel("fgsc-dat4.xlsx", 19)
-s20 <- read_excel("fgsc-dat4.xlsx", 20)
-s21 <- read_excel("fgsc-dat4.xlsx", 21)
-s22 <- read_excel("fgsc-dat4.xlsx", 22)
-
-s23 <- read_excel("fgsc-dat4.xlsx", 23)
-s24 <- read_excel("fgsc-dat4.xlsx", 24)
-s25 <- read_excel("fgsc-dat4.xlsx", 25)
-s26 <- read_excel("fgsc-dat4.xlsx", 26)
-s27 <- read_excel("fgsc-dat4.xlsx", 27)
-s28 <- read_excel("fgsc-dat4.xlsx", 28)
-
-s29 <- read_excel("fgsc-dat4.xlsx", 29)
-
-s30 <- read_excel("fgsc-dat4.xlsx", 30)
-s31 <- read_excel("fgsc-dat4.xlsx", 31)
-s32 <- read_excel("fgsc-dat4.xlsx", 32)
-s33 <- read_excel("fgsc-dat4.xlsx", 33)
-s34 <- read_excel("fgsc-dat4.xlsx", 34)
-s35 <- read_excel("fgsc-dat4.xlsx", 35)
-s36 <- read_excel("fgsc-dat4.xlsx", 36)
-s37 <- read_excel("fgsc-dat4.xlsx", 37)
-s38 <- read_excel("fgsc-dat4.xlsx", 38)
-s39 <- read_excel("fgsc-dat4.xlsx", 39)
-fgsc2 <- rbind(s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14, s15, s16, s19, s20, s21, s22, s23, s24, s25, s26, s27, s28, s29, s30, s31, s32, s33, s34, s35, s36, s37, s38, s39)
-fgsc2$Latitude <- round(jitter(fgsc2$Latitude, factor = 6),4)
-fgsc2$Longitude <- round(jitter(fgsc2$Longitude, factor = 6),4)
-
-fgsc <- fgsc2 %>% select(c(13,2,6,7, 8,9, 10, 14, 19, 20, 21))
+fgsc <- read_excel("fgsc.xlsx")
 library(plyr)
-table(fgsc$FGSC)
-fgsc$FGSC2 <- revalue(fgsc$FGSC, 
-                     c("F. graminearum" = "Fgra",
-                            "F. meridionale" = "Fmer",
-                              "F. cortaderiae" = "Fcor",
-                                  "F. austroamericanum" = "Faus",
-                                  "F. asiaticum" = "Fasi", 
-                                  "F. louisianense" = "Flou", 
-                                  "F. boothii" = "Fboo",
-                                  "F. gerlachii" = "Fger", 
-                                  "F. ussurianum" = "Fuss",
-                                  "F. vorosii" = "Fvor", 
-                       "F. acaciae-mearnsii" = "Faca", 
-                       "F. boothii X F. graminearum" = "Fboo x Fgra",
-                       "F. brasilicum" = "Fbra",
-                       "F. aethiopicum" = "Faet"
+fgsc$FGSC <- revalue(fgsc$FGSC, 
+                     c("Fusarium vorosii" = "F. vorosii",
+                       "Fusarium nepalense" = "F. nepalense",
+                       "Fusarium meridionale" = "F. meridionale",
+                       "Fusarium graminearum" = "F. graminearum",
+                       "Fusarium cortaderiae" = "F. cortaderiae",
+                       "Fusarium boothii" = "F. boothii",
+                      "Fusarium asiaticum" = "F. asiaticum"))
                        
-                                  ))
-fgsc$Year <- as.numeric(fgsc$Year)
-fgsc <- fgsc %>% 
-  filter(FGSC != 30) %>% 
-  filter(FGSC != "F. cerealis") %>% 
-  filter(FGSC != "F. culmorum") 
 
-fgsc$Host <- revalue(fgsc$Host, 
-                     c("oat" = "Oat",
-                       "corn" = "Maize",
-                       "wheat" = "Wheat", 
-                     "barley" = "Barley"))
-
-fgsc$Tri_genotype <- revalue(fgsc$Tri_genotype, 
-                     c("NX2" = "NX-2"))
 ```
 
 
@@ -124,7 +45,7 @@ library(crosstalk)
 library(leaflet)
 library(DT)
 sd <- SharedData$new(fgsc)
-sd2 <- SharedData$new(fgsc2)
+
 ```
 
 <i class="fa fa-home" aria-hidden="true"></i> Main dashboard
@@ -453,7 +374,7 @@ sd %>%
 =================
 
 ```{r}
-datatable(fgsc2, 
+datatable(fgsc, 
           extensions = c('Buttons', 'ColReorder'),
           escape = TRUE, rownames = FALSE,
          class = 'cell-border stripe',
