@@ -88,11 +88,12 @@ Column {.tabset}
 ```{r}
 library(RColorBrewer)
 library(htmltools)
-pal <- colorFactor("Accent", domain = c("15-ADON", "3-ADON", "DON", "DON/NIV", "NIV", "NX-2"))
+pal <- colorFactor("RdYlBu", domain = c("15-ADON", "3-ADON", "DON", "DON/NIV", "NIV", "NX-2", "NA"))
 leaflet(data = sd) %>%
 addTiles(urlTemplate = "https://mts1.google.com/vt/lyrs=r&hl=en&src=app&x={x}&y={y}&z={z}&s=G", attribution = 'Google') %>% 
-    addCircleMarkers(group = "Tri_genotype", radius = 7, fillOpacity = 0.8,  weight=1, color = NA, fillColor = ~pal(Tri_genotype), label = ~Tri_genotype) %>%
-addLegend("bottomleft", pal = pal, values = ~Tri_genotype, title = "Tri genotype",  opacity = 1 ) %>%   
+    addCircleMarkers(group = "Tri_genotype", radius = 2.5, fillOpacity = 0.8,  weight=1, color = NA, fillColor = ~pal(Tri_genotype), label = paste(fgsc$FGSC,"- click for details"), popup = paste("Collection code:<b>", fgsc$`Collection code`, "</b>", "<br><i>", fgsc$FGSC,"</i>(", fgsc$Tri_genotype, ")<br>", "Host:", fgsc$Host,"<br>","Location:", fgsc$Country, "<br>","Year of collection:", fgsc$Year, "<br>","Reference:", fgsc$Pub1))%>%
+addLegend("bottomleft", pal = pal, values = ~Tri_genotype, title = "Tri genotype",  opacity = 1 )%>%   
+  addMiniMap() %>% 
  addEasyButton(easyButton(
     icon="fa-globe", title="Back to initial view",
     onClick=JS("function(btn, map){ map.setZoom(2); }"))) 
@@ -100,60 +101,7 @@ addLegend("bottomleft", pal = pal, values = ~Tri_genotype, title = "Tri genotype
 
 ```
 
-### <i class="fa fa-map" aria-hidden="true"></i> Species map
 
-
-```{r}
-
-library(htmltools)
-
-
-
-
-icons <- awesomeIcons(
-  icon = "circle-o",
-  iconColor = "black",
-  library = "fa",
-  squareMarker = TRUE
-)
-
-pal <- colorFactor("Accent", domain = c(
-  "F. graminearum",
-"F. meridionale" ,
-                              "F. cortaderiae" ,
-                                  "F. austroamericanum",
-                                  "F. asiaticum", 
-                                  "F. louisianense", 
-                                  "F. boothii",
-                                  "F. gerlachii", 
-                                  "F. ussurianum",
-                                  "F. vorosii", 
-                       "F. acaciae-mearnsii", 
-                       "F. boothii X F. graminearum hybrid",
-                       "F. brasilicum",
-                       "F. aethiopicum", 
-"F. mesoamericanum"))
-leaflet(data = sd) %>%
-addTiles(urlTemplate = "https://mts1.google.com/vt/lyrs=r&hl=en&src=app&x={x}&y={y}&z={z}&s=G", attribution = 'Google') %>% 
-   
-  
-  # addCircleMarkers(group = "Tri_genotype", radius = 7, fillOpacity = 0.8, weight=1, color = NA, fillColor = ~pal(FGSC), label = ~FGSC) %>%
-
-  addAwesomeMarkers(
-    ~Longitude,
-    ~Latitude,
-    icon = icons,
-    label = paste(fgsc$FGSC, "- click for details"),
-    popup = paste("<b>", fgsc$FGSC, "</b><br>",
-                  fgsc$Tri_genotype, "<br>",
-                  fgsc$Pub1, ",",fgsc$Host, "<br>"))  %>% 
-    addLegend("bottomleft", pal = pal, values = ~FGSC, title = "Species",  opacity = 1 ) %>%
- addEasyButton(easyButton(
-    icon="fa-globe", title="Back to initial view",
-    onClick=JS("function(btn, map){ map.setZoom(2); }"))) 
-
-
-```
 
 
 
