@@ -43,141 +43,11 @@ fgsc$FGSC <- revalue(fgsc$FGSC,
 ```{r all table, echo=FALSE}
 library(crosstalk)
 library(leaflet)
+library(leaflet.extras)
 library(DT)
 sd <- SharedData$new(fgsc)
 
 ```
-
-<i class="fa fa-home" aria-hidden="true"></i> Main dashboard
-==================
-
-
-Column {}
-----------------------------------
-
-
-### Filters
-<table class= "table">
-<tr>
-<td width=35%>
-The **FGSC database** is a curated database of peer-reviewed information of *F. graminearum* species complex (FGSC) members strains. Apply the filters to update the table, plot and map. Backspace within each field to clean up your search.
-<br><br>
-Last update: `r Sys.Date()`  
-<input type="button" value="Clean filters" onClick="window.location.reload()">
-
-
-</td><td>
-```{r}
-filter_select("Pub1", "Select article(s)", sd, ~Pub1)
-filter_select("Country", "Select Country", sd, ~Country)
-filter_slider("Year", "Year of isolation", sd, ~Year)
-```
-</td><td>
-```{r}
-filter_select("Host", "Host", sd, ~Host)
-filter_select("FGSC", "Species", sd, ~FGSC)
-filter_select("Tri_genotype", "Select genotype(s)", sd, ~Tri_genotype)
-```
-</td></tr></table>
-
-
-
-
-
-### <i aria-hidden="true"></i> Table
-
-
-
-
-```{r}
-datatable(sd, 
-          extensions = c('Buttons', 'ColReorder'),
-          escape = TRUE,
-          rownames = FALSE, 
-          colnames = c('Code', 'Host', 'Country', 'Year', 'Lat', 'Long', 'FGSC2', 'Tri genotype', 'Pub1'), 
-         class = 'cell-border stripe',
-                      options=list(dom = 'Bfrtip',
-                                   buttons = c( 'excel', 'pdf'), deferRender=TRUE, 
-                         scrollY='520px', 
-                         scroller=TRUE,
-                          colReorder = F,
-                         
-                         
-  pageLength = 50,
-    fontSize = 8,
-  lengthMenu = c(100, 250, 500))) %>% 
- formatStyle(
-  c('Collection code', 'Host', 'Country', 'Year', 'Latitude', 'Longitude', 'FGSC', 'Tri_genotype', 'Pub1'),
-  fontSize = '90%')
-```
-
-datatable(employee, rownames = FALSE, options = list(
-  ajax = list(
-    serverSide = TRUE, processing = TRUE,
-    url = 'http://datatables.net/examples/server_side/scripts/jsonp.php',
-    dataType = 'jsonp'
-  )
-
-
-Column {}
-----------------------------------
-
-###  <i class="fa fa-map" aria-hidden="true"></i> Geographic map
-
-```{r}
-library(viridis)
-library(leaflet)
-pal <- colorFactor("Accent", domain = c("15-ADON", "3-ADON", "DON", "DON/NIV", "NIV", "NX-2"))
-
-library(magrittr)
-leaflet(sd) %>% 
-  addTiles(urlTemplate = "https://mts1.google.com/vt/lyrs=r&hl=en&src=app&x={x}&y={y}&z={z}&s=G", attribution = 'Google') %>% 
-  
-  addCircleMarkers(group = "Species", color = NA, fillColor = ~pal(Tri_genotype), radius = 5, fillOpacity = 0.9, label = ~FGSC) %>% 
-addLegend("bottomleft", pal = pal, values = ~Tri_genotype, title = "Tri genotype",  opacity = 1) %>%  
-  
-addEasyButton(easyButton(
-    icon="fa-globe", title="Back to initial view",
-    onClick=JS("function(btn, map){ map.setZoom(1); }"))) 
-
-```
-
-
-
-
-### <i class="fa fa-bar-chart" aria-hidden="true"></i> Trichothecene genotype by species frequency plot
-
-
-```{r}
-
-#fgsc$FGSC2 <- with(fgsc, reorder(FGSC, FGSC, function(x) length(x)))
-#p<-sd %>% 
-# ggplot(aes(FGSC))+
-# geom_bar(aes(fill = Tri_genotype)) +
-# theme_grey() +
-# scale_fill_viridis(discrete = TRUE)+
-# coord_flip()+
-# theme(legend.position = "bottom", panel.background = element_rect(fill = "grey97"))+
-# labs(fill = "Tri genotype", y = "Frequency", x = "", title = "")
-#(gg <- ggplotly(p))
-
-
-sd %>% 
-  plot_ly(x = ~FGSC, 
-         color=~Tri_genotype,
-      
-          colors = viridis_pal(option = "D")(3)) %>% 
-  layout(barmode = 'stack',
-         margin=list(l=40,r=40,t=40,b=120)) %>% 
-  highlight(off = "plotly_deselect")    
-
- #add_trace(x = ~FGSC)
-
-
-```
-
-
-
 
 
 
@@ -236,6 +106,17 @@ addLegend("bottomleft", pal = pal, values = ~Tri_genotype, title = "Tri genotype
 ```{r}
 
 library(htmltools)
+
+
+
+
+icons <- awesomeIcons(
+  icon = "circle-o",
+  iconColor = "black",
+  library = "fa",
+  squareMarker = TRUE
+)
+
 pal <- colorFactor("Accent", domain = c(
   "F. graminearum",
 "F. meridionale" ,
@@ -254,8 +135,19 @@ pal <- colorFactor("Accent", domain = c(
 "F. mesoamericanum"))
 leaflet(data = sd) %>%
 addTiles(urlTemplate = "https://mts1.google.com/vt/lyrs=r&hl=en&src=app&x={x}&y={y}&z={z}&s=G", attribution = 'Google') %>% 
-    addCircleMarkers(group = "Tri_genotype", radius = 7, fillOpacity = 0.8,  weight=1, color = NA, fillColor = ~pal(FGSC), label = ~FGSC) %>%
-addLegend("bottomleft", pal = pal, values = ~FGSC, title = "Species",  opacity = 1 ) %>%
+   
+  
+  # addCircleMarkers(group = "Tri_genotype", radius = 7, fillOpacity = 0.8, weight=1, color = NA, fillColor = ~pal(FGSC), label = ~FGSC) %>%
+
+  addAwesomeMarkers(
+    ~Longitude,
+    ~Latitude,
+    icon = icons,
+    label = paste(fgsc$FGSC, "- click for details"),
+    popup = paste("<b>", fgsc$FGSC, "</b><br>",
+                  fgsc$Tri_genotype, "<br>",
+                  fgsc$Pub1, ",",fgsc$Host, "<br>"))  %>% 
+    addLegend("bottomleft", pal = pal, values = ~FGSC, title = "Species",  opacity = 1 ) %>%
  addEasyButton(easyButton(
     icon="fa-globe", title="Back to initial view",
     onClick=JS("function(btn, map){ map.setZoom(2); }"))) 
