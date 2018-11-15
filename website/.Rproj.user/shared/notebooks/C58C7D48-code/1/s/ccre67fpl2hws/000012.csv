@@ -1,7 +1,0 @@
-"0","articles %>% "
-"0","  "
-"0","  ggplot(aes(year))+"
-"0","  geom_bar()+"
-"0","  scale_y_continuous(breaks=seq(0, 11, 1), expand=c(0.02, 0))+"
-"0","  scale_x_continuous(breaks=seq(2000, 2017))+"
-"0","  labs(y = ""Number of articles"", x = ""Published year"", title = ""Articles per year"")"

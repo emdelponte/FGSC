@@ -23,7 +23,8 @@ library(crosstalk)
 library(plotly)
 library(viridis)
 library(gsheet)
-theme_set(theme_grey())
+library(ggthemes)
+theme_set(theme_light())
 Sys.setlocale("LC_ALL", "pt_BR.UTF-8")
 ```
 
@@ -86,11 +87,10 @@ write.csv(fgsc, here("data", "data-fgsc.csv"))
 
 ```{r include=FALSE}
 # load the article database
-# library(gsheet)
-# articles <-
-# gsheet2tbl('https://docs.google.com/spreadsheets/d/1rAC_U5upuDPHCSLi9kieb4R5tztHVJGW84aQOf6z7Lk/edit?usp=sharing')
-# articles <- articles
-articles <- read_excel(here("data", "articles-reviewed.xlsx"))
+library(gsheet)
+articles <-gsheet2tbl('https://docs.google.com/spreadsheets/d/1rAC_U5upuDPHCSLi9kieb4R5tztHVJGW84aQOf6z7Lk/edit?usp=sharing')
+
+#articles <- read_excel(here("data", "articles-reviewed.xlsx"))
 ```
 
 # Bibliographic analysis
@@ -113,8 +113,10 @@ articles %>%
   ggplot(aes(year)) +
   geom_bar(aes(fill = factor(pub_order))) +
   scale_y_continuous(breaks = seq(0, 11, 1), expand = c(0.02, 0)) +
+  scale_fill_viridis(discrete = TRUE)+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))+
   scale_x_continuous(breaks = seq(2000, 2017)) +
-  labs(y = "Number of articles", x = "Published year", title = "Articles per year")
+  labs(y = "Number of articles", x = "Year of publication", title = "Articles per year", fill = "Strain info")
 ```
 
 
@@ -135,9 +137,10 @@ The articles were published in `r nrow(journal)` scientific journals. The journa
 articles %>%
   ggplot(aes(reorder(journal_name, journal_name, function(x) length(x)))) +
   geom_bar(aes(fill = factor(pub_order))) +
+    scale_fill_viridis(discrete = TRUE)+
   scale_y_continuous(breaks = seq(0, 10), expand = c(0.01, 0)) +
   coord_flip() +
-  labs(y = "Number of articles", x = "", title = "Articles per journal")
+  labs(y = "Number of articles", x = "", title = "Journals", fill = "Strain info")
 ```
 
 
@@ -161,7 +164,7 @@ articles %>%
 
 ```{r include=FALSE}
 countries <- articles %>%
-  gather(code, country, 25:30) %>%
+  gather(code, country, 28:33) %>%
   filter(country != "NA") %>%
   select(country) %>%
   group_by(country) %>%
@@ -172,14 +175,13 @@ countries <- articles %>%
 For each article, the countries reported in the affiliations of the authors were indexed. We recorded the country name only once per article regardless of the number of authors from a same country. There were `r nrow(countries)` unique countries, and the three most unique occurrences were `r countries[1,1]`, `r countries[2,1]` and `r countries[3,1]`.  
 
 ```{r message=FALSE, warning=FALSE, paged.print=TRUE}
-articles %>%
-  gather(code, country, 25:30) %>%
-  filter(country != "NA") %>%
-  ggplot(aes(reorder(country, country, function(x) length(x)))) +
-  geom_bar(aes(fill = factor(pub_order))) +
-  scale_y_continuous(breaks = seq(0, 30, 2), expand = c(0.01, 0)) +
+countries %>% 
+  filter(n > 2) %>% 
+  ggplot(aes(reorder(country, n), n)) +
+  geom_col(fill = "#440154FF") +
+  scale_y_continuous(breaks = seq(0, 50, 2), expand = c(0.01, 0)) +
   coord_flip() +
-  labs(y = "Number of articles", x = "", title = "Articles per country")
+  labs(y = "Number of articles", x = "", title = "Countries with more than 2 articles")
 ```
 
 
@@ -208,9 +210,9 @@ head(authors, 20)
 
 ```{r}
 authors %>%
-  filter(n > 2) %>%
+  filter(n > 4) %>%
   ggplot(aes(reorder(name, n), n)) +
-  geom_col() +
+  geom_col(fill = "#440154FF") +
   scale_y_continuous(breaks = seq(0, 30, 3), expand = c(0.01, 0)) +
   coord_flip() +
   labs(x = "", y = "Frequency", title = "Articles per author")
@@ -450,12 +452,6 @@ The total number of indexed strains in the database was `r n_strains_yes` and no
 
 Let's have a look at the distribution across the studies. For the cases the strains are used in more than one study, the count is subtracted from the second article and then the count does not reflect the total number of strains for some studies. There is one plot for the non indexed and indexed strains.
 
-```{r}
-articles %>%
-  ggplot(aes(n_isolates)) +
-  geom_histogram(color = "white") +
-  facet_wrap(~pub_order)
-```
 
 Another visualization is via box plots.
 

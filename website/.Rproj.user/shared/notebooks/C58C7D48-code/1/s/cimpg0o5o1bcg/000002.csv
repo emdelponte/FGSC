@@ -1,6 +1,0 @@
-"0","# load the article database"
-"0","library(gsheet)"
-"0","articles <-"
-"0"," gsheet2tbl('https://docs.google.com/spreadsheets/d/1rAC_U5upuDPHCSLi9kieb4R5tztHVJGW84aQOf6z7Lk/edit?usp=sharing') "
-"0","articles <- articles %>% "
-"0","  filter (pub_order == 1)"

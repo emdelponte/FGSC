@@ -1,3 +1,0 @@
-"0","```r
-fitAuthor <<e2><80><90> ergm(netstat ~ edges + nodematch(\"vertex.names\"))
-```"

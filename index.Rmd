@@ -24,7 +24,9 @@ library(viridis)
 ```{r load data, include=FALSE}
 Sys.setlocale("LC_ALL", 'pt_BR.UTF-8')
 
-fgsc <- read_excel("fgsc.xlsx")
+fgsc <- read_excel("fgsc-dat4.xlsx")
+fgsc <- fgsc %>% 
+  filter(Tri_genotype != "15-ADON, NIV")
 library(plyr)
 fgsc$FGSC <- revalue(fgsc$FGSC, 
                      c("Fusarium vorosii" = "F. vorosii",
@@ -90,7 +92,7 @@ library(RColorBrewer)
 library(htmltools)
 pal <- colorFactor("RdYlBu", domain = c("15-ADON", "3-ADON", "DON", "DON/NIV", "NIV", "NX-2", "NA"))
 leaflet(data = sd) %>%
-addTiles(urlTemplate = "https://mts1.google.com/vt/lyrs=r&hl=en&src=app&x={x}&y={y}&z={z}&s=G", attribution = 'Google') %>% 
+addTiles() %>% 
 
   addCircleMarkers(group = "Tri_genotype", radius = 3, fillOpacity = 0.8,  weight=0.5, color = NA, fillColor = ~pal(Tri_genotype), label = paste(fgsc$FGSC,"- click for details"), popup = paste("Collection code:<b>", fgsc$`Collection code`, "</b>", "<br><i>", fgsc$FGSC,"</i>(", fgsc$Tri_genotype, ")<br>", "Host:", fgsc$Host,"<br>","Location:", fgsc$Country, "<br>","Year of collection:", fgsc$Year, "<br>","Reference:", fgsc$Pub1))%>%
 addLegend("bottomleft", pal = pal, values = ~Tri_genotype, title = "Tri genotype",  opacity = 1 )%>%   

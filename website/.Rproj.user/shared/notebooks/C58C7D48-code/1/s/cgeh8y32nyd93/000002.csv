@@ -1,8 +1,0 @@
-"0","articles %>% "
-"0","  gather(code, country, 25:30) %>% "
-"0","  filter(country != ""NA"") %>% "
-"0","  ggplot(aes(reorder(country, country, function(x) length(x))))+"
-"0","  geom_bar()+"
-"0","  scale_y_continuous(breaks=seq(0,30,2), expand=c(0.01, 0))+"
-"0","  coord_flip()+"
-"0","  labs(y = ""Number of articles"", x = ""Published year"", title = ""Articles per country"" )"
