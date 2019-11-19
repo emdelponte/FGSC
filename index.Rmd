@@ -5,6 +5,8 @@ output:
     theme: united
     css: style2.css
     social: menu
+editor_options: 
+  chunk_output_type: inline
 ---
 
 
@@ -21,12 +23,12 @@ library(viridis)
 
 
 
-```{r load data, include=FALSE}
+```{r load data, message=FALSE, warning=FALSE, include=FALSE}
 Sys.setlocale("LC_ALL", 'pt_BR.UTF-8')
 
-fgsc <- read_excel("fgsc-dat4.xlsx")
+fgsc <- read_excel("fgsc-dat5.xlsx")
 fgsc <- fgsc %>% 
-  filter(Tri_genotype != "15-ADON, NIV")
+  filter(TRI_genotype != "15-ADON, NIV")
 library(plyr)
 fgsc$FGSC <- revalue(fgsc$FGSC, 
                      c("Fusarium vorosii" = "F. vorosii",
@@ -36,7 +38,15 @@ fgsc$FGSC <- revalue(fgsc$FGSC,
                        "Fusarium cortaderiae" = "F. cortaderiae",
                        "Fusarium boothii" = "F. boothii",
                       "Fusarium asiaticum" = "F. asiaticum"))
-                       
+
+fgsc$TRI_genotype <- revalue(fgsc$TRI_genotype, 
+                     c("DON/ZEA" = "DON",
+                       "N-15-ADON" = "15-ADON",
+                       "N-15ADON" = "15-ADON",
+                       "s3-ADON" = "3-ADON",
+                       "NX-2/3-ADON" = "NX-2",
+                       "NX2" = "NX-2"))                       
+
 
 ```
 
@@ -69,9 +79,13 @@ Column {data-width=230}
 filter_slider("Year", "Year of isolation", sd, ~Year)
 filter_select("Pub1", "Select article(s)", sd, ~Pub1)
 filter_select("Country", "Select Country", sd, ~Country)
+```
+
+
+```{r}
 filter_select("Host", "Host", sd, ~Host)
 filter_select("FGSC", "Species", sd, ~FGSC)
-filter_select("Tri_genotype", "Select genotype(s)", sd, ~Tri_genotype)
+filter_select("TRI_genotype", "Select genotype(s)", sd, ~TRI_genotype)
 ```
 
 
@@ -90,12 +104,12 @@ Column {.tabset}
 ```{r}
 library(RColorBrewer)
 library(htmltools)
-pal <- colorFactor("RdYlBu", domain = c("15-ADON", "3-ADON", "DON", "DON/NIV", "NIV", "NX-2", "NA"))
+pal <- colorFactor("RdYlBu", domain = c("15-ADON", "3-ADON", "DON", "NIV", "DON/NIV",  "NX-2", "NA"))
 leaflet(data = sd) %>%
 addTiles() %>% 
 
-  addCircleMarkers(group = "Tri_genotype", radius = 3, fillOpacity = 0.8,  weight=0.5, color = NA, fillColor = ~pal(Tri_genotype), label = paste(fgsc$FGSC,"- click for details"), popup = paste("Collection code:<b>", fgsc$`Collection code`, "</b>", "<br><i>", fgsc$FGSC,"</i>(", fgsc$Tri_genotype, ")<br>", "Host:", fgsc$Host,"<br>","Location:", fgsc$Country, "<br>","Year of collection:", fgsc$Year, "<br>","Reference:", fgsc$Pub1))%>%
-addLegend("bottomleft", pal = pal, values = ~Tri_genotype, title = "Tri genotype",  opacity = 1 )%>%   
+  addCircleMarkers(group = "TRI_genotype", radius = 3, fillOpacity = 0.8,  weight=0.5, color = NA, fillColor = ~pal(TRI_genotype), label = paste(fgsc$FGSC,"- click for details"), popup = paste("Collection code:<b>", fgsc$`Collection code`, "</b>", "<br><i>", fgsc$FGSC,"</i>(", fgsc$TRI_genotype, ")<br>", "Host:", fgsc$Host,"<br>","Location:", fgsc$Country, "<br>","Year of collection:", fgsc$Year, "<br>","Reference:", fgsc$Pub1))%>%
+addLegend("bottomleft", pal = pal, values = ~TRI_genotype, title = "TRI genotype",  opacity = 1 )%>%   
   addMiniMap() %>% 
  addEasyButton(easyButton(
     icon="fa-globe", title="Back to initial view",
@@ -108,7 +122,7 @@ addLegend("bottomleft", pal = pal, values = ~Tri_genotype, title = "Tri genotype
 
 
 
-### <i class="fa fa-bar-chart" aria-hidden="true"></i> Tri genotype by species 
+### <i class="fa fa-bar-chart" aria-hidden="true"></i> TRI genotype by species 
 
 dfa
 ```{r}
@@ -116,18 +130,18 @@ dfa
 #fgsc$FGSC2 <- with(fgsc, reorder(FGSC, FGSC, function(x) length(x)))
 #p<-sd %>% 
 # ggplot(aes(FGSC))+
-# geom_bar(aes(fill = Tri_genotype)) +
+# geom_bar(aes(fill = TRI_genotype)) +
 # theme_grey() +
 # scale_fill_viridis(discrete = TRUE)+
 # coord_flip()+
 # theme(legend.position = "bottom", panel.background = element_rect(fill = "grey97"))+
-# labs(fill = "Tri genotype", y = "Frequency", x = "", title = "")
+# labs(fill = "TRI genotype", y = "Frequency", x = "", title = "")
 #(gg <- ggplotly(p))
 
 
 sd %>% 
   plot_ly(x = ~FGSC, 
-         color=~Tri_genotype,
+         color=~TRI_genotype,
       
           colors = viridis_pal(option = "D")(3))%>% 
   layout(barmode = 'stack',
@@ -142,7 +156,7 @@ sd %>%
 
 
 
-### <i class="fa fa-bar-chart" aria-hidden="true"></i> Tri genotypes by year
+### <i class="fa fa-bar-chart" aria-hidden="true"></i> TRI genotypes by year
 
 
 ```{r}
@@ -150,18 +164,18 @@ sd %>%
 #fgsc$FGSC2 <- with(fgsc, reorder(FGSC, FGSC, function(x) length(x)))
 #p<-sd %>% 
 # ggplot(aes(FGSC))+
-# geom_bar(aes(fill = Tri_genotype)) +
+# geom_bar(aes(fill = TRI_genotype)) +
 # theme_grey() +
 # scale_fill_viridis(discrete = TRUE)+
 # coord_flip()+
 # theme(legend.position = "bottom", panel.background = element_rect(fill = "grey97"))+
-# labs(fill = "Tri genotype", y = "Frequency", x = "", title = "")
+# labs(fill = "TRI genotype", y = "Frequency", x = "", title = "")
 #(gg <- ggplotly(p))
 
 
 sd %>% 
   plot_ly(x = ~Year, 
-         color=~Tri_genotype,
+         color=~TRI_genotype,
       
           colors = viridis_pal(option = "D")(3)) %>% 
   layout(barmode = 'stack',
@@ -175,7 +189,7 @@ sd %>%
 
 
 
-### <i class="fa fa-bar-chart" aria-hidden="true"></i> Tri genotypes by country
+### <i class="fa fa-bar-chart" aria-hidden="true"></i> TRI genotypes by country
 
 
 ```{r}
@@ -183,18 +197,18 @@ sd %>%
 #fgsc$FGSC2 <- with(fgsc, reorder(FGSC, FGSC, function(x) length(x)))
 #p<-sd %>% 
 # ggplot(aes(FGSC))+
-# geom_bar(aes(fill = Tri_genotype)) +
+# geom_bar(aes(fill = TRI_genotype)) +
 # theme_grey() +
 # scale_fill_viridis(discrete = TRUE)+
 # coord_flip()+
 # theme(legend.position = "bottom", panel.background = element_rect(fill = "grey97"))+
-# labs(fill = "Tri genotype", y = "Frequency", x = "", title = "")
+# labs(fill = "TRI genotype", y = "Frequency", x = "", title = "")
 #(gg <- ggplotly(p))
 
 
 sd %>% 
   plot_ly(x = ~Country, 
-         color=~Tri_genotype,
+         color=~TRI_genotype,
       
           colors = viridis_pal(option = "D")(3)) %>% 
   layout(barmode = 'stack',
