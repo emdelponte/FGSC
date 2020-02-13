@@ -1,5 +1,5 @@
 ---
-title: "Global Fusarium graminearum Database"
+title: "Fusarium graminearum Database"
 output: 
   flexdashboard::flex_dashboard:
     theme: united
@@ -26,7 +26,7 @@ library(viridis)
 ```{r load data, message=FALSE, warning=FALSE, include=FALSE}
 Sys.setlocale("LC_ALL", 'pt_BR.UTF-8')
 
-fgsc <- read_excel("fgsc-dat5.xlsx")
+fgsc <- read_excel("fgsc-dat8.xlsx")
 fgsc <- fgsc %>% 
   filter(TRI_genotype != "15-ADON, NIV")
 library(plyr)
@@ -68,9 +68,9 @@ sd <- SharedData$new(fgsc)
 ============
 
 
+Column {.sidebar}
+-------------------------------------
 
-Column {data-width=230}
-----------------------------------
 
 ### Quick filter
 
@@ -107,6 +107,15 @@ library(htmltools)
 pal <- colorFactor("RdYlBu", domain = c("15-ADON", "3-ADON", "DON", "NIV", "DON/NIV",  "NX-2", "NA"))
 leaflet(data = sd) %>%
 addTiles() %>% 
+  addProviderTiles("Esri.WorldImagery", group = "Aerial") %>%
+  addProviderTiles("OpenTopoMap", group = "Terrain") %>%
+  addScaleBar("bottomright") %>%
+  addProviderTiles(providers$CartoDB.Voyager, group = "Default") %>%
+  addLayersControl(
+    baseGroups = c("Default", "Aerial", "Terrain"),
+    overlayGroups = "FGSC",
+    options = layersControlOptions(collapsed = TRUE)
+  ) %>%
 
   addCircleMarkers(group = "TRI_genotype", radius = 3, fillOpacity = 0.8,  weight=0.5, color = NA, fillColor = ~pal(TRI_genotype), label = paste(fgsc$FGSC,"- click for details"), popup = paste("Collection code:<b>", fgsc$`Collection code`, "</b>", "<br><i>", fgsc$FGSC,"</i>(", fgsc$TRI_genotype, ")<br>", "Host:", fgsc$Host,"<br>","Location:", fgsc$Country, "<br>","Year of collection:", fgsc$Year, "<br>","Reference:", fgsc$Pub1))%>%
 addLegend("bottomleft", pal = pal, values = ~TRI_genotype, title = "TRI genotype",  opacity = 1 )%>%   
@@ -230,6 +239,14 @@ sd %>%
 <i class="fa fa-table" aria-hidden="true"></i> Full Table
 =================
 
+
+
+
+Column {.tabset}
+----------------------------------
+
+### Grid view
+
 ```{r}
 datatable(fgsc, 
           extensions = c('Buttons', 'ColReorder'),
@@ -257,5 +274,10 @@ Column {.tabset}
 ### About
 
 ### References
+
+
+
+
+
 
 
