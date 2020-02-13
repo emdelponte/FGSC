@@ -1,17 +1,16 @@
+navbar-inverse
+{
+ background-color: #558796
+ }
 
-.rev{
-font-family: 'arial', sans-serif;
-font-size:18px;
-padding-bottom:5px;
-}
+
 body {
-     font-size: 15px;
+     font-size: 14px;
      font-family: 'arial', sans-serif
      }
 
-img {
-        padding: 2px
-}
+
+
 p    {
      padding-left: 15px;
      padding-right: 15px;
@@ -23,11 +22,6 @@ p    {
     white-space: nowrap;
     overflow: hidden;
 }
-.navbar-inverse
-{
- background-color: #003366}
-}
-body{color: #339966}
 
 .table {
         width: 100%
@@ -35,11 +29,14 @@ body{color: #339966}
     }
 .table td {
     padding: 7px;
-    font-size: 100%
+    font-size: 60%
 
 }
-.img-circle {
-    border-radius: 50%;
-    padding:10px;
+
+.section.sidebar {
+  top: 55px;
+  border-bottom: 10px solid #ececec;
+  border-left: 10px solid #ececec;
+  background-color: rgba(255, 255, 255, 1);
 }
 
