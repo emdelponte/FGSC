@@ -52,10 +52,11 @@ sd <- SharedData$new(fgsc)
 
 <font size = 2>
 ```{r echo=FALSE, layout="l-page"}
-
+filter_slider("Year", "Select year interval", sd, ~Year)
 bscols(
 
 filter_select("Pub1", "Select article(s)", sd, ~Pub1),
+
 filter_select("Host", "Host", sd, ~Host),
 filter_select("FGSC", "Species", sd, ~FGSC),
 filter_select("TRI_genotype", "Select genotype(s)", sd, ~TRI_genotype)
@@ -63,7 +64,7 @@ filter_select("TRI_genotype", "Select genotype(s)", sd, ~TRI_genotype)
 ```
 </font>
 
-```{r echo=FALSE, layout="l-page", fig.height=5.2}
+```{r echo=FALSE, layout="l-page", fig.height=5}
 library(RColorBrewer)
 library(htmltools)
 pal <- colorFactor("RdYlBu", domain = c("15-ADON", "3-ADON", "DON", "NIV", "DON/NIV",  "NX-2", "NA"))
