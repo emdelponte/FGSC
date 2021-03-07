@@ -62,7 +62,7 @@ filter_select("TRI_genotype", "Select genotype(s)", sd, ~TRI_genotype)
 ```
 
 
-```{r echo=FALSE, layout="l-page"}
+```{r echo=FALSE, layout="l-page", fig.height=5.2}
 library(RColorBrewer)
 library(htmltools)
 pal <- colorFactor("RdYlBu", domain = c("15-ADON", "3-ADON", "DON", "NIV", "DON/NIV",  "NX-2", "NA"))

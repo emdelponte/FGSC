@@ -49,25 +49,28 @@ sd <- SharedData$new(fgsc)
 
 
 ```{r echo=FALSE, layout="l-page"}
+
+fgsc2 <- fgsc %>% 
+  select(1:4, 7:9)
+
 library(crosstalk)
 bscols(
 
 
 
 )
-datatable(fgsc, 
-          extensions = c('Buttons', 'ColReorder'),
+datatable(fgsc2, 
+          #extensions = c('Buttons', 'ColReorder')
           escape = TRUE, rownames = FALSE,
          class = 'cell-border stripe',
-                      options=list(dom = 'Bfrtip',buttons = c( 'excel', 'pdf'),deferRender=TRUE, 
-                          scrollY=500, 
+                     options=list(deferRender=TRUE, 
+                          scrollY=450, 
                           scroller=TRUE,
-                          colReorder = TRUE,
+                      #    colReorder = TRUE,
   pageLength = 100,
-    fontSize = 12,
+    fontSize = 14,
   lengthMenu = c(100, 250, 500))) %>% 
-formatStyle(c(1:19),
-  fontSize = '100%')
+formatStyle(c(1:19))
            
 
 
