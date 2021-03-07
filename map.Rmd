@@ -1,5 +1,5 @@
 ---
-title: "&nbsp;"
+title: "Interactive map"
 output:
   distill::distill_article:
     toc: true

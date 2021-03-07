@@ -1,5 +1,5 @@
 ---
-title: "&nbsp;"
+title: "Interactive plots"
 output:
   distill::distill_article:
     toc: true
