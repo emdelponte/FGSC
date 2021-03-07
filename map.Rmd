@@ -1,0 +1,94 @@
+---
+title: "&nbsp;"
+output:
+  distill::distill_article:
+    toc: true
+    toc_depth: 3
+
+---
+
+
+
+```{r setup, include=FALSE}
+
+library(flexdashboard)
+library(readxl)
+library(tidyverse)
+library(crosstalk)
+library(plotly)
+library(viridis)
+
+Sys.setlocale("LC_ALL", 'pt_BR.UTF-8')
+
+fgsc <- read_excel("fgsc-dat9.xlsx") %>% 
+  select(1:9)
+
+fgsc <- fgsc %>% 
+  filter(TRI_genotype != "15-ADON, NIV")
+library(plyr)
+fgsc$FGSC <- revalue(fgsc$FGSC, 
+                     c("Fusarium vorosii" = "F. vorosii",
+                       "Fusarium nepalense" = "F. nepalense",
+                       "Fusarium meridionale" = "F. meridionale",
+                       "Fusarium graminearum" = "F. graminearum",
+                       "Fusarium cortaderiae" = "F. cortaderiae",
+                       "Fusarium boothii" = "F. boothii",
+                      "Fusarium asiaticum" = "F. asiaticum"))
+
+fgsc$TRI_genotype <- revalue(fgsc$TRI_genotype, 
+                     c("DON/ZEA" = "DON",
+                       "N-15-ADON" = "15-ADON",
+                       "N-15ADON" = "15-ADON",
+                       "s3-ADON" = "3-ADON",
+                       "NX-2/3-ADON" = "NX-2",
+                       "NX2" = "NX-2"))                       
+library(crosstalk)
+library(leaflet)
+library(leaflet.extras)
+library(DT)
+sd <- SharedData$new(fgsc)
+
+```
+
+
+```{r echo=FALSE}
+bscols(
+
+filter_select("Pub1", "Select article(s)", sd, ~Pub1),
+filter_select("Host", "Host", sd, ~Host),
+filter_select("FGSC", "Species", sd, ~FGSC),
+filter_select("TRI_genotype", "Select genotype(s)", sd, ~TRI_genotype)
+)
+```
+
+
+```{r echo=FALSE, layout="l-page"}
+library(RColorBrewer)
+library(htmltools)
+pal <- colorFactor("RdYlBu", domain = c("15-ADON", "3-ADON", "DON", "NIV", "DON/NIV",  "NX-2", "NA"))
+leaflet(data = sd) %>%
+   setView(-0, 15, zoom = 2) %>%
+addTiles() %>% 
+  addProviderTiles("Esri.WorldImagery", group = "Aerial") %>%
+  addProviderTiles("OpenTopoMap", group = "Terrain") %>%
+  addScaleBar("bottomright") %>%
+  addProviderTiles(providers$CartoDB.Voyager, group = "Default") %>%
+  addLayersControl(
+    baseGroups = c("Default", "Aerial", "Terrain"),
+    overlayGroups = "FGSC",
+    options = layersControlOptions(collapsed = TRUE)
+  ) %>%
+
+  addCircleMarkers(group = "TRI_genotype", radius = 3, fillOpacity = 0.8,  weight=0.5, color = NA, fillColor = ~pal(TRI_genotype), label = paste(fgsc$FGSC,"- click for details"), popup = paste("Collection code:<b>", fgsc$`Collection code`, "</b>", "<br><i>", fgsc$FGSC,"</i>(", fgsc$TRI_genotype, ")<br>", "Host:", fgsc$Host,"<br>","Location:", fgsc$Country, "<br>","Year of collection:", fgsc$Year, "<br>","Reference:", fgsc$Pub1))%>%
+addLegend("bottomleft", pal = pal, values = ~TRI_genotype, title = "TRI genotype",  opacity = 1 )%>%   
+  
+ addEasyButton(easyButton(
+    icon="fa-globe", title="Back to initial view",
+    onClick=JS("function(btn, map){ map.setZoom(2); }"))) 
+
+
+```
+
+
+
+

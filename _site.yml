@@ -1,0 +1,19 @@
+name: "FGSCdb"
+title: "FGSCdb"
+theme: fitopatologia.css
+description: |
+  Pyblastr
+output_dir: "docs"
+navbar:
+  left:
+    - text: "Introduction"
+      href: index.html
+    - text: "Grid view"
+      href: grid.html
+    - text: "Map view"
+      href: map.html
+    - text: "Charts"
+      href: graficos.html
+     
+
+output: distill::distill_article
