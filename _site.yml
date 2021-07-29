@@ -6,15 +6,8 @@ description: |
 output_dir: "docs"
 navbar:
   right:
-    - text: "Introduction"
+    - text: "About"
       href: index.html
-    - text: "Grid view"
-      href: grid.html
-    - text: "Map view"
-      href: map.html
-    - text: "Charts"
-      href: graficos.html
-  source_url: TRUE
 
 repository_url: https://github.com/emdelponte/FGSC
 creative_commons: CC BY
