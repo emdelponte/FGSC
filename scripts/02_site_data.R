@@ -4,7 +4,29 @@ suppressPackageStartupMessages({ library(readr); library(dplyr); library(jsonlit
 
 iso <- read_csv("data/fgsc_isolates.csv", show_col_types = FALSE, guess_max = 1e5)
 art <- read_csv("data/fgsc_articles.csv", show_col_types = FALSE)
-cnt <- read_csv("data/fgsc_counts.csv", show_col_types = FALSE)
+cnt <- read_csv("data/fgsc_counts.csv", show_col_types = FALSE, col_types = cols(.default = "c"))
+voc <- function(f) read_csv(file.path("vocab", f), col_types = cols(.default = "c"), na = character())
+
+# Aggregated counts (sources without isolate-level tables) are expanded to one record per isolate, flagged agg = 1,
+# so filters, totals and charts treat them like isolates. They are placed at the centroid of the reported unit.
+agg <- if (nrow(cnt)) {
+  tg  <- voc("tri_genotype.csv") %>% distinct(tri_genotype, tri_group)
+  hv  <- voc("host.csv") %>% distinct(host, host_group)
+  cv  <- voc("country.csv") %>% distinct(country, iso3, region)
+  cnt %>%
+    mutate(n_isolates = as.integer(n_isolates)) %>%
+    left_join(tg, by = "tri_genotype") %>% left_join(hv, by = "host") %>% left_join(cv, by = "country") %>%
+    mutate(tri_group = coalesce(tri_group, "Undetermined"),
+           year = ifelse(year_start == year_end, as.integer(year_start), NA_integer_),
+           isolate_id = "", strain_code = NA_character_,
+           location = paste(locality, admin1, sep = ", "),
+           coord_precision = paste0("aggregated count (", geo_level, " centroid)"),
+           latitude = as.numeric(latitude), longitude = as.numeric(longitude)) %>%
+    tidyr::uncount(n_isolates) %>%
+    transmute(isolate_id, species, tri_group, tri_genotype, host, host_group, organ, country, region, reference,
+              coord_precision, year, latitude, longitude, strain_code, location, agg = 1L)
+} else NULL
+recs <- bind_rows(iso %>% mutate(agg = 0L, strain_code = as.character(strain_code)), agg)
 
 enc <- function(x, levels = NULL) {
   x <- ifelse(is.na(x), "—", as.character(x))
@@ -14,16 +36,18 @@ enc <- function(x, levels = NULL) {
 fields <- list(sp = "species", tg = "tri_group", tri = "tri_genotype", h = "host", hg = "host_group",
                org = "organ", c = "country", rg = "region", ref = "reference", pr = "coord_precision")
 dict <- list(); cols <- list()
-for (k in names(fields)) { e <- enc(iso[[fields[[k]]]]); dict[[k]] <- e$levels; cols[[k]] <- e$codes }
-cols$y   <- iso$year
-cols$lat <- iso$latitude
-cols$lon <- iso$longitude
-cols$id  <- iso$isolate_id
-cols$st  <- iso$strain_code
-cols$loc <- iso$location
+for (k in names(fields)) { e <- enc(recs[[fields[[k]]]]); dict[[k]] <- e$levels; cols[[k]] <- e$codes }
+cols$y   <- recs$year
+cols$lat <- recs$latitude
+cols$lon <- recs$longitude
+cols$id  <- recs$isolate_id
+cols$st  <- recs$strain_code
+cols$loc <- recs$location
+cols$agg <- recs$agg
 
 out <- list(
-  meta = list(generated = format(Sys.time(), "%Y-%m-%d"), n = nrow(iso)),
+  meta = list(generated = format(Sys.time(), "%Y-%m-%d"), n = nrow(recs), n_isolate_level = nrow(iso),
+              n_aggregated = sum(recs$agg)),
   dict = dict, cols = cols,
   articles = art %>% select(article_id, reference, n_isolates, countries, year_min, year_max, doi),
   counts = cnt

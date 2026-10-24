@@ -29,6 +29,7 @@ jobs:
             any::dplyr
             any::stringr
             any::jsonlite
+            any::tidyr
       - name: Fetch curated sheet
         run: Rscript scripts/00_fetch_sheet.R
       - name: Validate

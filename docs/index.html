@@ -793,6 +793,7 @@ nav.tabs button[aria-selected="true"] { color: var(--ink); border-bottom-color: 
 .legend .key { margin-top: 4px; padding-top: 5px; border-top: 1px solid var(--line); display: flex; gap: 12px; flex-wrap: wrap; color: var(--muted); font-size: 0.72rem; }
 .legend .ring { display: inline-block; width: 10px; height: 10px; border-radius: 50%; border: 1.5px solid var(--ink-2); vertical-align: -1px; margin-right: 4px; }
 .legend .ring.dash { border-style: dashed; }
+.legend .ring.double { box-shadow: 0 0 0 1.5px var(--surface), 0 0 0 3px var(--ink-2); }
 .basemaps { position: absolute; right: 10px; top: 10px; z-index: 500; }
 .tip { position: absolute; z-index: 600; pointer-events: none; background: var(--surface); color: var(--ink); border: 1px solid var(--line-2); border-radius: 5px; padding: 8px 10px; box-shadow: 0 4px 16px #0000001f; font-size: 0.8rem; max-width: 300px; }
 .tip.pinned { pointer-events: auto; }
@@ -898,6 +899,7 @@ footer.foot a { color: var(--accent); }
         <summary>Location precision</summary>
         <div class="fg-body">
           <label class="chk"><input type="checkbox" id="p-cc" checked> Include isolates placed at the country centroid (source gives country only)</label>
+          <label class="chk"><input type="checkbox" id="p-agg" checked> Include aggregated counts (sources that report only numbers per region, placed at the region centroid)</label>
         </div>
       </details>
       <div class="f-foot">
@@ -984,7 +986,7 @@ footer.foot a { color: var(--accent); }
     </div>
     <div>
       <h3>About the locations</h3>
-      <p>Coordinates are those reported by each source. When a source gives only a county, the county centroid is used; when it gives only the country, the isolate is placed at the country centroid and drawn with a dashed outline. Use the location-precision filter to exclude those records from spatial analyses.</p>
+      <p>Coordinates are those reported by each source. When a source gives only a municipality or county, its center is used; when it gives only the country, the isolate is placed at the country centroid and drawn with a dashed outline. Some sources report only numbers of isolates per region (no isolate table); these aggregated counts are placed at the region centroid and drawn with a double outline. Use the location-precision filters to exclude either group from spatial analyses.</p>
     </div>
   </footer>
 </div>
@@ -1040,12 +1042,12 @@ function init(json) {
   const c = D.cols, n = D.meta.n;
   for (let i = 0; i < n; i++) R.push({
     i, id: c.id[i], st: c.st[i], sp: c.sp[i], tg: c.tg[i], tri: c.tri[i], h: c.h[i], hg: c.hg[i], org: c.org[i],
-    c: c.c[i], rg: c.rg[i], ref: c.ref[i], pr: c.pr[i], y: c.y[i], lat: c.lat[i], lon: c.lon[i], loc: c.loc[i]
+    c: c.c[i], rg: c.rg[i], ref: c.ref[i], pr: c.pr[i], y: c.y[i], lat: c.lat[i], lon: c.lon[i], loc: c.loc[i], agg: c.agg ? c.agg[i] : 0
   });
   const years = R.map(r => r.y).filter(y => y != null);
   S.yMin = Math.min(...years); S.yMax = Math.max(...years);
   $("#y0").min = $("#y1").min = S.yMin; $("#y0").max = $("#y1").max = S.yMax;
-  $("#version").textContent = `Data version ${D.meta.generated} · ${fmt(n)} isolates from ${D.articles.length} sources.`;
+  $("#version").textContent = `Data version ${D.meta.generated} · ${fmt(n)} isolates from ${D.articles.length} sources` + (D.meta.n_aggregated ? ` (${fmt(D.meta.n_isolate_level)} with isolate-level records, ${fmt(D.meta.n_aggregated)} from aggregated counts).` : ".");
   resetState(); buildFilters(); bind(); initMap();
   $("#loading").hidden = true;
   apply();
@@ -1053,8 +1055,8 @@ function init(json) {
 
 function resetState() {
   for (const g of GROUPS) S.sel[g.k] = new Set(dict[g.k].map((_, j) => j));
-  S.y0 = S.yMin; S.y1 = S.yMax; S.yna = true; S.pcc = true; S.page = 0;
-  $("#y0").value = S.y0; $("#y1").value = S.y1; $("#y-na").checked = true; $("#p-cc").checked = true;
+  S.y0 = S.yMin; S.y1 = S.yMax; S.yna = true; S.pcc = true; S.pagg = true; S.page = 0;
+  $("#y0").value = S.y0; $("#y1").value = S.y1; $("#y-na").checked = true; $("#p-cc").checked = true; $("#p-agg").checked = true;
 }
 
 function buildFilters() {
@@ -1099,6 +1101,7 @@ function bind() {
   $("#y0").onchange = yr; $("#y1").onchange = yr;
   $("#y-na").onchange = e => { S.yna = e.target.checked; apply(); };
   $("#p-cc").onchange = e => { S.pcc = e.target.checked; apply(); };
+  $("#p-agg").onchange = e => { S.pagg = e.target.checked; apply(); };
   $("#reset").onclick = () => { resetState(); GROUPS.forEach(g => syncChecks(g.k)); apply(); };
   $("#cb-sp").onclick = () => setColorBy("sp"); $("#cb-tg").onclick = () => setColorBy("tg");
   $("#c1-n").onclick = () => { S.c1 = "n"; $("#c1-n").setAttribute("aria-pressed", true); $("#c1-p").setAttribute("aria-pressed", false); drawCharts(); };
@@ -1128,7 +1131,7 @@ const CC = () => dict.pr.indexOf("country centroid");
 function apply() {
   const cc = CC();
   F = R.filter(r => S.sel.sp.has(r.sp) && S.sel.tg.has(r.tg) && S.sel.hg.has(r.hg) && S.sel.c.has(r.c) && S.sel.ref.has(r.ref)
-    && (r.y == null ? S.yna : r.y >= S.y0 && r.y <= S.y1) && (S.pcc || r.pr !== cc));
+    && (r.y == null ? S.yna : r.y >= S.y0 && r.y <= S.y1) && (S.pcc || r.pr !== cc) && (S.pagg || !r.agg));
   // stats
   const undet = dict.sp.indexOf("Undetermined"), unp = dict.ref.indexOf("Unpublished");
   $("#st-iso").textContent = fmt(F.length);
@@ -1144,7 +1147,7 @@ function apply() {
   }
   const yAll = S.y0 === S.yMin && S.y1 === S.yMax;
   $("#yr-sub").textContent = yAll ? "all" : `${S.y0}–${S.y1}`;
-  if (!yAll || !S.yna) active++; if (!S.pcc) active++;
+  if (!yAll || !S.yna) active++; if (!S.pcc) active++; if (!S.pagg) active++;
   $("#f-active").textContent = active ? `${active} active` : "";
   S.page = 0; S.only = null; pinned = null; $("#tip").hidden = true;
   if (S.tab === "map") drawMap();
@@ -1202,9 +1205,9 @@ function drawMap() {
   const m = new Map(), cc = CC();
   for (const r of F) {
     if (r.lat == null) continue;
-    const key = r.lat.toFixed(3) + "," + r.lon.toFixed(3);
+    const key = (r.agg ? "a" : "i") + r.lat.toFixed(3) + "," + r.lon.toFixed(3);
     let s = m.get(key);
-    if (!s) { s = { lat: r.lat, lon: r.lon, n: 0, k: {}, refs: new Set(), locs: new Set(), c: r.c, approx: r.pr === cc, rows: [] }; m.set(key, s); }
+    if (!s) { s = { lat: r.lat, lon: r.lon, n: 0, k: {}, refs: new Set(), locs: new Set(), c: r.c, approx: r.pr === cc, agg: !!r.agg, rows: [] }; m.set(key, s); }
     s.n++; const k = catOf(r); s.k[k] = (s.k[k] || 0) + 1; s.refs.add(r.ref); if (r.loc) s.locs.add(r.loc); s.rows.push(r.i);
   }
   sites = [...m.values()].sort((a, b) => b.n - a.n);
@@ -1212,7 +1215,7 @@ function drawMap() {
   for (const r of F) { const k = catOf(r); tot[k] = (tot[k] || 0) + 1; }
   $("#legend").innerHTML = `<strong style="font-size:.74rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)">${S.colorBy === "sp" ? "Species" : "TRI genotype"}</strong>` +
     cs.filter(([k]) => tot[k]).map(([k, v]) => `<div class="row"><span class="sw" style="background:var(${v})"></span><span class="${k.startsWith("F.") ? "sp" : ""}">${k}</span><span class="n">${fmt(tot[k] || 0)}</span></div>`).join("") +
-    `<div class="key"><span><i class="ring"></i>reported site</span><span><i class="ring dash"></i>country centroid</span></div>`;
+    `<div class="key"><span><i class="ring"></i>reported site</span><span><i class="ring dash"></i>country centroid</span><span><i class="ring double"></i>aggregated count</span></div>`;
   drawPies();
 }
 function radius(n) { const z = map.getZoom(); return Math.min(30, 2.6 + Math.sqrt(n) * (z <= 2 ? 1.35 : z <= 4 ? 1.7 : 2.1)); }
@@ -1240,6 +1243,7 @@ function drawPies() {
     ctx.lineWidth = 1.5;
     if (s.approx) { ctx.setLineDash([3, 2.5]); ctx.strokeStyle = ink; } else { ctx.setLineDash([]); ctx.strokeStyle = ring; }
     ctx.beginPath(); ctx.arc(p.x, p.y, s.r + (s.approx ? 1.5 : 0.75), 0, Math.PI * 2); ctx.stroke();
+    if (s.agg) { ctx.setLineDash([]); ctx.strokeStyle = ink; ctx.lineWidth = 1.2; ctx.beginPath(); ctx.arc(p.x, p.y, s.r + 3, 0, Math.PI * 2); ctx.stroke(); }
   }
   ctx.setLineDash([]);
 }
@@ -1255,7 +1259,7 @@ function showTip(s, e, pin) {
   const refs = [...s.refs].map(j => dict.ref[j]);
   const locs = [...s.locs];
   tip.innerHTML = `<h4>${esc(locs.length ? locs.slice(0, 2).join("; ") + (locs.length > 2 ? ` +${locs.length - 2}` : "") : dict.c[s.c])}</h4>
-    <div class="meta">${esc(dict.c[s.c])} · ${fmt(s.n)} isolate${s.n > 1 ? "s" : ""}${s.approx ? " · placed at country centroid" : ""}</div>
+    <div class="meta">${esc(dict.c[s.c])} · ${fmt(s.n)} isolate${s.n > 1 ? "s" : ""}${s.approx ? " · placed at country centroid" : ""}${s.agg ? " · aggregated count reported by the source, placed at the region centroid" : ""}</div>
     <table>${cs.map(([k, v]) => `<tr><td><span class="sw" style="background:var(${v})"></span><span class="${k.startsWith("F.") ? "sp" : ""}">${k}</span></td><td class="n">${fmt(s.k[k])}</td></tr>`).join("")}</table>
     <div class="refs">${esc(refs.slice(0, 4).join("; "))}${refs.length > 4 ? ` +${refs.length - 4} more` : ""}</div>
     ${pin ? `<div class="go"><button class="btn" type="button" id="tip-list">List these isolates</button><button class="btn" type="button" id="tip-x">Close</button></div>` : ""}`;
@@ -1352,7 +1356,7 @@ const COLS = [
   ["y", "Year", r => r.y ?? "", "num"], ["ref", "Source", r => dict.ref[r.ref]], ["pr", "Location from", r => dict.pr[r.pr], "prec"]
 ];
 function tableRows() {
-  let rows = S.only ? F.filter(r => S.only.has(r.i)) : F;
+  let rows = (S.only ? F.filter(r => S.only.has(r.i)) : F).filter(r => !r.agg);
   if (S.q) rows = rows.filter(r => [r.id, r.st, r.loc, dict.ref[r.ref], dict.sp[r.sp], dict.c[r.c], dict.h[r.h]].join(" ").toLowerCase().includes(S.q));
   const col = COLS.find(c => c[0] === S.sort.k), d = S.sort.d;
   return rows.slice().sort((a, b) => { const x = col[2](a), y = col[2](b); return (x === "" ? 1 : y === "" ? -1 : x < y ? -1 : x > y ? 1 : 0) * d; });
@@ -1369,7 +1373,7 @@ function drawTable() {
     if (c[3] === "prec") return `<td><span class="prec ${v === "reported" ? "" : "approx"}">${esc(v)}</span></td>`;
     return `<td class="${c[3] || ""}">${esc(v)}</td>`;
   }).join("") + "</tr>").join("") || `<tr><td colspan="${COLS.length}" class="hint" style="padding:24px">No isolates match the current filters.</td></tr>`;
-  $("#t-count").innerHTML = (S.only ? `Showing isolates of <strong>${esc(S.onlyLabel)}</strong> · <button class="btn" type="button" id="only-x" style="padding:2px 8px">Show all</button> · ` : "") + `${fmt(rows.length)} isolates`;
+  $("#t-count").innerHTML = (S.only ? `Showing isolates of <strong>${esc(S.onlyLabel)}</strong> · <button class="btn" type="button" id="only-x" style="padding:2px 8px">Show all</button> · ` : "") + `${fmt(rows.length)} isolates` + (() => { const a = (S.only ? F.filter(r => S.only.has(r.i)) : F).filter(r => r.agg).length; return a ? ` listed · ${fmt(a)} more from aggregated counts (see Sources)` : ""; })();
   if (S.only) $("#only-x").onclick = () => { S.only = null; drawTable(); };
   $("#pg-lab").textContent = `Page ${S.page + 1} of ${pages}`;
   $("#pg-prev").disabled = S.page === 0; $("#pg-next").disabled = S.page >= pages - 1;
@@ -1392,9 +1396,9 @@ function drawSources() {
 
 /* ---------------- download ---------------- */
 function download() {
-  const head = ["isolate_id", "strain_code", "species", "tri_genotype", "tri_group", "host", "host_group", "organ", "country", "region", "location", "year", "latitude", "longitude", "coord_precision", "reference"];
+  const head = ["isolate_id", "strain_code", "species", "tri_genotype", "tri_group", "host", "host_group", "organ", "country", "region", "location", "year", "latitude", "longitude", "coord_precision", "reference", "data_level"];
   const q = v => v == null ? "" : /[",\n]/.test(String(v)) ? `"${String(v).replace(/"/g, '""')}"` : v;
-  const lines = [head.join(",")].concat(F.map(r => [r.id, r.st, dict.sp[r.sp], dict.tri[r.tri], dict.tg[r.tg], dict.h[r.h], dict.hg[r.hg], dict.org[r.org], dict.c[r.c], dict.rg[r.rg], r.loc, r.y, r.lat, r.lon, dict.pr[r.pr], dict.ref[r.ref]].map(q).join(",")));
+  const lines = [head.join(",")].concat(F.map(r => [r.id, r.st, dict.sp[r.sp], dict.tri[r.tri], dict.tg[r.tg], dict.h[r.h], dict.hg[r.hg], dict.org[r.org], dict.c[r.c], dict.rg[r.rg], r.loc, r.y, r.lat, r.lon, dict.pr[r.pr], dict.ref[r.ref], r.agg ? "aggregated count" : "isolate"].map(q).join(",")));
   const blob = new Blob([lines.join("\n")], { type: "text/csv" });
   const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = `FGSCdb_${F.length}_isolates.csv`;
   document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 2000);
