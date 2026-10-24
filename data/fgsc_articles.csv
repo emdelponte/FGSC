@@ -103,3 +103,4 @@ article_id,reference,n_isolates,n_species,countries,year_min,year_max,pub_year,d
 102,Zhu et al. (2021),3,1,China,2021,2021,2021,,isolate,
 14,von der Ohe et al. (2010),24,1,Canada,2006,2006,2010,,isolate,
 104,Oghenekaro et al. (2021),539,1,Canada,2018,2019,2021,10.3390/toxins13030180,isolate,Toxins 13:180. Isolate data from Table S1 (Canada only). Locations geocoded from municipality (no coordinates in source). 31 Pennsylvania isolates excluded as re-report of Duffeck et al. (2021). Ontario: Table S1 has 90 isolates (text says 91); table used.
+105,Dong et al. (2021),306,2,China,2018,2018,2021,10.1094/PDIS-11-20-2376-RE,aggregate,"Plant Dis 105:3269-3275. No isolate table; counts per city (n) from Fig. 3, species x genotype split digitized from pie charts and fitted to text totals (Fa-3ADON 215, Fa-NIV 74, Fg-15ADON 14, Fg-NIV 3). Host: seeds of gramineous weeds near wheat fields, Apr-May 2018."
