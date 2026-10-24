@@ -1,2442 +1,1401 @@
-<!DOCTYPE html>
-
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
-
+<!doctype html>
+<html lang="en">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"/>
-  <meta name="generator" content="distill" />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>html{color-scheme:light}:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>FGSCdb</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Georeferenced database of Fusarium graminearum species complex isolates identified to species and trichothecene genotype, compiled from the literature.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,500;0,600;1,400;1,500&family=Instrument+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>/* required styles */
 
-  <style type="text/css">
-  /* Hide doc at startup (prevent jankiness while JS renders/transforms) */
-  body {
-    visibility: hidden;
-  }
-  </style>
-
- <!--radix_placeholder_import_source-->
- <!--/radix_placeholder_import_source-->
-
-<style type="text/css">code{white-space: pre;}</style>
-<style type="text/css" data-origin="pandoc">
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
+.leaflet-pane,
+.leaflet-tile,
+.leaflet-marker-icon,
+.leaflet-marker-shadow,
+.leaflet-tile-container,
+.leaflet-pane > svg,
+.leaflet-pane > canvas,
+.leaflet-zoom-box,
+.leaflet-image-layer,
+.leaflet-layer {
+	position: absolute;
+	left: 0;
+	top: 0;
+	}
+.leaflet-container {
+	overflow: hidden;
+	}
+.leaflet-tile,
+.leaflet-marker-icon,
+.leaflet-marker-shadow {
+	-webkit-user-select: none;
+	   -moz-user-select: none;
+	        user-select: none;
+	  -webkit-user-drag: none;
+	}
+/* Prevents IE11 from highlighting tiles in blue */
+.leaflet-tile::selection {
+	background: transparent;
 }
+/* Safari renders non-retina tile on retina better with this, but Chrome is worse */
+.leaflet-safari .leaflet-tile {
+	image-rendering: -webkit-optimize-contrast;
+	}
+/* hack that prevents hw layers "stretching" when loading new tiles */
+.leaflet-safari .leaflet-tile-container {
+	width: 1600px;
+	height: 1600px;
+	-webkit-transform-origin: 0 0;
+	}
+.leaflet-marker-icon,
+.leaflet-marker-shadow {
+	display: block;
+	}
+/* .leaflet-container svg: reset svg max-width decleration shipped in Joomla! (joomla.org) 3.x */
+/* .leaflet-container img: map is broken in FF if you have max-width: 100% on tiles */
+.leaflet-container .leaflet-overlay-pane svg {
+	max-width: none !important;
+	max-height: none !important;
+	}
+.leaflet-container .leaflet-marker-pane img,
+.leaflet-container .leaflet-shadow-pane img,
+.leaflet-container .leaflet-tile-pane img,
+.leaflet-container img.leaflet-image-layer,
+.leaflet-container .leaflet-tile {
+	max-width: none !important;
+	max-height: none !important;
+	width: auto;
+	padding: 0;
+	}
+
+.leaflet-container img.leaflet-tile {
+	/* See: https://bugs.chromium.org/p/chromium/issues/detail?id=600120 */
+	mix-blend-mode: plus-lighter;
+}
+
+.leaflet-container.leaflet-touch-zoom {
+	-ms-touch-action: pan-x pan-y;
+	touch-action: pan-x pan-y;
+	}
+.leaflet-container.leaflet-touch-drag {
+	-ms-touch-action: pinch-zoom;
+	/* Fallback for FF which doesn't support pinch-zoom */
+	touch-action: none;
+	touch-action: pinch-zoom;
+}
+.leaflet-container.leaflet-touch-drag.leaflet-touch-zoom {
+	-ms-touch-action: none;
+	touch-action: none;
+}
+.leaflet-container {
+	-webkit-tap-highlight-color: transparent;
+}
+.leaflet-container a {
+	-webkit-tap-highlight-color: rgba(51, 181, 229, 0.4);
+}
+.leaflet-tile {
+	filter: inherit;
+	visibility: hidden;
+	}
+.leaflet-tile-loaded {
+	visibility: inherit;
+	}
+.leaflet-zoom-box {
+	width: 0;
+	height: 0;
+	-moz-box-sizing: border-box;
+	     box-sizing: border-box;
+	z-index: 800;
+	}
+/* workaround for https://bugzilla.mozilla.org/show_bug.cgi?id=888319 */
+.leaflet-overlay-pane svg {
+	-moz-user-select: none;
+	}
+
+.leaflet-pane         { z-index: 400; }
+
+.leaflet-tile-pane    { z-index: 200; }
+.leaflet-overlay-pane { z-index: 400; }
+.leaflet-shadow-pane  { z-index: 500; }
+.leaflet-marker-pane  { z-index: 600; }
+.leaflet-tooltip-pane   { z-index: 650; }
+.leaflet-popup-pane   { z-index: 700; }
+
+.leaflet-map-pane canvas { z-index: 100; }
+.leaflet-map-pane svg    { z-index: 200; }
+
+.leaflet-vml-shape {
+	width: 1px;
+	height: 1px;
+	}
+.lvml {
+	behavior: url(#default#VML);
+	display: inline-block;
+	position: absolute;
+	}
+
+
+/* control positioning */
+
+.leaflet-control {
+	position: relative;
+	z-index: 800;
+	pointer-events: visiblePainted; /* IE 9-10 doesn't have auto */
+	pointer-events: auto;
+	}
+.leaflet-top,
+.leaflet-bottom {
+	position: absolute;
+	z-index: 1000;
+	pointer-events: none;
+	}
+.leaflet-top {
+	top: 0;
+	}
+.leaflet-right {
+	right: 0;
+	}
+.leaflet-bottom {
+	bottom: 0;
+	}
+.leaflet-left {
+	left: 0;
+	}
+.leaflet-control {
+	float: left;
+	clear: both;
+	}
+.leaflet-right .leaflet-control {
+	float: right;
+	}
+.leaflet-top .leaflet-control {
+	margin-top: 10px;
+	}
+.leaflet-bottom .leaflet-control {
+	margin-bottom: 10px;
+	}
+.leaflet-left .leaflet-control {
+	margin-left: 10px;
+	}
+.leaflet-right .leaflet-control {
+	margin-right: 10px;
+	}
+
+
+/* zoom and fade animations */
+
+.leaflet-fade-anim .leaflet-popup {
+	opacity: 0;
+	-webkit-transition: opacity 0.2s linear;
+	   -moz-transition: opacity 0.2s linear;
+	        transition: opacity 0.2s linear;
+	}
+.leaflet-fade-anim .leaflet-map-pane .leaflet-popup {
+	opacity: 1;
+	}
+.leaflet-zoom-animated {
+	-webkit-transform-origin: 0 0;
+	    -ms-transform-origin: 0 0;
+	        transform-origin: 0 0;
+	}
+svg.leaflet-zoom-animated {
+	will-change: transform;
+}
+
+.leaflet-zoom-anim .leaflet-zoom-animated {
+	-webkit-transition: -webkit-transform 0.25s cubic-bezier(0,0,0.25,1);
+	   -moz-transition:    -moz-transform 0.25s cubic-bezier(0,0,0.25,1);
+	        transition:         transform 0.25s cubic-bezier(0,0,0.25,1);
+	}
+.leaflet-zoom-anim .leaflet-tile,
+.leaflet-pan-anim .leaflet-tile {
+	-webkit-transition: none;
+	   -moz-transition: none;
+	        transition: none;
+	}
+
+.leaflet-zoom-anim .leaflet-zoom-hide {
+	visibility: hidden;
+	}
+
+
+/* cursors */
+
+.leaflet-interactive {
+	cursor: pointer;
+	}
+.leaflet-grab {
+	cursor: -webkit-grab;
+	cursor:    -moz-grab;
+	cursor:         grab;
+	}
+.leaflet-crosshair,
+.leaflet-crosshair .leaflet-interactive {
+	cursor: crosshair;
+	}
+.leaflet-popup-pane,
+.leaflet-control {
+	cursor: auto;
+	}
+.leaflet-dragging .leaflet-grab,
+.leaflet-dragging .leaflet-grab .leaflet-interactive,
+.leaflet-dragging .leaflet-marker-draggable {
+	cursor: move;
+	cursor: -webkit-grabbing;
+	cursor:    -moz-grabbing;
+	cursor:         grabbing;
+	}
+
+/* marker & overlays interactivity */
+.leaflet-marker-icon,
+.leaflet-marker-shadow,
+.leaflet-image-layer,
+.leaflet-pane > svg path,
+.leaflet-tile-container {
+	pointer-events: none;
+	}
+
+.leaflet-marker-icon.leaflet-interactive,
+.leaflet-image-layer.leaflet-interactive,
+.leaflet-pane > svg path.leaflet-interactive,
+svg.leaflet-image-layer.leaflet-interactive path {
+	pointer-events: visiblePainted; /* IE 9-10 doesn't have auto */
+	pointer-events: auto;
+	}
+
+/* visual tweaks */
+
+.leaflet-container {
+	background: #ddd;
+	outline-offset: 1px;
+	}
+.leaflet-container a {
+	color: #0078A8;
+	}
+.leaflet-zoom-box {
+	border: 2px dotted #38f;
+	background: rgba(255,255,255,0.5);
+	}
+
+
+/* general typography */
+.leaflet-container {
+	font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-size: 0.75rem;
+	line-height: 1.5;
+	}
+
+
+/* general toolbar styles */
+
+.leaflet-bar {
+	box-shadow: 0 1px 5px rgba(0,0,0,0.65);
+	border-radius: 4px;
+	}
+.leaflet-bar a {
+	background-color: #fff;
+	border-bottom: 1px solid #ccc;
+	width: 26px;
+	height: 26px;
+	line-height: 26px;
+	display: block;
+	text-align: center;
+	text-decoration: none;
+	color: black;
+	}
+.leaflet-bar a,
+.leaflet-control-layers-toggle {
+	background-position: 50% 50%;
+	background-repeat: no-repeat;
+	display: block;
+	}
+.leaflet-bar a:hover,
+.leaflet-bar a:focus {
+	background-color: #f4f4f4;
+	}
+.leaflet-bar a:first-child {
+	border-top-left-radius: 4px;
+	border-top-right-radius: 4px;
+	}
+.leaflet-bar a:last-child {
+	border-bottom-left-radius: 4px;
+	border-bottom-right-radius: 4px;
+	border-bottom: none;
+	}
+.leaflet-bar a.leaflet-disabled {
+	cursor: default;
+	background-color: #f4f4f4;
+	color: #bbb;
+	}
+
+.leaflet-touch .leaflet-bar a {
+	width: 30px;
+	height: 30px;
+	line-height: 30px;
+	}
+.leaflet-touch .leaflet-bar a:first-child {
+	border-top-left-radius: 2px;
+	border-top-right-radius: 2px;
+	}
+.leaflet-touch .leaflet-bar a:last-child {
+	border-bottom-left-radius: 2px;
+	border-bottom-right-radius: 2px;
+	}
+
+/* zoom control */
+
+.leaflet-control-zoom-in,
+.leaflet-control-zoom-out {
+	font: bold 18px 'Lucida Console', Monaco, monospace;
+	text-indent: 1px;
+	}
+
+.leaflet-touch .leaflet-control-zoom-in, .leaflet-touch .leaflet-control-zoom-out  {
+	font-size: 22px;
+	}
+
+
+/* layers control */
+
+.leaflet-control-layers {
+	box-shadow: 0 1px 5px rgba(0,0,0,0.4);
+	background: #fff;
+	border-radius: 5px;
+	}
+.leaflet-control-layers-toggle {
+	background-image: url(images/layers.png);
+	width: 36px;
+	height: 36px;
+	}
+.leaflet-retina .leaflet-control-layers-toggle {
+	background-image: url(images/layers-2x.png);
+	background-size: 26px 26px;
+	}
+.leaflet-touch .leaflet-control-layers-toggle {
+	width: 44px;
+	height: 44px;
+	}
+.leaflet-control-layers .leaflet-control-layers-list,
+.leaflet-control-layers-expanded .leaflet-control-layers-toggle {
+	display: none;
+	}
+.leaflet-control-layers-expanded .leaflet-control-layers-list {
+	display: block;
+	position: relative;
+	}
+.leaflet-control-layers-expanded {
+	padding: 6px 10px 6px 6px;
+	color: #333;
+	background: #fff;
+	}
+.leaflet-control-layers-scrollbar {
+	overflow-y: scroll;
+	overflow-x: hidden;
+	padding-right: 5px;
+	}
+.leaflet-control-layers-selector {
+	margin-top: 2px;
+	position: relative;
+	top: 1px;
+	}
+.leaflet-control-layers label {
+	display: block;
+	font-size: 13px;
+	font-size: 1.08333em;
+	}
+.leaflet-control-layers-separator {
+	height: 0;
+	border-top: 1px solid #ddd;
+	margin: 5px -10px 5px -6px;
+	}
+
+/* Default icon URLs */
+.leaflet-default-icon-path { /* used only in path-guessing heuristic, see L.Icon.Default */
+	background-image: url(images/marker-icon.png);
+	}
+
+
+/* attribution and scale controls */
+
+.leaflet-container .leaflet-control-attribution {
+	background: #fff;
+	background: rgba(255, 255, 255, 0.8);
+	margin: 0;
+	}
+.leaflet-control-attribution,
+.leaflet-control-scale-line {
+	padding: 0 5px;
+	color: #333;
+	line-height: 1.4;
+	}
+.leaflet-control-attribution a {
+	text-decoration: none;
+	}
+.leaflet-control-attribution a:hover,
+.leaflet-control-attribution a:focus {
+	text-decoration: underline;
+	}
+.leaflet-attribution-flag {
+	display: inline !important;
+	vertical-align: baseline !important;
+	width: 1em;
+	height: 0.6669em;
+	}
+.leaflet-left .leaflet-control-scale {
+	margin-left: 5px;
+	}
+.leaflet-bottom .leaflet-control-scale {
+	margin-bottom: 5px;
+	}
+.leaflet-control-scale-line {
+	border: 2px solid #777;
+	border-top: none;
+	line-height: 1.1;
+	padding: 2px 5px 1px;
+	white-space: nowrap;
+	-moz-box-sizing: border-box;
+	     box-sizing: border-box;
+	background: rgba(255, 255, 255, 0.8);
+	text-shadow: 1px 1px #fff;
+	}
+.leaflet-control-scale-line:not(:first-child) {
+	border-top: 2px solid #777;
+	border-bottom: none;
+	margin-top: -2px;
+	}
+.leaflet-control-scale-line:not(:first-child):not(:last-child) {
+	border-bottom: 2px solid #777;
+	}
+
+.leaflet-touch .leaflet-control-attribution,
+.leaflet-touch .leaflet-control-layers,
+.leaflet-touch .leaflet-bar {
+	box-shadow: none;
+	}
+.leaflet-touch .leaflet-control-layers,
+.leaflet-touch .leaflet-bar {
+	border: 2px solid rgba(0,0,0,0.2);
+	background-clip: padding-box;
+	}
+
+
+/* popup */
+
+.leaflet-popup {
+	position: absolute;
+	text-align: center;
+	margin-bottom: 20px;
+	}
+.leaflet-popup-content-wrapper {
+	padding: 1px;
+	text-align: left;
+	border-radius: 12px;
+	}
+.leaflet-popup-content {
+	margin: 13px 24px 13px 20px;
+	line-height: 1.3;
+	font-size: 13px;
+	font-size: 1.08333em;
+	min-height: 1px;
+	}
+.leaflet-popup-content p {
+	margin: 17px 0;
+	margin: 1.3em 0;
+	}
+.leaflet-popup-tip-container {
+	width: 40px;
+	height: 20px;
+	position: absolute;
+	left: 50%;
+	margin-top: -1px;
+	margin-left: -20px;
+	overflow: hidden;
+	pointer-events: none;
+	}
+.leaflet-popup-tip {
+	width: 17px;
+	height: 17px;
+	padding: 1px;
+
+	margin: -10px auto 0;
+	pointer-events: auto;
+
+	-webkit-transform: rotate(45deg);
+	   -moz-transform: rotate(45deg);
+	    -ms-transform: rotate(45deg);
+	        transform: rotate(45deg);
+	}
+.leaflet-popup-content-wrapper,
+.leaflet-popup-tip {
+	background: white;
+	color: #333;
+	box-shadow: 0 3px 14px rgba(0,0,0,0.4);
+	}
+.leaflet-container a.leaflet-popup-close-button {
+	position: absolute;
+	top: 0;
+	right: 0;
+	border: none;
+	text-align: center;
+	width: 24px;
+	height: 24px;
+	font: 16px/24px Tahoma, Verdana, sans-serif;
+	color: #757575;
+	text-decoration: none;
+	background: transparent;
+	}
+.leaflet-container a.leaflet-popup-close-button:hover,
+.leaflet-container a.leaflet-popup-close-button:focus {
+	color: #585858;
+	}
+.leaflet-popup-scrolled {
+	overflow: auto;
+	}
+
+.leaflet-oldie .leaflet-popup-content-wrapper {
+	-ms-zoom: 1;
+	}
+.leaflet-oldie .leaflet-popup-tip {
+	width: 24px;
+	margin: 0 auto;
+
+	-ms-filter: "progid:DXImageTransform.Microsoft.Matrix(M11=0.70710678, M12=0.70710678, M21=-0.70710678, M22=0.70710678)";
+	filter: progid:DXImageTransform.Microsoft.Matrix(M11=0.70710678, M12=0.70710678, M21=-0.70710678, M22=0.70710678);
+	}
+
+.leaflet-oldie .leaflet-control-zoom,
+.leaflet-oldie .leaflet-control-layers,
+.leaflet-oldie .leaflet-popup-content-wrapper,
+.leaflet-oldie .leaflet-popup-tip {
+	border: 1px solid #999;
+	}
+
+
+/* div icon */
+
+.leaflet-div-icon {
+	background: #fff;
+	border: 1px solid #666;
+	}
+
+
+/* Tooltip */
+/* Base styles for the element that has a tooltip */
+.leaflet-tooltip {
+	position: absolute;
+	padding: 6px;
+	background-color: #fff;
+	border: 1px solid #fff;
+	border-radius: 3px;
+	color: #222;
+	white-space: nowrap;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	pointer-events: none;
+	box-shadow: 0 1px 3px rgba(0,0,0,0.4);
+	}
+.leaflet-tooltip.leaflet-interactive {
+	cursor: pointer;
+	pointer-events: auto;
+	}
+.leaflet-tooltip-top:before,
+.leaflet-tooltip-bottom:before,
+.leaflet-tooltip-left:before,
+.leaflet-tooltip-right:before {
+	position: absolute;
+	pointer-events: none;
+	border: 6px solid transparent;
+	background: transparent;
+	content: "";
+	}
+
+/* Directions */
+
+.leaflet-tooltip-bottom {
+	margin-top: 6px;
+}
+.leaflet-tooltip-top {
+	margin-top: -6px;
+}
+.leaflet-tooltip-bottom:before,
+.leaflet-tooltip-top:before {
+	left: 50%;
+	margin-left: -6px;
+	}
+.leaflet-tooltip-top:before {
+	bottom: 0;
+	margin-bottom: -12px;
+	border-top-color: #fff;
+	}
+.leaflet-tooltip-bottom:before {
+	top: 0;
+	margin-top: -12px;
+	margin-left: -6px;
+	border-bottom-color: #fff;
+	}
+.leaflet-tooltip-left {
+	margin-left: -6px;
+}
+.leaflet-tooltip-right {
+	margin-left: 6px;
+}
+.leaflet-tooltip-left:before,
+.leaflet-tooltip-right:before {
+	top: 50%;
+	margin-top: -6px;
+	}
+.leaflet-tooltip-left:before {
+	right: 0;
+	margin-right: -12px;
+	border-left-color: #fff;
+	}
+.leaflet-tooltip-right:before {
+	left: 0;
+	margin-left: -12px;
+	border-right-color: #fff;
+	}
+
+/* Printing */
+
 @media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+	/* Prevent printers from removing background-images of controls. */
+	.leaflet-control {
+		-webkit-print-color-adjust: exact;
+		print-color-adjust: exact;
+		}
+	}
+</style>
+<style>
+/* Layout: a working instrument. Filter rail on the left, one main stage with tabs (map / charts / table / sources).
+   Accent is the carmine of F. graminearum-infected kernels; series colors come from a validated categorical set. */
+:root {
+  --bg: #f4f6f3;
+  --surface: #ffffff;
+  --ink: #17202a;
+  --ink-2: #4a5561;
+  --muted: #7b858f;
+  --line: #dde2dc;
+  --line-2: #c9d0c8;
+  --accent: #a3214a;
+  --accent-wash: #a3214a14;
+  --sea: #e9eef0;
+  --land: #ffffff;
+  --border-land: #cfd6d2;
+  --s1: #2a78d6; --s2: #eb6834; --s3: #1baf7a; --s4: #eda100; --s5: #e87ba4;
+  --s-other: #8d959c; --s-undet: #c4c9cc;
+  --font-display: "Spectral", Georgia, "Times New Roman", serif;
+  --font-body: "Instrument Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --r: 6px;
 }
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-    color: #aaaaaa;
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #11161b; --surface: #182028; --ink: #e6eae7; --ink-2: #b6bfc5; --muted: #8a959e;
+    --line: #26313a; --line-2: #34414b; --accent: #e3648b; --accent-wash: #e3648b1f;
+    --sea: #0e1419; --land: #1d2730; --border-land: #33414c;
+    --s1: #3987e5; --s2: #d95926; --s3: #199e70; --s4: #c98500; --s5: #d55181;
+    --s-other: #7d8890; --s-undet: #4b565f;
+    color-scheme: dark;
   }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-code span.al { color: #ad0000; } /* Alert */
-code span.an { color: #5e5e5e; } /* Annotation */
-code span.at { color: #20794d; } /* Attribute */
-code span.bn { color: #ad0000; } /* BaseN */
-code span.bu { } /* BuiltIn */
-code span.cf { color: #007ba5; } /* ControlFlow */
-code span.ch { color: #20794d; } /* Char */
-code span.cn { color: #8f5902; } /* Constant */
-code span.co { color: #5e5e5e; } /* Comment */
-code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
-code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
-code span.dt { color: #ad0000; } /* DataType */
-code span.dv { color: #ad0000; } /* DecVal */
-code span.er { color: #ad0000; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #ad0000; } /* Float */
-code span.fu { color: #4758ab; } /* Function */
-code span.im { } /* Import */
-code span.in { color: #5e5e5e; } /* Information */
-code span.kw { color: #007ba5; } /* Keyword */
-code span.op { color: #5e5e5e; } /* Operator */
-code span.ot { color: #007ba5; } /* Other */
-code span.pp { color: #ad0000; } /* Preprocessor */
-code span.sc { color: #20794d; } /* SpecialChar */
-code span.ss { color: #20794d; } /* SpecialString */
-code span.st { color: #20794d; } /* String */
-code span.va { color: #111111; } /* Variable */
-code span.vs { color: #20794d; } /* VerbatimString */
-code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
+:root[data-theme="dark"] {
+  --bg: #11161b; --surface: #182028; --ink: #e6eae7; --ink-2: #b6bfc5; --muted: #8a959e;
+  --line: #26313a; --line-2: #34414b; --accent: #e3648b; --accent-wash: #e3648b1f;
+  --sea: #0e1419; --land: #1d2730; --border-land: #33414c;
+  --s1: #3987e5; --s2: #d95926; --s3: #199e70; --s4: #c98500; --s5: #d55181;
+  --s-other: #7d8890; --s-undet: #4b565f;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font: 14px/1.5 var(--font-body); }
+.wrap { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); max-width: 1480px; margin: 0 auto; }
+em, .sp { font-family: var(--font-display); font-style: italic; font-size: 1.06em; }
+button, input, select { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* header */
+header.top { padding-block: 22px 14px; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 12px 32px; align-items: end; }
+.brand h1 { font-family: var(--font-display); font-weight: 600; font-size: 2.1rem; line-height: 1; margin: 0; letter-spacing: -0.01em; }
+.brand h1 b { color: var(--accent); font-weight: 600; }
+.brand p { margin: 8px 0 0; color: var(--ink-2); max-width: 64ch; text-wrap: pretty; }
+.stats { display: flex; gap: 28px; flex-wrap: wrap; }
+.stat { display: grid; gap: 2px; }
+.stat .v { font-family: var(--font-display); font-size: 1.75rem; font-weight: 500; line-height: 1; }
+.stat .k { font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+
+/* shell */
+.shell { display: grid; grid-template-columns: 272px minmax(0, 1fr); gap: 18px; padding-block: 4px 28px; }
+aside.filters { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 12px); align-self: start; max-height: calc(100vh - 24px); overflow: auto; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); }
+.f-head { display: flex; justify-content: space-between; align-items: center; padding: 12px 14px; border-bottom: 1px solid var(--line); }
+.f-head h2 { font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase; margin: 0; color: var(--ink-2); }
+.f-active { font-family: var(--font-mono); font-size: 0.72rem; color: var(--accent); }
+details.fg { border-bottom: 1px solid var(--line); }
+details.fg > summary { list-style: none; cursor: pointer; padding: 10px 14px; display: flex; justify-content: space-between; gap: 8px; font-weight: 600; font-size: 0.86rem; }
+details.fg > summary::-webkit-details-marker { display: none; }
+details.fg > summary::after { content: "+"; color: var(--muted); font-family: var(--font-mono); }
+details.fg[open] > summary::after { content: "–"; }
+.fg-sub { color: var(--muted); font-weight: 400; font-family: var(--font-mono); font-size: 0.72rem; margin-left: auto; }
+.fg-body { padding: 0 14px 12px; display: grid; gap: 6px; }
+.fg-tools { display: flex; gap: 10px; font-size: 0.76rem; }
+.fg-tools button { background: none; border: 0; padding: 0; color: var(--accent); cursor: pointer; }
+.fg-search { width: 100%; padding: 6px 8px; border: 1px solid var(--line-2); border-radius: 4px; background: var(--bg); }
+.opts { display: grid; gap: 1px; max-height: 220px; overflow: auto; }
+.opt { display: grid; grid-template-columns: 16px 10px minmax(0, 1fr) auto; gap: 7px; align-items: center; padding: 3px 4px; border-radius: 3px; cursor: pointer; font-size: 0.84rem; }
+.opt:hover { background: var(--accent-wash); }
+.opt input { margin: 0; accent-color: var(--accent); }
+.opt .sw { width: 10px; height: 10px; border-radius: 50%; }
+.opt .sw.none { background: transparent; }
+.opt .lab { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.opt .n { font-family: var(--font-mono); font-size: 0.72rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+.yr { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.yr label { display: grid; gap: 2px; font-size: 0.72rem; color: var(--muted); }
+.yr input { width: 100%; padding: 5px 7px; border: 1px solid var(--line-2); border-radius: 4px; background: var(--bg); font-family: var(--font-mono); }
+.chk { display: flex; gap: 8px; align-items: flex-start; font-size: 0.82rem; color: var(--ink-2); cursor: pointer; }
+.chk input { accent-color: var(--accent); margin-top: 3px; }
+.f-foot { padding: 12px 14px; display: grid; gap: 8px; }
+.btn { display: inline-flex; justify-content: center; align-items: center; gap: 6px; padding: 8px 12px; border-radius: 5px; border: 1px solid var(--line-2); background: var(--surface); cursor: pointer; font-weight: 500; font-size: 0.86rem; text-decoration: none; }
+.btn:hover { border-color: var(--ink-2); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+.btn.primary:hover { filter: brightness(1.08); }
+.toggle-filters { display: none; }
+
+/* stage */
+.stage { min-width: 0; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); overflow: hidden; }
+nav.tabs { display: flex; gap: 2px; border-bottom: 1px solid var(--line); padding: 0 10px; overflow-x: auto; }
+nav.tabs button { background: none; border: 0; padding: 12px 12px 10px; cursor: pointer; color: var(--ink-2); font-weight: 500; border-bottom: 2px solid transparent; white-space: nowrap; }
+nav.tabs button[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--accent); }
+.panel { padding: 14px; }
+.bar { display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+.seg { display: inline-flex; border: 1px solid var(--line-2); border-radius: 5px; overflow: hidden; }
+.seg button { border: 0; background: none; padding: 5px 11px; cursor: pointer; font-size: 0.82rem; color: var(--ink-2); }
+.seg button[aria-pressed="true"] { background: var(--ink); color: var(--surface); }
+.hint { color: var(--muted); font-size: 0.8rem; }
+
+/* map */
+.mapbox { position: relative; height: min(64vh, 620px); min-height: 380px; border: 1px solid var(--line); border-radius: 4px; overflow: hidden; }
+#map { position: absolute; inset: 0; background: var(--sea); }
+#pies { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 450; }
+.leaflet-container { font: inherit; background: var(--sea); }
+.leaflet-control-zoom a, .leaflet-bar a { background: var(--surface); color: var(--ink); border-color: var(--line) !important; }
+.leaflet-control-attribution { background: color-mix(in srgb, var(--surface) 80%, transparent) !important; color: var(--muted) !important; font-size: 10px; }
+.leaflet-control-attribution a { color: var(--ink-2) !important; }
+.legend { position: absolute; left: 10px; bottom: 10px; z-index: 500; background: color-mix(in srgb, var(--surface) 92%, transparent); border: 1px solid var(--line); border-radius: 5px; padding: 8px 10px; display: grid; gap: 3px; font-size: 0.8rem; max-width: calc(100% - 20px); }
+.legend .row { display: grid; grid-template-columns: 11px minmax(0, 1fr) auto; gap: 7px; align-items: center; }
+.legend .sw { width: 11px; height: 11px; border-radius: 50%; }
+.legend .n { font-family: var(--font-mono); font-size: 0.72rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+.legend .key { margin-top: 4px; padding-top: 5px; border-top: 1px solid var(--line); display: flex; gap: 12px; flex-wrap: wrap; color: var(--muted); font-size: 0.72rem; }
+.legend .ring { display: inline-block; width: 10px; height: 10px; border-radius: 50%; border: 1.5px solid var(--ink-2); vertical-align: -1px; margin-right: 4px; }
+.legend .ring.dash { border-style: dashed; }
+.basemaps { position: absolute; right: 10px; top: 10px; z-index: 500; }
+.tip { position: absolute; z-index: 600; pointer-events: none; background: var(--surface); color: var(--ink); border: 1px solid var(--line-2); border-radius: 5px; padding: 8px 10px; box-shadow: 0 4px 16px #0000001f; font-size: 0.8rem; max-width: 300px; }
+.tip.pinned { pointer-events: auto; }
+.tip h4 { margin: 0 0 2px; font-size: 0.86rem; }
+.tip .meta { color: var(--muted); font-size: 0.74rem; margin-bottom: 6px; }
+.tip table { border-collapse: collapse; width: 100%; }
+.tip td { padding: 1px 0; }
+.tip td.n { text-align: right; font-family: var(--font-mono); font-variant-numeric: tabular-nums; padding-left: 10px; }
+.tip .sw { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; }
+.tip .refs { margin-top: 6px; color: var(--ink-2); font-size: 0.74rem; }
+.tip .go { margin-top: 8px; display: flex; gap: 8px; }
+.tip .go button { font-size: 0.76rem; padding: 4px 8px; }
+
+/* charts */
+.charts { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 480px), 1fr)); gap: 18px; }
+figure.chart { margin: 0; min-width: 0; border: 1px solid var(--line); border-radius: 4px; padding: 12px 14px; }
+figure.chart.wide { grid-column: 1 / -1; }
+figure.chart figcaption { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; flex-wrap: wrap; margin-bottom: 8px; }
+figure.chart h3 { margin: 0; font-size: 0.95rem; font-weight: 600; }
+figure.chart .sub { color: var(--muted); font-size: 0.78rem; }
+.plot { overflow-x: auto; }
+.plot svg { max-width: 100%; height: auto; font-family: var(--font-body); }
+.plot [aria-label="tip"] { font-family: var(--font-body); }
+.swatches { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 0.78rem; color: var(--ink-2); margin-bottom: 6px; }
+.swatches span::before { content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 2px; background: var(--c); margin-right: 6px; vertical-align: -1px; }
+
+/* table */
+.tablewrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 4px; }
+table.grid { border-collapse: collapse; width: 100%; font-size: 0.82rem; }
+table.grid th, table.grid td { padding: 6px 10px; text-align: left; border-bottom: 1px solid var(--line); white-space: nowrap; }
+table.grid th { position: sticky; top: 0; background: var(--surface); font-weight: 600; color: var(--ink-2); cursor: pointer; user-select: none; font-size: 0.76rem; }
+table.grid th[aria-sort="ascending"]::after { content: " ↑"; color: var(--accent); }
+table.grid th[aria-sort="descending"]::after { content: " ↓"; color: var(--accent); }
+table.grid td.num, table.grid td.mono { font-family: var(--font-mono); font-size: 0.76rem; font-variant-numeric: tabular-nums; }
+table.grid tbody tr:hover { background: var(--accent-wash); }
+.prec { font-size: 0.7rem; padding: 1px 6px; border-radius: 10px; border: 1px solid var(--line-2); color: var(--ink-2); }
+.prec.approx { border-style: dashed; }
+.pager { display: flex; gap: 10px; align-items: center; justify-content: space-between; flex-wrap: wrap; margin-top: 10px; font-size: 0.82rem; color: var(--ink-2); }
+.pager .btns { display: flex; gap: 6px; }
+.search { padding: 6px 10px; border: 1px solid var(--line-2); border-radius: 5px; background: var(--bg); min-width: min(260px, 100%); }
+
+/* sources */
+.srcs { display: grid; gap: 0; }
+.src { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 16px; padding: 9px 4px; border-bottom: 1px solid var(--line); }
+.src .t { font-weight: 500; }
+.src .d { color: var(--muted); font-size: 0.78rem; grid-column: 1; }
+.src .n { font-family: var(--font-mono); font-size: 0.8rem; grid-row: 1 / span 2; grid-column: 2; align-self: center; text-align: right; }
+.src button { background: none; border: 0; padding: 0; color: var(--accent); cursor: pointer; font-size: 0.78rem; }
+
+footer.foot { padding-block: 6px 32px; color: var(--ink-2); font-size: 0.82rem; display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 20px 40px; }
+footer.foot h3 { font-size: 0.74rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin: 0 0 6px; }
+footer.foot p { margin: 0 0 8px; max-width: 70ch; }
+footer.foot a { color: var(--accent); }
+.loading { padding: 60px 20px; text-align: center; color: var(--muted); }
+
+@media (max-width: 860px) {
+  header.top { grid-template-columns: 1fr; }
+  .shell { grid-template-columns: minmax(0, 1fr); }
+  aside.filters { position: static; max-height: none; display: none; }
+  aside.filters.open { display: block; }
+  .toggle-filters { display: inline-flex; }
+  footer.foot { grid-template-columns: 1fr; }
+  .stats { gap: 18px; }
+  .stat .v { font-size: 1.4rem; }
+  .legend { font-size: 0.72rem; padding: 6px 8px; gap: 1px; }
+  .legend .key { display: none; }
+  .mapbox { height: 460px; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
 </style>
 
-  <!--radix_placeholder_meta_tags-->
-  <title>FGSCdb: &amp;nbsp;</title>
-
-
-  <link rel="license" href="https://creativecommons.org/licenses/by/4.0/"/>
-
-
-  <!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
-  <meta property="og:title" content="FGSCdb: &amp;nbsp;"/>
-  <meta property="og:type" content="article"/>
-  <meta property="og:locale" content="en_US"/>
-  <meta property="og:site_name" content="FGSCdb"/>
-
-  <!--  https://dev.twitter.com/cards/types/summary -->
-  <meta property="twitter:card" content="summary"/>
-  <meta property="twitter:title" content="FGSCdb: &amp;nbsp;"/>
-
-  <!--/radix_placeholder_meta_tags-->
-  <!--radix_placeholder_rmarkdown_metadata-->
-
-  <script type="text/json" id="radix-rmarkdown-metadata">
-  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","site"]}},"value":[{"type":"character","attributes":{},"value":["&nbsp;"]},{"type":"character","attributes":{},"value":["distill::distill_website"]}]}
-  </script>
-  <!--/radix_placeholder_rmarkdown_metadata-->
-  <!--radix_placeholder_navigation_in_header-->
-  <meta name="distill:offset" content=""/>
-
-  <script type="application/javascript">
-
-    window.headroom_prevent_pin = false;
-
-    window.document.addEventListener("DOMContentLoaded", function (event) {
-
-      // initialize headroom for banner
-      var header = $('header').get(0);
-      var headerHeight = header.offsetHeight;
-      var headroom = new Headroom(header, {
-        tolerance: 5,
-        onPin : function() {
-          if (window.headroom_prevent_pin) {
-            window.headroom_prevent_pin = false;
-            headroom.unpin();
-          }
-        }
-      });
-      headroom.init();
-      if(window.location.hash)
-        headroom.unpin();
-      $(header).addClass('headroom--transition');
-
-      // offset scroll location for banner on hash change
-      // (see: https://github.com/WickyNilliams/headroom.js/issues/38)
-      window.addEventListener("hashchange", function(event) {
-        window.scrollTo(0, window.pageYOffset - (headerHeight + 25));
-      });
-
-      // responsive menu
-      $('.distill-site-header').each(function(i, val) {
-        var topnav = $(this);
-        var toggle = topnav.find('.nav-toggle');
-        toggle.on('click', function() {
-          topnav.toggleClass('responsive');
-        });
-      });
-
-      // nav dropdowns
-      $('.nav-dropbtn').click(function(e) {
-        $(this).next('.nav-dropdown-content').toggleClass('nav-dropdown-active');
-        $(this).parent().siblings('.nav-dropdown')
-           .children('.nav-dropdown-content').removeClass('nav-dropdown-active');
-      });
-      $("body").click(function(e){
-        $('.nav-dropdown-content').removeClass('nav-dropdown-active');
-      });
-      $(".nav-dropdown").click(function(e){
-        e.stopPropagation();
-      });
-    });
-  </script>
-
-  <style type="text/css">
-
-  /* Theme (user-documented overrideables for nav appearance) */
-
-  .distill-site-nav {
-    color: rgba(255, 255, 255, 0.8);
-    background-color: #0F2E3D;
-    font-size: 15px;
-    font-weight: 300;
-  }
-
-  .distill-site-nav a {
-    color: inherit;
-    text-decoration: none;
-  }
-
-  .distill-site-nav a:hover {
-    color: white;
-  }
-
-  @media print {
-    .distill-site-nav {
-      display: none;
-    }
-  }
-
-  .distill-site-header {
-
-  }
-
-  .distill-site-footer {
-
-  }
-
-
-  /* Site Header */
-
-  .distill-site-header {
-    width: 100%;
-    box-sizing: border-box;
-    z-index: 3;
-  }
-
-  .distill-site-header .nav-left {
-    display: inline-block;
-    margin-left: 8px;
-  }
-
-  @media screen and (max-width: 768px) {
-    .distill-site-header .nav-left {
-      margin-left: 0;
-    }
-  }
-
-
-  .distill-site-header .nav-right {
-    float: right;
-    margin-right: 8px;
-  }
-
-  .distill-site-header a,
-  .distill-site-header .title {
-    display: inline-block;
-    text-align: center;
-    padding: 14px 10px 14px 10px;
-  }
-
-  .distill-site-header .title {
-    font-size: 18px;
-    min-width: 150px;
-  }
-
-  .distill-site-header .logo {
-    padding: 0;
-  }
-
-  .distill-site-header .logo img {
-    display: none;
-    max-height: 20px;
-    width: auto;
-    margin-bottom: -4px;
-  }
-
-  .distill-site-header .nav-image img {
-    max-height: 18px;
-    width: auto;
-    display: inline-block;
-    margin-bottom: -3px;
-  }
-
-
-
-  @media screen and (min-width: 1000px) {
-    .distill-site-header .logo img {
-      display: inline-block;
-    }
-    .distill-site-header .nav-left {
-      margin-left: 20px;
-    }
-    .distill-site-header .nav-right {
-      margin-right: 20px;
-    }
-    .distill-site-header .title {
-      padding-left: 12px;
-    }
-  }
-
-
-  .distill-site-header .nav-toggle {
-    display: none;
-  }
-
-  .nav-dropdown {
-    display: inline-block;
-    position: relative;
-  }
-
-  .nav-dropdown .nav-dropbtn {
-    border: none;
-    outline: none;
-    color: rgba(255, 255, 255, 0.8);
-    padding: 16px 10px;
-    background-color: transparent;
-    font-family: inherit;
-    font-size: inherit;
-    font-weight: inherit;
-    margin: 0;
-    margin-top: 1px;
-    z-index: 2;
-  }
-
-  .nav-dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: white;
-    min-width: 200px;
-    border: 1px solid rgba(0,0,0,0.15);
-    border-radius: 4px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.1);
-    z-index: 1;
-    margin-top: 2px;
-    white-space: nowrap;
-    padding-top: 4px;
-    padding-bottom: 4px;
-  }
-
-  .nav-dropdown-content hr {
-    margin-top: 4px;
-    margin-bottom: 4px;
-    border: none;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-  }
-
-  .nav-dropdown-active {
-    display: block;
-  }
-
-  .nav-dropdown-content a, .nav-dropdown-content .nav-dropdown-header {
-    color: black;
-    padding: 6px 24px;
-    text-decoration: none;
-    display: block;
-    text-align: left;
-  }
-
-  .nav-dropdown-content .nav-dropdown-header {
-    display: block;
-    padding: 5px 24px;
-    padding-bottom: 0;
-    text-transform: uppercase;
-    font-size: 14px;
-    color: #999999;
-    white-space: nowrap;
-  }
-
-  .nav-dropdown:hover .nav-dropbtn {
-    color: white;
-  }
-
-  .nav-dropdown-content a:hover {
-    background-color: #ddd;
-    color: black;
-  }
-
-  .nav-right .nav-dropdown-content {
-    margin-left: -45%;
-    right: 0;
-  }
-
-  @media screen and (max-width: 768px) {
-    .distill-site-header a, .distill-site-header .nav-dropdown  {display: none;}
-    .distill-site-header a.nav-toggle {
-      float: right;
-      display: block;
-    }
-    .distill-site-header .title {
-      margin-left: 0;
-    }
-    .distill-site-header .nav-right {
-      margin-right: 0;
-    }
-    .distill-site-header {
-      overflow: hidden;
-    }
-    .nav-right .nav-dropdown-content {
-      margin-left: 0;
-    }
-  }
-
-
-  @media screen and (max-width: 768px) {
-    .distill-site-header.responsive {position: relative; min-height: 500px; }
-    .distill-site-header.responsive a.nav-toggle {
-      position: absolute;
-      right: 0;
-      top: 0;
-    }
-    .distill-site-header.responsive a,
-    .distill-site-header.responsive .nav-dropdown {
-      display: block;
-      text-align: left;
-    }
-    .distill-site-header.responsive .nav-left,
-    .distill-site-header.responsive .nav-right {
-      width: 100%;
-    }
-    .distill-site-header.responsive .nav-dropdown {float: none;}
-    .distill-site-header.responsive .nav-dropdown-content {position: relative;}
-    .distill-site-header.responsive .nav-dropdown .nav-dropbtn {
-      display: block;
-      width: 100%;
-      text-align: left;
-    }
-  }
-
-  /* Site Footer */
-
-  .distill-site-footer {
-    width: 100%;
-    overflow: hidden;
-    box-sizing: border-box;
-    z-index: 3;
-    margin-top: 30px;
-    padding-top: 30px;
-    padding-bottom: 30px;
-    text-align: center;
-  }
-
-  /* Headroom */
-
-  d-title {
-    padding-top: 6rem;
-  }
-
-  @media print {
-    d-title {
-      padding-top: 4rem;
-    }
-  }
-
-  .headroom {
-    z-index: 1000;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-  }
-
-  .headroom--transition {
-    transition: all .4s ease-in-out;
-  }
-
-  .headroom--unpinned {
-    top: -100px;
-  }
-
-  .headroom--pinned {
-    top: 0;
-  }
-
-  /* adjust viewport for navbar height */
-  /* helps vertically center bootstrap (non-distill) content */
-  .min-vh-100 {
-    min-height: calc(100vh - 100px) !important;
-  }
-
-  </style>
-
-  <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
-  <link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet"/>
-  <link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet"/>
-  <script src="site_libs/headroom-0.9.4/headroom.min.js"></script>
-  <script src="site_libs/autocomplete-0.37.1/autocomplete.min.js"></script>
-  <script src="site_libs/fuse-6.4.1/fuse.min.js"></script>
-
-  <script type="application/javascript">
-
-  function getMeta(metaName) {
-    var metas = document.getElementsByTagName('meta');
-    for (let i = 0; i < metas.length; i++) {
-      if (metas[i].getAttribute('name') === metaName) {
-        return metas[i].getAttribute('content');
-      }
-    }
-    return '';
-  }
-
-  function offsetURL(url) {
-    var offset = getMeta('distill:offset');
-    return offset ? offset + '/' + url : url;
-  }
-
-  function createFuseIndex() {
-
-    // create fuse index
-    var options = {
-      keys: [
-        { name: 'title', weight: 20 },
-        { name: 'categories', weight: 15 },
-        { name: 'description', weight: 10 },
-        { name: 'contents', weight: 5 },
-      ],
-      ignoreLocation: true,
-      threshold: 0
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="brand">
+      <h1>FGSC<b>db</b></h1>
+      <p>Georeferenced isolates of the <em>Fusarium graminearum</em> species complex identified to species and trichothecene genotype, compiled from the literature.</p>
+    </div>
+    <div class="stats" aria-live="polite">
+      <div class="stat"><span class="v" id="st-iso">–</span><span class="k">Isolates</span></div>
+      <div class="stat"><span class="v" id="st-art">–</span><span class="k">Sources</span></div>
+      <div class="stat"><span class="v" id="st-cty">–</span><span class="k">Countries</span></div>
+      <div class="stat"><span class="v" id="st-sp">–</span><span class="k">Species</span></div>
+    </div>
+  </header>
+
+  <div class="shell">
+    <aside class="filters" id="filters" aria-label="Filters">
+      <div class="f-head"><h2>Filters</h2><span class="f-active" id="f-active"></span></div>
+      <div id="f-groups"></div>
+      <details class="fg">
+        <summary>Collection year<span class="fg-sub" id="yr-sub"></span></summary>
+        <div class="fg-body">
+          <div class="yr">
+            <label for="y0">From<input id="y0" type="number" inputmode="numeric"></label>
+            <label for="y1">To<input id="y1" type="number" inputmode="numeric"></label>
+          </div>
+          <label class="chk"><input type="checkbox" id="y-na" checked> Include isolates with unknown year</label>
+        </div>
+      </details>
+      <details class="fg">
+        <summary>Location precision</summary>
+        <div class="fg-body">
+          <label class="chk"><input type="checkbox" id="p-cc" checked> Include isolates placed at the country centroid (source gives country only)</label>
+        </div>
+      </details>
+      <div class="f-foot">
+        <button class="btn" id="reset" type="button">Reset filters</button>
+        <button class="btn primary" id="dl" type="button">Download filtered CSV</button>
+        <a class="btn" href="data/fgsc_isolates.csv" id="dl-full">Full dataset, all fields (CSV)</a>
+      </div>
+    </aside>
+
+    <main class="stage">
+      <nav class="tabs" role="tablist">
+        <button role="tab" id="tab-map" aria-selected="true" data-p="map">Map</button>
+        <button role="tab" id="tab-charts" aria-selected="false" data-p="charts">Charts</button>
+        <button role="tab" id="tab-table" aria-selected="false" data-p="table">Isolates</button>
+        <button role="tab" id="tab-src" aria-selected="false" data-p="src">Sources</button>
+        <button class="btn toggle-filters" id="tf" type="button" style="margin:6px 0 6px auto">Filters</button>
+      </nav>
+
+      <section class="panel" id="p-map" role="tabpanel">
+        <div class="bar">
+          <div class="seg" role="group" aria-label="Color by">
+            <button type="button" id="cb-sp" aria-pressed="true">Species</button>
+            <button type="button" id="cb-tg" aria-pressed="false">TRI genotype</button>
+          </div>
+          <span class="hint">Each circle is a collection site; area is proportional to isolates. Hover for details, click to pin.</span>
+        </div>
+        <div class="mapbox">
+          <div id="map"></div>
+          <canvas id="pies"></canvas>
+          <div class="legend" id="legend"></div>
+          <div class="seg basemaps" role="group" aria-label="Basemap">
+            <button type="button" data-bm="plain" aria-pressed="true">Plain</button>
+            <button type="button" data-bm="streets" aria-pressed="false">Streets</button>
+            <button type="button" data-bm="sat" aria-pressed="false">Satellite</button>
+          </div>
+          <div class="tip" id="tip" hidden></div>
+        </div>
+      </section>
+
+      <section class="panel" id="p-charts" role="tabpanel" hidden>
+        <div class="charts">
+          <figure class="chart wide">
+            <figcaption><div><h3>Isolates by species and TRI genotype</h3><span class="sub" id="c1-sub"></span></div>
+              <div class="seg" role="group" aria-label="Scale"><button type="button" id="c1-n" aria-pressed="true">Count</button><button type="button" id="c1-p" aria-pressed="false">Share</button></div></figcaption>
+            <div class="swatches" id="c1-key"></div>
+            <div class="plot" id="c1"></div>
+          </figure>
+          <figure class="chart">
+            <figcaption><div><h3>Cumulative isolates by collection year</h3><span class="sub">Isolates with known year</span></div></figcaption>
+            <div class="swatches" id="c2-key"></div>
+            <div class="plot" id="c2"></div>
+          </figure>
+          <figure class="chart">
+            <figcaption><div><h3>Countries with most isolates</h3><span class="sub">Top 15, by species</span></div></figcaption>
+            <div class="swatches" id="c3-key"></div>
+            <div class="plot" id="c3"></div>
+          </figure>
+        </div>
+      </section>
+
+      <section class="panel" id="p-table" role="tabpanel" hidden>
+        <div class="bar">
+          <input class="search" id="q" type="search" placeholder="Search strain, location, reference…" aria-label="Search isolates">
+          <span class="hint" id="t-count"></span>
+        </div>
+        <div class="tablewrap"><table class="grid" id="grid"><thead></thead><tbody></tbody></table></div>
+        <div class="pager"><span id="pg-lab"></span><div class="btns"><button class="btn" id="pg-prev" type="button">Previous</button><button class="btn" id="pg-next" type="button">Next</button></div></div>
+      </section>
+
+      <section class="panel" id="p-src" role="tabpanel" hidden>
+        <div class="bar"><input class="search" id="qs" type="search" placeholder="Search sources…" aria-label="Search sources"><span class="hint" id="s-count"></span></div>
+        <div class="srcs" id="srcs"></div>
+      </section>
+
+      <div class="loading" id="loading">Loading data…</div>
+    </main>
+  </div>
+
+  <footer class="foot">
+    <div>
+      <h3>How to cite</h3>
+      <p>Del Ponte, E. M., Moreira, G. M., Ward, T. J., O’Donnell, K., Nicolli, C. P., Machado, F. J., Duffeck, M. R., Alves, K. S., Tessmann, D. J., Waalwijk, C., et al. 2022. <em>Fusarium graminearum</em> species complex: a bibliographic analysis and web-accessible database for global mapping of species and trichothecene toxin chemotypes. Phytopathology 112:741–751. <a href="https://doi.org/10.1094/PHYTO-06-21-0277-RVW" target="_blank" rel="noopener">doi:10.1094/PHYTO-06-21-0277-RVW</a></p>
+      <p id="version"></p>
+    </div>
+    <div>
+      <h3>About the locations</h3>
+      <p>Coordinates are those reported by each source. When a source gives only a county, the county centroid is used; when it gives only the country, the isolate is placed at the country centroid and drawn with a dashed outline. Use the location-precision filter to exclude those records from spatial analyses.</p>
+    </div>
+  </footer>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@observablehq/plot@0.6.16/dist/plot.umd.min.js"></script>
+<script>
+(() => {
+"use strict";
+const $ = (s, r = document) => r.querySelector(s);
+const fmt = n => n.toLocaleString("en-US");
+const css = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+
+// Fixed series assignments: color follows the entity, never its rank.
+const SP_MAP = { "F. graminearum": "--s1", "F. asiaticum": "--s2", "F. meridionale": "--s3" };   // map: 3 hues max
+const SP_BAR = { ...SP_MAP, "F. boothii": "--s4", "F. cortaderiae": "--s5" };                    // bars: 5 hues
+const TG = { "15-ADON": "--s1", "3-ADON": "--s2", "NIV": "--s3", "NX-2": "--s4", "Other / mixed": "--s5", "DON (unresolved)": "--s-other", "Undetermined": "--s-undet" };
+const TG_MAP = { "15-ADON": "--s1", "3-ADON": "--s2", "NIV": "--s3" };
+const TG_ORDER = ["15-ADON", "3-ADON", "NIV", "NX-2", "Other / mixed", "DON (unresolved)", "Undetermined"];
+
+let D, R = [], F = [], dict;
+const S = { sel: {}, y0: null, y1: null, yna: true, pcc: true, colorBy: "sp", c1: "n", sort: { k: "id", d: 1 }, page: 0, q: "", tab: "map" };
+
+const GROUPS = [
+  { k: "sp", title: "Species", open: true, italic: true, color: v => SP_BAR[v] ? `var(${SP_BAR[v]})` : (v === "Undetermined" ? "var(--s-undet)" : "var(--s-other)") },
+  { k: "tg", title: "TRI genotype", open: true, color: v => `var(${TG[v] || "--s-other"})` },
+  { k: "hg", title: "Host", open: false },
+  { k: "c", title: "Country", open: false, search: true },
+  { k: "ref", title: "Source", open: false, search: true },
+];
+
+// Load a data file. On a web server fetch() works; when the page is opened straight from disk (file://)
+// browsers block fetch, so fall back to the same data published as a script that sets a global.
+function loadData(name, globalName) {
+  return fetch("data/" + name + ".json").then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
+    .catch(() => new Promise((resolve, reject) => {
+      if (window[globalName]) return resolve(window[globalName]);
+      const s = document.createElement("script");
+      s.src = "data/" + name + ".js";
+      s.onload = () => window[globalName] ? resolve(window[globalName]) : reject(new Error("empty " + name + ".js"));
+      s.onerror = () => reject(new Error("data/" + name + ".js not found"));
+      document.head.appendChild(s);
+    }));
+}
+loadData("fgsc", "FGSC_DATA").then(init).catch(e => {
+  $("#loading").textContent = "The data could not be loaded (" + e.message + "). Keep the data folder next to index.html.";
+});
+
+function init(json) {
+  D = json; dict = D.dict;
+  const c = D.cols, n = D.meta.n;
+  for (let i = 0; i < n; i++) R.push({
+    i, id: c.id[i], st: c.st[i], sp: c.sp[i], tg: c.tg[i], tri: c.tri[i], h: c.h[i], hg: c.hg[i], org: c.org[i],
+    c: c.c[i], rg: c.rg[i], ref: c.ref[i], pr: c.pr[i], y: c.y[i], lat: c.lat[i], lon: c.lon[i], loc: c.loc[i]
+  });
+  const years = R.map(r => r.y).filter(y => y != null);
+  S.yMin = Math.min(...years); S.yMax = Math.max(...years);
+  $("#y0").min = $("#y1").min = S.yMin; $("#y0").max = $("#y1").max = S.yMax;
+  $("#version").textContent = `Data version ${D.meta.generated} · ${fmt(n)} isolates from ${D.articles.length} sources.`;
+  resetState(); buildFilters(); bind(); initMap();
+  $("#loading").hidden = true;
+  apply();
+}
+
+function resetState() {
+  for (const g of GROUPS) S.sel[g.k] = new Set(dict[g.k].map((_, j) => j));
+  S.y0 = S.yMin; S.y1 = S.yMax; S.yna = true; S.pcc = true; S.page = 0;
+  $("#y0").value = S.y0; $("#y1").value = S.y1; $("#y-na").checked = true; $("#p-cc").checked = true;
+}
+
+function buildFilters() {
+  const host = $("#f-groups"); host.innerHTML = "";
+  for (const g of GROUPS) {
+    const counts = new Array(dict[g.k].length).fill(0);
+    for (const r of R) counts[r[g.k]]++;
+    let order = dict[g.k].map((v, j) => j);
+    if (g.k === "tg") order = TG_ORDER.map(v => dict.tg.indexOf(v)).filter(j => j >= 0);
+    if (g.k === "c" || g.k === "ref") order.sort((a, b) => dict[g.k][a].localeCompare(dict[g.k][b]));
+    const d = document.createElement("details"); d.className = "fg"; d.open = g.open;
+    d.innerHTML = `<summary>${g.title}<span class="fg-sub" id="sub-${g.k}"></span></summary>
+      <div class="fg-body">
+        <div class="fg-tools"><button type="button" data-all>Select all</button><button type="button" data-none>Clear</button></div>
+        ${g.search ? `<input class="fg-search" type="search" id="fs-${g.k}" placeholder="Search ${g.title.toLowerCase()}…" aria-label="Search ${g.title}">` : ""}
+        <div class="opts">${order.map(j => {
+          const v = dict[g.k][j];
+          return `<label class="opt" data-l="${esc(v.toLowerCase())}"><input type="checkbox" id="f-${g.k}-${j}" data-g="${g.k}" data-j="${j}" checked>
+            <span class="sw ${g.color ? "" : "none"}" style="${g.color ? "background:" + g.color(v) : ""}"></span>
+            <span class="lab ${g.italic && v.startsWith("F.") ? "sp" : ""}" title="${esc(v)}">${esc(v)}</span><span class="n">${fmt(counts[j])}</span></label>`;
+        }).join("")}</div></div>`;
+      host.appendChild(d);
+    d.querySelector("[data-all]").onclick = () => { S.sel[g.k] = new Set(dict[g.k].map((_, j) => j)); syncChecks(g.k); apply(); };
+    d.querySelector("[data-none]").onclick = () => { S.sel[g.k].clear(); syncChecks(g.k); apply(); };
+    if (g.search) d.querySelector(".fg-search").oninput = e => {
+      const q = e.target.value.toLowerCase();
+      d.querySelectorAll(".opt").forEach(o => o.hidden = q && !o.dataset.l.includes(q));
     };
-    var fuse = new window.Fuse([], options);
-
-    // fetch the main search.json
-    return fetch(offsetURL('search.json'))
-      .then(function(response) {
-        if (response.status == 200) {
-          return response.json().then(function(json) {
-            // index main articles
-            json.articles.forEach(function(article) {
-              fuse.add(article);
-            });
-            // download collections and index their articles
-            return Promise.all(json.collections.map(function(collection) {
-              return fetch(offsetURL(collection)).then(function(response) {
-                if (response.status === 200) {
-                  return response.json().then(function(articles) {
-                    articles.forEach(function(article) {
-                      fuse.add(article);
-                    });
-                  })
-                } else {
-                  return Promise.reject(
-                    new Error('Unexpected status from search index request: ' +
-                              response.status)
-                  );
-                }
-              });
-            })).then(function() {
-              return fuse;
-            });
-          });
-
-        } else {
-          return Promise.reject(
-            new Error('Unexpected status from search index request: ' +
-                        response.status)
-          );
-        }
-      });
   }
-
-  window.document.addEventListener("DOMContentLoaded", function (event) {
-
-    // get search element (bail if we don't have one)
-    var searchEl = window.document.getElementById('distill-search');
-    if (!searchEl)
-      return;
-
-    createFuseIndex()
-      .then(function(fuse) {
-
-        // make search box visible
-        searchEl.classList.remove('hidden');
-
-        // initialize autocomplete
-        var options = {
-          autoselect: true,
-          hint: false,
-          minLength: 2,
-        };
-        window.autocomplete(searchEl, options, [{
-          source: function(query, callback) {
-            const searchOptions = {
-              isCaseSensitive: false,
-              shouldSort: true,
-              minMatchCharLength: 2,
-              limit: 10,
-            };
-            var results = fuse.search(query, searchOptions);
-            callback(results
-              .map(function(result) { return result.item; })
-            );
-          },
-          templates: {
-            suggestion: function(suggestion) {
-              var img = suggestion.preview && Object.keys(suggestion.preview).length > 0
-                ? `<img src="${offsetURL(suggestion.preview)}"</img>`
-                : '';
-              var html = `
-                <div class="search-item">
-                  <h3>${suggestion.title}</h3>
-                  <div class="search-item-description">
-                    ${suggestion.description || ''}
-                  </div>
-                  <div class="search-item-preview">
-                    ${img}
-                  </div>
-                </div>
-              `;
-              return html;
-            }
-          }
-        }]).on('autocomplete:selected', function(event, suggestion) {
-          window.location.href = offsetURL(suggestion.path);
-        });
-        // remove inline display style on autocompleter (we want to
-        // manage responsive display via css)
-        $('.algolia-autocomplete').css("display", "");
-      })
-      .catch(function(error) {
-        console.log(error);
-      });
-
+  host.addEventListener("change", e => {
+    const t = e.target; if (!t.dataset.g) return;
+    const s = S.sel[t.dataset.g], j = +t.dataset.j;
+    t.checked ? s.add(j) : s.delete(j); apply();
   });
-
-  </script>
-
-  <style type="text/css">
-
-  .nav-search {
-    font-size: x-small;
-  }
-
-  /* Algolioa Autocomplete */
-
-  .algolia-autocomplete {
-    display: inline-block;
-    margin-left: 10px;
-    vertical-align: sub;
-    background-color: white;
-    color: black;
-    padding: 6px;
-    padding-top: 8px;
-    padding-bottom: 0;
-    border-radius: 6px;
-    border: 1px #0F2E3D solid;
-    width: 180px;
-  }
-
-
-  @media screen and (max-width: 768px) {
-    .distill-site-nav .algolia-autocomplete {
-      display: none;
-      visibility: hidden;
-    }
-    .distill-site-nav.responsive .algolia-autocomplete {
-      display: inline-block;
-      visibility: visible;
-    }
-    .distill-site-nav.responsive .algolia-autocomplete .aa-dropdown-menu {
-      margin-left: 0;
-      width: 400px;
-      max-height: 400px;
-    }
-  }
-
-  .algolia-autocomplete .aa-input, .algolia-autocomplete .aa-hint {
-    width: 90%;
-    outline: none;
-    border: none;
-  }
-
-  .algolia-autocomplete .aa-hint {
-    color: #999;
-  }
-  .algolia-autocomplete .aa-dropdown-menu {
-    width: 550px;
-    max-height: 70vh;
-    overflow-x: visible;
-    overflow-y: scroll;
-    padding: 5px;
-    margin-top: 3px;
-    margin-left: -150px;
-    background-color: #fff;
-    border-radius: 5px;
-    border: 1px solid #999;
-    border-top: none;
-  }
-
-  .algolia-autocomplete .aa-dropdown-menu .aa-suggestion {
-    cursor: pointer;
-    padding: 5px 4px;
-    border-bottom: 1px solid #eee;
-  }
-
-  .algolia-autocomplete .aa-dropdown-menu .aa-suggestion:last-of-type {
-    border-bottom: none;
-    margin-bottom: 2px;
-  }
-
-  .algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item {
-    overflow: hidden;
-    font-size: 0.8em;
-    line-height: 1.4em;
-  }
-
-  .algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item h3 {
-    font-size: 1rem;
-    margin-block-start: 0;
-    margin-block-end: 5px;
-  }
-
-  .algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item-description {
-    display: inline-block;
-    overflow: hidden;
-    height: 2.8em;
-    width: 80%;
-    margin-right: 4%;
-  }
-
-  .algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item-preview {
-    display: inline-block;
-    width: 15%;
-  }
-
-  .algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item-preview img {
-    height: 3em;
-    width: auto;
-    display: none;
-  }
-
-  .algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item-preview img[src] {
-    display: initial;
-  }
-
-  .algolia-autocomplete .aa-dropdown-menu .aa-suggestion.aa-cursor {
-    background-color: #eee;
-  }
-  .algolia-autocomplete .aa-dropdown-menu .aa-suggestion em {
-    font-weight: bold;
-    font-style: normal;
-  }
-
-  </style>
-
-
-  <!--/radix_placeholder_navigation_in_header-->
-  <!--radix_placeholder_distill-->
-
-  <style type="text/css">
-
-  body {
-    background-color: white;
-  }
-
-  .pandoc-table {
-    width: 100%;
-  }
-
-  .pandoc-table>caption {
-    margin-bottom: 10px;
-  }
-
-  .pandoc-table th:not([align]) {
-    text-align: left;
-  }
-
-  .pagedtable-footer {
-    font-size: 15px;
-  }
-
-  d-byline .byline {
-    grid-template-columns: 2fr 2fr;
-  }
-
-  d-byline .byline h3 {
-    margin-block-start: 1.5em;
-  }
-
-  d-byline .byline .authors-affiliations h3 {
-    margin-block-start: 0.5em;
-  }
-
-  .authors-affiliations .orcid-id {
-    width: 16px;
-    height:16px;
-    margin-left: 4px;
-    margin-right: 4px;
-    vertical-align: middle;
-    padding-bottom: 2px;
-  }
-
-  d-title .dt-tags {
-    margin-top: 1em;
-    grid-column: text;
-  }
-
-  .dt-tags .dt-tag {
-    text-decoration: none;
-    display: inline-block;
-    color: rgba(0,0,0,0.6);
-    padding: 0em 0.4em;
-    margin-right: 0.5em;
-    margin-bottom: 0.4em;
-    font-size: 70%;
-    border: 1px solid rgba(0,0,0,0.2);
-    border-radius: 3px;
-    text-transform: uppercase;
-    font-weight: 500;
-  }
-
-  d-article table.gt_table td,
-  d-article table.gt_table th {
-    border-bottom: none;
-  }
-
-  .html-widget {
-    margin-bottom: 2.0em;
-  }
-
-  .l-screen-inset {
-    padding-right: 16px;
-  }
-
-  .l-screen .caption {
-    margin-left: 10px;
-  }
-
-  .shaded {
-    background: rgb(247, 247, 247);
-    padding-top: 20px;
-    padding-bottom: 20px;
-    border-top: 1px solid rgba(0, 0, 0, 0.1);
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-  }
-
-  .shaded .html-widget {
-    margin-bottom: 0;
-    border: 1px solid rgba(0, 0, 0, 0.1);
-  }
-
-  .shaded .shaded-content {
-    background: white;
-  }
-
-  .text-output {
-    margin-top: 0;
-    line-height: 1.5em;
-  }
-
-  .hidden {
-    display: none !important;
-  }
-
-  d-article {
-    padding-top: 2.5rem;
-    padding-bottom: 30px;
-  }
-
-  d-appendix {
-    padding-top: 30px;
-  }
-
-  d-article>p>img {
-    width: 100%;
-  }
-
-  d-article h2 {
-    margin: 1rem 0 1.5rem 0;
-  }
-
-  d-article h3 {
-    margin-top: 1.5rem;
-  }
-
-  d-article iframe {
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    margin-bottom: 2.0em;
-    width: 100%;
-  }
-
-  /* Tweak code blocks */
-
-  d-article div.sourceCode code,
-  d-article pre code {
-    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
-  }
-
-  d-article pre,
-  d-article div.sourceCode,
-  d-article div.sourceCode pre {
-    overflow: auto;
-  }
-
-  d-article div.sourceCode {
-    background-color: white;
-  }
-
-  d-article div.sourceCode pre {
-    padding-left: 10px;
-    font-size: 12px;
-    border-left: 2px solid rgba(0,0,0,0.1);
-  }
-
-  d-article pre {
-    font-size: 12px;
-    color: black;
-    background: none;
-    margin-top: 0;
-    text-align: left;
-    white-space: pre;
-    word-spacing: normal;
-    word-break: normal;
-    word-wrap: normal;
-    line-height: 1.5;
-
-    -moz-tab-size: 4;
-    -o-tab-size: 4;
-    tab-size: 4;
-
-    -webkit-hyphens: none;
-    -moz-hyphens: none;
-    -ms-hyphens: none;
-    hyphens: none;
-  }
-
-  d-article pre a {
-    border-bottom: none;
-  }
-
-  d-article pre a:hover {
-    border-bottom: none;
-    text-decoration: underline;
-  }
-
-  d-article details {
-    grid-column: text;
-    margin-bottom: 0.8em;
-  }
-
-  @media(min-width: 768px) {
-
-  d-article pre,
-  d-article div.sourceCode,
-  d-article div.sourceCode pre {
-    overflow: visible !important;
-  }
-
-  d-article div.sourceCode pre {
-    padding-left: 18px;
-    font-size: 14px;
-  }
-
-  d-article pre {
-    font-size: 14px;
-  }
-
-  }
-
-  figure img.external {
-    background: white;
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
-    padding: 18px;
-    box-sizing: border-box;
-  }
-
-  /* CSS for d-contents */
-
-  .d-contents {
-    grid-column: text;
-    color: rgba(0,0,0,0.8);
-    font-size: 0.9em;
-    padding-bottom: 1em;
-    margin-bottom: 1em;
-    padding-bottom: 0.5em;
-    margin-bottom: 1em;
-    padding-left: 0.25em;
-    justify-self: start;
-  }
-
-  @media(min-width: 1000px) {
-    .d-contents.d-contents-float {
-      height: 0;
-      grid-column-start: 1;
-      grid-column-end: 4;
-      justify-self: center;
-      padding-right: 3em;
-      padding-left: 2em;
-    }
-  }
-
-  .d-contents nav h3 {
-    font-size: 18px;
-    margin-top: 0;
-    margin-bottom: 1em;
-  }
-
-  .d-contents li {
-    list-style-type: none
-  }
-
-  .d-contents nav > ul {
-    padding-left: 0;
-  }
-
-  .d-contents ul {
-    padding-left: 1em
-  }
-
-  .d-contents nav ul li {
-    margin-top: 0.6em;
-    margin-bottom: 0.2em;
-  }
-
-  .d-contents nav a {
-    font-size: 13px;
-    border-bottom: none;
-    text-decoration: none
-    color: rgba(0, 0, 0, 0.8);
-  }
-
-  .d-contents nav a:hover {
-    text-decoration: underline solid rgba(0, 0, 0, 0.6)
-  }
-
-  .d-contents nav > ul > li > a {
-    font-weight: 600;
-  }
-
-  .d-contents nav > ul > li > ul {
-    font-weight: inherit;
-  }
-
-  .d-contents nav > ul > li > ul > li {
-    margin-top: 0.2em;
-  }
-
-
-  .d-contents nav ul {
-    margin-top: 0;
-    margin-bottom: 0.25em;
-  }
-
-  .d-article-with-toc h2:nth-child(2) {
-    margin-top: 0;
-  }
-
-
-  /* Figure */
-
-  .figure {
-    position: relative;
-    margin-bottom: 2.5em;
-    margin-top: 1.5em;
-  }
-
-  .figure img {
-    width: 100%;
-  }
-
-  .figure .caption {
-    color: rgba(0, 0, 0, 0.6);
-    font-size: 12px;
-    line-height: 1.5em;
-  }
-
-  .figure img.external {
-    background: white;
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
-    padding: 18px;
-    box-sizing: border-box;
-  }
-
-  .figure .caption a {
-    color: rgba(0, 0, 0, 0.6);
-  }
-
-  .figure .caption b,
-  .figure .caption strong, {
-    font-weight: 600;
-    color: rgba(0, 0, 0, 1.0);
-  }
-
-  /* Citations */
-
-  d-article .citation {
-    color: inherit;
-    cursor: inherit;
-  }
-
-  div.hanging-indent{
-    margin-left: 1em; text-indent: -1em;
-  }
-
-  /* Citation hover box */
-
-  .tippy-box[data-theme~=light-border] {
-    background-color: rgba(250, 250, 250, 0.95);
-  }
-
-  .tippy-content > p {
-    margin-bottom: 0;
-    padding: 2px;
-  }
-
-
-  /* Tweak 1000px media break to show more text */
-
-  @media(min-width: 1000px) {
-    .base-grid,
-    distill-header,
-    d-title,
-    d-abstract,
-    d-article,
-    d-appendix,
-    distill-appendix,
-    d-byline,
-    d-footnote-list,
-    d-citation-list,
-    distill-footer {
-      grid-template-columns: [screen-start] 1fr [page-start kicker-start] 80px [middle-start] 50px [text-start kicker-end] 65px 65px 65px 65px 65px 65px 65px 65px [text-end gutter-start] 65px [middle-end] 65px [page-end gutter-end] 1fr [screen-end];
-      grid-column-gap: 16px;
-    }
-
-    .grid {
-      grid-column-gap: 16px;
-    }
-
-    d-article {
-      font-size: 1.06rem;
-      line-height: 1.7em;
-    }
-    figure .caption, .figure .caption, figure figcaption {
-      font-size: 13px;
-    }
-  }
-
-  @media(min-width: 1180px) {
-    .base-grid,
-    distill-header,
-    d-title,
-    d-abstract,
-    d-article,
-    d-appendix,
-    distill-appendix,
-    d-byline,
-    d-footnote-list,
-    d-citation-list,
-    distill-footer {
-      grid-template-columns: [screen-start] 1fr [page-start kicker-start] 60px [middle-start] 60px [text-start kicker-end] 60px 60px 60px 60px 60px 60px 60px 60px [text-end gutter-start] 60px [middle-end] 60px [page-end gutter-end] 1fr [screen-end];
-      grid-column-gap: 32px;
-    }
-
-    .grid {
-      grid-column-gap: 32px;
-    }
-  }
-
-
-  /* Get the citation styles for the appendix (not auto-injected on render since
-     we do our own rendering of the citation appendix) */
-
-  d-appendix .citation-appendix,
-  .d-appendix .citation-appendix {
-    font-size: 11px;
-    line-height: 15px;
-    border-left: 1px solid rgba(0, 0, 0, 0.1);
-    padding-left: 18px;
-    border: 1px solid rgba(0,0,0,0.1);
-    background: rgba(0, 0, 0, 0.02);
-    padding: 10px 18px;
-    border-radius: 3px;
-    color: rgba(150, 150, 150, 1);
-    overflow: hidden;
-    margin-top: -12px;
-    white-space: pre-wrap;
-    word-wrap: break-word;
-  }
-
-  /* Include appendix styles here so they can be overridden */
-
-  d-appendix {
-    contain: layout style;
-    font-size: 0.8em;
-    line-height: 1.7em;
-    margin-top: 60px;
-    margin-bottom: 0;
-    border-top: 1px solid rgba(0, 0, 0, 0.1);
-    color: rgba(0,0,0,0.5);
-    padding-top: 60px;
-    padding-bottom: 48px;
-  }
-
-  d-appendix h3 {
-    grid-column: page-start / text-start;
-    font-size: 15px;
-    font-weight: 500;
-    margin-top: 1em;
-    margin-bottom: 0;
-    color: rgba(0,0,0,0.65);
-  }
-
-  d-appendix h3 + * {
-    margin-top: 1em;
-  }
-
-  d-appendix ol {
-    padding: 0 0 0 15px;
-  }
-
-  @media (min-width: 768px) {
-    d-appendix ol {
-      padding: 0 0 0 30px;
-      margin-left: -30px;
-    }
-  }
-
-  d-appendix li {
-    margin-bottom: 1em;
-  }
-
-  d-appendix a {
-    color: rgba(0, 0, 0, 0.6);
-  }
-
-  d-appendix > * {
-    grid-column: text;
-  }
-
-  d-appendix > d-footnote-list,
-  d-appendix > d-citation-list,
-  d-appendix > distill-appendix {
-    grid-column: screen;
-  }
-
-  /* Include footnote styles here so they can be overridden */
-
-  d-footnote-list {
-    contain: layout style;
-  }
-
-  d-footnote-list > * {
-    grid-column: text;
-  }
-
-  d-footnote-list a.footnote-backlink {
-    color: rgba(0,0,0,0.3);
-    padding-left: 0.5em;
-  }
-
-
-
-  /* Anchor.js */
-
-  .anchorjs-link {
-    /*transition: all .25s linear; */
-    text-decoration: none;
-    border-bottom: none;
-  }
-  *:hover > .anchorjs-link {
-    margin-left: -1.125em !important;
-    text-decoration: none;
-    border-bottom: none;
-  }
-
-  /* Social footer */
-
-  .social_footer {
-    margin-top: 30px;
-    margin-bottom: 0;
-    color: rgba(0,0,0,0.67);
-  }
-
-  .disqus-comments {
-    margin-right: 30px;
-  }
-
-  .disqus-comment-count {
-    border-bottom: 1px solid rgba(0, 0, 0, 0.4);
-    cursor: pointer;
-  }
-
-  #disqus_thread {
-    margin-top: 30px;
-  }
-
-  .article-sharing a {
-    border-bottom: none;
-    margin-right: 8px;
-  }
-
-  .article-sharing a:hover {
-    border-bottom: none;
-  }
-
-  .sidebar-section.subscribe {
-    font-size: 12px;
-    line-height: 1.6em;
-  }
-
-  .subscribe p {
-    margin-bottom: 0.5em;
-  }
-
-
-  .article-footer .subscribe {
-    font-size: 15px;
-    margin-top: 45px;
-  }
-
-
-  .sidebar-section.custom {
-    font-size: 12px;
-    line-height: 1.6em;
-  }
-
-  .custom p {
-    margin-bottom: 0.5em;
-  }
-
-  /* Styles for listing layout (hide title) */
-  .layout-listing d-title, .layout-listing .d-title {
-    display: none;
-  }
-
-  /* Styles for posts lists (not auto-injected) */
-
-
-  .posts-with-sidebar {
-    padding-left: 45px;
-    padding-right: 45px;
-  }
-
-  .posts-list .description h2,
-  .posts-list .description p {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
-  }
-
-  .posts-list .description h2 {
-    font-weight: 700;
-    border-bottom: none;
-    padding-bottom: 0;
-  }
-
-  .posts-list h2.post-tag {
-    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
-    padding-bottom: 12px;
-  }
-  .posts-list {
-    margin-top: 60px;
-    margin-bottom: 24px;
-  }
-
-  .posts-list .post-preview {
-    text-decoration: none;
-    overflow: hidden;
-    display: block;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-    padding: 24px 0;
-  }
-
-  .post-preview-last {
-    border-bottom: none !important;
-  }
-
-  .posts-list .posts-list-caption {
-    grid-column: screen;
-    font-weight: 400;
-  }
-
-  .posts-list .post-preview h2 {
-    margin: 0 0 6px 0;
-    line-height: 1.2em;
-    font-style: normal;
-    font-size: 24px;
-  }
-
-  .posts-list .post-preview p {
-    margin: 0 0 12px 0;
-    line-height: 1.4em;
-    font-size: 16px;
-  }
-
-  .posts-list .post-preview .thumbnail {
-    box-sizing: border-box;
-    margin-bottom: 24px;
-    position: relative;
-    max-width: 500px;
-  }
-  .posts-list .post-preview img {
-    width: 100%;
-    display: block;
-  }
-
-  .posts-list .metadata {
-    font-size: 12px;
-    line-height: 1.4em;
-    margin-bottom: 18px;
-  }
-
-  .posts-list .metadata > * {
-    display: inline-block;
-  }
-
-  .posts-list .metadata .publishedDate {
-    margin-right: 2em;
-  }
-
-  .posts-list .metadata .dt-authors {
-    display: block;
-    margin-top: 0.3em;
-    margin-right: 2em;
-  }
-
-  .posts-list .dt-tags {
-    display: block;
-    line-height: 1em;
-  }
-
-  .posts-list .dt-tags .dt-tag {
-    display: inline-block;
-    color: rgba(0,0,0,0.6);
-    padding: 0.3em 0.4em;
-    margin-right: 0.2em;
-    margin-bottom: 0.4em;
-    font-size: 60%;
-    border: 1px solid rgba(0,0,0,0.2);
-    border-radius: 3px;
-    text-transform: uppercase;
-    font-weight: 500;
-  }
-
-  .posts-list img {
-    opacity: 1;
-  }
-
-  .posts-list img[data-src] {
-    opacity: 0;
-  }
-
-  .posts-more {
-    clear: both;
-  }
-
-
-  .posts-sidebar {
-    font-size: 16px;
-  }
-
-  .posts-sidebar h3 {
-    font-size: 16px;
-    margin-top: 0;
-    margin-bottom: 0.5em;
-    font-weight: 400;
-    text-transform: uppercase;
-  }
-
-  .sidebar-section {
-    margin-bottom: 30px;
-  }
-
-  .categories ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-  }
-
-  .categories li {
-    color: rgba(0, 0, 0, 0.8);
-    margin-bottom: 0;
-  }
-
-  .categories li>a {
-    border-bottom: none;
-  }
-
-  .categories li>a:hover {
-    border-bottom: 1px solid rgba(0, 0, 0, 0.4);
-  }
-
-  .categories .active {
-    font-weight: 600;
-  }
-
-  .categories .category-count {
-    color: rgba(0, 0, 0, 0.4);
-  }
-
-
-  @media(min-width: 768px) {
-    .posts-list .post-preview h2 {
-      font-size: 26px;
-    }
-    .posts-list .post-preview .thumbnail {
-      float: right;
-      width: 30%;
-      margin-bottom: 0;
-    }
-    .posts-list .post-preview .description {
-      float: left;
-      width: 45%;
-    }
-    .posts-list .post-preview .metadata {
-      float: left;
-      width: 20%;
-      margin-top: 8px;
-    }
-    .posts-list .post-preview p {
-      margin: 0 0 12px 0;
-      line-height: 1.5em;
-      font-size: 16px;
-    }
-    .posts-with-sidebar .posts-list {
-      float: left;
-      width: 75%;
-    }
-    .posts-with-sidebar .posts-sidebar {
-      float: right;
-      width: 20%;
-      margin-top: 60px;
-      padding-top: 24px;
-      padding-bottom: 24px;
-    }
-  }
-
-
-  /* Improve display for browsers without grid (IE/Edge <= 15) */
-
-  .downlevel {
-    line-height: 1.6em;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
-    margin: 0;
-  }
-
-  .downlevel .d-title {
-    padding-top: 6rem;
-    padding-bottom: 1.5rem;
-  }
-
-  .downlevel .d-title h1 {
-    font-size: 50px;
-    font-weight: 700;
-    line-height: 1.1em;
-    margin: 0 0 0.5rem;
-  }
-
-  .downlevel .d-title p {
-    font-weight: 300;
-    font-size: 1.2rem;
-    line-height: 1.55em;
-    margin-top: 0;
-  }
-
-  .downlevel .d-byline {
-    padding-top: 0.8em;
-    padding-bottom: 0.8em;
-    font-size: 0.8rem;
-    line-height: 1.8em;
-  }
-
-  .downlevel .section-separator {
-    border: none;
-    border-top: 1px solid rgba(0, 0, 0, 0.1);
-  }
-
-  .downlevel .d-article {
-    font-size: 1.06rem;
-    line-height: 1.7em;
-    padding-top: 1rem;
-    padding-bottom: 2rem;
-  }
-
-
-  .downlevel .d-appendix {
-    padding-left: 0;
-    padding-right: 0;
-    max-width: none;
-    font-size: 0.8em;
-    line-height: 1.7em;
-    margin-bottom: 0;
-    color: rgba(0,0,0,0.5);
-    padding-top: 40px;
-    padding-bottom: 48px;
-  }
-
-  .downlevel .footnotes ol {
-    padding-left: 13px;
-  }
-
-  .downlevel .base-grid,
-  .downlevel .distill-header,
-  .downlevel .d-title,
-  .downlevel .d-abstract,
-  .downlevel .d-article,
-  .downlevel .d-appendix,
-  .downlevel .distill-appendix,
-  .downlevel .d-byline,
-  .downlevel .d-footnote-list,
-  .downlevel .d-citation-list,
-  .downlevel .distill-footer,
-  .downlevel .appendix-bottom,
-  .downlevel .posts-container {
-    padding-left: 40px;
-    padding-right: 40px;
-  }
-
-  @media(min-width: 768px) {
-    .downlevel .base-grid,
-    .downlevel .distill-header,
-    .downlevel .d-title,
-    .downlevel .d-abstract,
-    .downlevel .d-article,
-    .downlevel .d-appendix,
-    .downlevel .distill-appendix,
-    .downlevel .d-byline,
-    .downlevel .d-footnote-list,
-    .downlevel .d-citation-list,
-    .downlevel .distill-footer,
-    .downlevel .appendix-bottom,
-    .downlevel .posts-container {
-    padding-left: 150px;
-    padding-right: 150px;
-    max-width: 900px;
-  }
-  }
-
-  .downlevel pre code {
-    display: block;
-    border-left: 2px solid rgba(0, 0, 0, .1);
-    padding: 0 0 0 20px;
-    font-size: 14px;
-  }
-
-  .downlevel code, .downlevel pre {
-    color: black;
-    background: none;
-    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
-    text-align: left;
-    white-space: pre;
-    word-spacing: normal;
-    word-break: normal;
-    word-wrap: normal;
-    line-height: 1.5;
-
-    -moz-tab-size: 4;
-    -o-tab-size: 4;
-    tab-size: 4;
-
-    -webkit-hyphens: none;
-    -moz-hyphens: none;
-    -ms-hyphens: none;
-    hyphens: none;
-  }
-
-  .downlevel .posts-list .post-preview {
-    color: inherit;
-  }
-
-
-
-  </style>
-
-  <script type="application/javascript">
-
-  function is_downlevel_browser() {
-    if (bowser.isUnsupportedBrowser({ msie: "12", msedge: "16"},
-                                   window.navigator.userAgent)) {
-      return true;
-    } else {
-      return window.load_distill_framework === undefined;
-    }
-  }
-
-  // show body when load is complete
-  function on_load_complete() {
-
-    // add anchors
-    if (window.anchors) {
-      window.anchors.options.placement = 'left';
-      window.anchors.add('d-article > h2, d-article > h3, d-article > h4, d-article > h5');
-    }
-
-
-    // set body to visible
-    document.body.style.visibility = 'visible';
-
-    // force redraw for leaflet widgets
-    if (window.HTMLWidgets) {
-      var maps = window.HTMLWidgets.findAll(".leaflet");
-      $.each(maps, function(i, el) {
-        var map = this.getMap();
-        map.invalidateSize();
-        map.eachLayer(function(layer) {
-          if (layer instanceof L.TileLayer)
-            layer.redraw();
-        });
-      });
-    }
-
-    // trigger 'shown' so htmlwidgets resize
-    $('d-article').trigger('shown');
-  }
-
-  function init_distill() {
-
-    init_common();
-
-    // create front matter
-    var front_matter = $('<d-front-matter></d-front-matter>');
-    $('#distill-front-matter').wrap(front_matter);
-
-    // create d-title
-    $('.d-title').changeElementType('d-title');
-
-    // create d-byline
-    var byline = $('<d-byline></d-byline>');
-    $('.d-byline').replaceWith(byline);
-
-    // create d-article
-    var article = $('<d-article></d-article>');
-    $('.d-article').wrap(article).children().unwrap();
-
-    // move posts container into article
-    $('.posts-container').appendTo($('d-article'));
-
-    // create d-appendix
-    $('.d-appendix').changeElementType('d-appendix');
-
-    // flag indicating that we have appendix items
-    var appendix = $('.appendix-bottom').children('h3').length > 0;
-
-    // replace footnotes with <d-footnote>
-    $('.footnote-ref').each(function(i, val) {
-      appendix = true;
-      var href = $(this).attr('href');
-      var id = href.replace('#', '');
-      var fn = $('#' + id);
-      var fn_p = $('#' + id + '>p');
-      fn_p.find('.footnote-back').remove();
-      var text = fn_p.html();
-      var dtfn = $('<d-footnote></d-footnote>');
-      dtfn.html(text);
-      $(this).replaceWith(dtfn);
-    });
-    // remove footnotes
-    $('.footnotes').remove();
-
-    // move refs into #references-listing
-    $('#references-listing').replaceWith($('#refs'));
-
-    $('h1.appendix, h2.appendix').each(function(i, val) {
-      $(this).changeElementType('h3');
-    });
-    $('h3.appendix').each(function(i, val) {
-      var id = $(this).attr('id');
-      $('.d-contents a[href="#' + id + '"]').parent().remove();
-      appendix = true;
-      $(this).nextUntil($('h1, h2, h3')).addBack().appendTo($('d-appendix'));
-    });
-
-    // show d-appendix if we have appendix content
-    $("d-appendix").css('display', appendix ? 'grid' : 'none');
-
-    // localize layout chunks to just output
-    $('.layout-chunk').each(function(i, val) {
-
-      // capture layout
-      var layout = $(this).attr('data-layout');
-
-      // apply layout to markdown level block elements
-      var elements = $(this).children().not('details, div.sourceCode, pre, script');
-      elements.each(function(i, el) {
-        var layout_div = $('<div class="' + layout + '"></div>');
-        if (layout_div.hasClass('shaded')) {
-          var shaded_content = $('<div class="shaded-content"></div>');
-          $(this).wrap(shaded_content);
-          $(this).parent().wrap(layout_div);
-        } else {
-          $(this).wrap(layout_div);
-        }
-      });
-
-
-      // unwrap the layout-chunk div
-      $(this).children().unwrap();
-    });
-
-    // remove code block used to force  highlighting css
-    $('.distill-force-highlighting-css').parent().remove();
-
-    // remove empty line numbers inserted by pandoc when using a
-    // custom syntax highlighting theme
-    $('code.sourceCode a:empty').remove();
-
-    // load distill framework
-    load_distill_framework();
-
-    // wait for window.distillRunlevel == 4 to do post processing
-    function distill_post_process() {
-
-      if (!window.distillRunlevel || window.distillRunlevel < 4)
-        return;
-
-      // hide author/affiliations entirely if we have no authors
-      var front_matter = JSON.parse($("#distill-front-matter").html());
-      var have_authors = front_matter.authors && front_matter.authors.length > 0;
-      if (!have_authors)
-        $('d-byline').addClass('hidden');
-
-      // article with toc class
-      $('.d-contents').parent().addClass('d-article-with-toc');
-
-      // strip links that point to #
-      $('.authors-affiliations').find('a[href="#"]').removeAttr('href');
-
-      // add orcid ids
-      $('.authors-affiliations').find('.author').each(function(i, el) {
-        var orcid_id = front_matter.authors[i].orcidID;
-        if (orcid_id) {
-          var a = $('<a></a>');
-          a.attr('href', 'https://orcid.org/' + orcid_id);
-          var img = $('<img></img>');
-          img.addClass('orcid-id');
-          img.attr('alt', 'ORCID ID');
-          img.attr('src','data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg==');
-          a.append(img);
-          $(this).append(a);
-        }
-      });
-
-      // hide elements of author/affiliations grid that have no value
-      function hide_byline_column(caption) {
-        $('d-byline').find('h3:contains("' + caption + '")').parent().css('visibility', 'hidden');
-      }
-
-      // affiliations
-      var have_affiliations = false;
-      for (var i = 0; i<front_matter.authors.length; ++i) {
-        var author = front_matter.authors[i];
-        if (author.affiliation !== "&nbsp;") {
-          have_affiliations = true;
-          break;
-        }
-      }
-      if (!have_affiliations)
-        $('d-byline').find('h3:contains("Affiliations")').css('visibility', 'hidden');
-
-      // published date
-      if (!front_matter.publishedDate)
-        hide_byline_column("Published");
-
-      // document object identifier
-      var doi = $('d-byline').find('h3:contains("DOI")');
-      var doi_p = doi.next().empty();
-      if (!front_matter.doi) {
-        // if we have a citation and valid citationText then link to that
-        if ($('#citation').length > 0 && front_matter.citationText) {
-          doi.html('Citation');
-          $('<a href="#citation"></a>')
-            .text(front_matter.citationText)
-            .appendTo(doi_p);
-        } else {
-          hide_byline_column("DOI");
-        }
-      } else {
-        $('<a></a>')
-           .attr('href', "https://doi.org/" + front_matter.doi)
-           .html(front_matter.doi)
-           .appendTo(doi_p);
-      }
-
-       // change plural form of authors/affiliations
-      if (front_matter.authors.length === 1) {
-        var grid = $('.authors-affiliations');
-        grid.children('h3:contains("Authors")').text('Author');
-        grid.children('h3:contains("Affiliations")').text('Affiliation');
-      }
-
-      // remove d-appendix and d-footnote-list local styles
-      $('d-appendix > style:first-child').remove();
-      $('d-footnote-list > style:first-child').remove();
-
-      // move appendix-bottom entries to the bottom
-      $('.appendix-bottom').appendTo('d-appendix').children().unwrap();
-      $('.appendix-bottom').remove();
-
-      // hoverable references
-      $('span.citation[data-cites]').each(function() {
-        var refHtml = $('#ref-' + $(this).attr('data-cites')).html();
-        window.tippy(this, {
-          allowHTML: true,
-          content: refHtml,
-          maxWidth: 500,
-          interactive: true,
-          interactiveBorder: 10,
-          theme: 'light-border',
-          placement: 'bottom-start'
-        });
-      });
-
-      // clear polling timer
-      clearInterval(tid);
-
-      // show body now that everything is ready
-      on_load_complete();
-    }
-
-    var tid = setInterval(distill_post_process, 50);
-    distill_post_process();
-
-  }
-
-  function init_downlevel() {
-
-    init_common();
-
-     // insert hr after d-title
-    $('.d-title').after($('<hr class="section-separator"/>'));
-
-    // check if we have authors
-    var front_matter = JSON.parse($("#distill-front-matter").html());
-    var have_authors = front_matter.authors && front_matter.authors.length > 0;
-
-    // manage byline/border
-    if (!have_authors)
-      $('.d-byline').remove();
-    $('.d-byline').after($('<hr class="section-separator"/>'));
-    $('.d-byline a').remove();
-
-    // remove toc
-    $('.d-contents').remove();
-
-    // move appendix elements
-    $('h1.appendix, h2.appendix').each(function(i, val) {
-      $(this).changeElementType('h3');
-    });
-    $('h3.appendix').each(function(i, val) {
-      $(this).nextUntil($('h1, h2, h3')).addBack().appendTo($('.d-appendix'));
-    });
-
-
-    // inject headers into references and footnotes
-    var refs_header = $('<h3></h3>');
-    refs_header.text('References');
-    $('#refs').prepend(refs_header);
-
-    var footnotes_header = $('<h3></h3');
-    footnotes_header.text('Footnotes');
-    $('.footnotes').children('hr').first().replaceWith(footnotes_header);
-
-    // move appendix-bottom entries to the bottom
-    $('.appendix-bottom').appendTo('.d-appendix').children().unwrap();
-    $('.appendix-bottom').remove();
-
-    // remove appendix if it's empty
-    if ($('.d-appendix').children().length === 0)
-      $('.d-appendix').remove();
-
-    // prepend separator above appendix
-    $('.d-appendix').before($('<hr class="section-separator" style="clear: both"/>'));
-
-    // trim code
-    $('pre>code').each(function(i, val) {
-      $(this).html($.trim($(this).html()));
-    });
-
-    // move posts-container right before article
-    $('.posts-container').insertBefore($('.d-article'));
-
-    $('body').addClass('downlevel');
-
-    on_load_complete();
-  }
-
-
-  function init_common() {
-
-    // jquery plugin to change element types
-    (function($) {
-      $.fn.changeElementType = function(newType) {
-        var attrs = {};
-
-        $.each(this[0].attributes, function(idx, attr) {
-          attrs[attr.nodeName] = attr.nodeValue;
-        });
-
-        this.replaceWith(function() {
-          return $("<" + newType + "/>", attrs).append($(this).contents());
-        });
-      };
-    })(jQuery);
-
-    // prevent underline for linked images
-    $('a > img').parent().css({'border-bottom' : 'none'});
-
-    // mark non-body figures created by knitr chunks as 100% width
-    $('.layout-chunk').each(function(i, val) {
-      var figures = $(this).find('img, .html-widget');
-      if ($(this).attr('data-layout') !== "l-body") {
-        figures.css('width', '100%');
-      } else {
-        figures.css('max-width', '100%');
-        figures.filter("[width]").each(function(i, val) {
-          var fig = $(this);
-          fig.css('width', fig.attr('width') + 'px');
-        });
-
-      }
-    });
-
-    // auto-append index.html to post-preview links in file: protocol
-    // and in rstudio ide preview
-    $('.post-preview').each(function(i, val) {
-      if (window.location.protocol === "file:")
-        $(this).attr('href', $(this).attr('href') + "index.html");
-    });
-
-    // get rid of index.html references in header
-    if (window.location.protocol !== "file:") {
-      $('.distill-site-header a[href]').each(function(i,val) {
-        $(this).attr('href', $(this).attr('href').replace("index.html", "./"));
-      });
-    }
-
-    // add class to pandoc style tables
-    $('tr.header').parent('thead').parent('table').addClass('pandoc-table');
-    $('.kable-table').children('table').addClass('pandoc-table');
-
-    // add figcaption style to table captions
-    $('caption').parent('table').addClass("figcaption");
-
-    // initialize posts list
-    if (window.init_posts_list)
-      window.init_posts_list();
-
-    // implmement disqus comment link
-    $('.disqus-comment-count').click(function() {
-      window.headroom_prevent_pin = true;
-      $('#disqus_thread').toggleClass('hidden');
-      if (!$('#disqus_thread').hasClass('hidden')) {
-        var offset = $(this).offset();
-        $(window).resize();
-        $('html, body').animate({
-          scrollTop: offset.top - 35
-        });
-      }
-    });
-  }
-
-  document.addEventListener('DOMContentLoaded', function() {
-    if (is_downlevel_browser())
-      init_downlevel();
-    else
-      window.addEventListener('WebComponentsReady', init_distill);
+}
+function syncChecks(k) { document.querySelectorAll(`input[data-g="${k}"]`).forEach(i => i.checked = S.sel[k].has(+i.dataset.j)); }
+
+function bind() {
+  document.querySelectorAll("nav.tabs [role=tab]").forEach(b => b.onclick = () => showTab(b.dataset.p));
+  $("#tf").onclick = () => $("#filters").classList.toggle("open");
+  const yr = () => { const a = +$("#y0").value, b = +$("#y1").value; if (a && b) { S.y0 = Math.min(a, b); S.y1 = Math.max(a, b); apply(); } };
+  $("#y0").onchange = yr; $("#y1").onchange = yr;
+  $("#y-na").onchange = e => { S.yna = e.target.checked; apply(); };
+  $("#p-cc").onchange = e => { S.pcc = e.target.checked; apply(); };
+  $("#reset").onclick = () => { resetState(); GROUPS.forEach(g => syncChecks(g.k)); apply(); };
+  $("#cb-sp").onclick = () => setColorBy("sp"); $("#cb-tg").onclick = () => setColorBy("tg");
+  $("#c1-n").onclick = () => { S.c1 = "n"; $("#c1-n").setAttribute("aria-pressed", true); $("#c1-p").setAttribute("aria-pressed", false); drawCharts(); };
+  $("#c1-p").onclick = () => { S.c1 = "p"; $("#c1-p").setAttribute("aria-pressed", true); $("#c1-n").setAttribute("aria-pressed", false); drawCharts(); };
+  $("#q").oninput = e => { S.q = e.target.value.toLowerCase(); S.page = 0; drawTable(); };
+  $("#qs").oninput = () => drawSources();
+  $("#pg-prev").onclick = () => { S.page = Math.max(0, S.page - 1); drawTable(); };
+  $("#pg-next").onclick = () => { S.page++; drawTable(); };
+  $("#dl").onclick = download;
+  // redraw colors when the theme changes
+  const rt = () => { if (!D) return; drawMap(); if (S.tab === "charts") drawCharts(); };
+  matchMedia("(prefers-color-scheme: dark)").addEventListener("change", rt);
+  new MutationObserver(rt).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+}
+
+function showTab(p) {
+  S.tab = p;
+  document.querySelectorAll("nav.tabs [role=tab]").forEach(b => b.setAttribute("aria-selected", b.dataset.p === p));
+  for (const k of ["map", "charts", "table", "src"]) $("#p-" + k).hidden = k !== p;
+  if (p === "map") { map.invalidateSize(); drawMap(); }
+  if (p === "charts") drawCharts();
+  if (p === "table") drawTable();
+  if (p === "src") drawSources();
+}
+
+const CC = () => dict.pr.indexOf("country centroid");
+function apply() {
+  const cc = CC();
+  F = R.filter(r => S.sel.sp.has(r.sp) && S.sel.tg.has(r.tg) && S.sel.hg.has(r.hg) && S.sel.c.has(r.c) && S.sel.ref.has(r.ref)
+    && (r.y == null ? S.yna : r.y >= S.y0 && r.y <= S.y1) && (S.pcc || r.pr !== cc));
+  // stats
+  const undet = dict.sp.indexOf("Undetermined"), unp = dict.ref.indexOf("Unpublished");
+  $("#st-iso").textContent = fmt(F.length);
+  $("#st-art").textContent = fmt(new Set(F.map(r => r.ref)).size);
+  $("#st-cty").textContent = fmt(new Set(F.map(r => r.c)).size);
+  $("#st-sp").textContent = fmt(new Set(F.filter(r => r.sp !== undet).map(r => r.sp)).size);
+  // filter badges
+  let active = 0;
+  for (const g of GROUPS) {
+    const all = dict[g.k].length, k = S.sel[g.k].size;
+    $("#sub-" + g.k).textContent = k === all ? "all" : `${k}/${all}`;
+    if (k !== all) active++;
+  }
+  const yAll = S.y0 === S.yMin && S.y1 === S.yMax;
+  $("#yr-sub").textContent = yAll ? "all" : `${S.y0}–${S.y1}`;
+  if (!yAll || !S.yna) active++; if (!S.pcc) active++;
+  $("#f-active").textContent = active ? `${active} active` : "";
+  S.page = 0; S.only = null; pinned = null; $("#tip").hidden = true;
+  if (S.tab === "map") drawMap();
+  if (S.tab === "charts") drawCharts();
+  if (S.tab === "table") drawTable();
+  if (S.tab === "src") drawSources();
+}
+
+/* ---------------- map ---------------- */
+let map, canvas, ctx, sites = [], pinned = null, tiles = {};
+function initMap() {
+  map = L.map("map", { worldCopyJump: true, zoomAnimation: false, fadeAnimation: false, minZoom: 0, maxZoom: 12, attributionControl: true }).setView([18, 0], $(".mapbox").clientWidth < 700 ? 0 : 2);
+  map.attributionControl.setPrefix(false);
+  map.createPane("land"); map.getPane("land").style.zIndex = 250;
+  loadData("world", "FGSC_WORLD").then(w => {
+    tiles.plain = L.geoJSON(w, { pane: "land", interactive: false, style: () => ({ color: css("--border-land"), weight: 0.7, fillColor: css("--land"), fillOpacity: 1 }) }).addTo(map);
+    map.attributionControl.addAttribution("Boundaries: Natural Earth");
+  }).catch(() => {});
+  tiles.streets = L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png", { attribution: "© OpenStreetMap, © CARTO", subdomains: "abcd", maxZoom: 19 });
+  tiles.sat = L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}", { attribution: "Imagery © Esri" });
+  document.querySelectorAll("[data-bm]").forEach(b => b.onclick = () => {
+    document.querySelectorAll("[data-bm]").forEach(x => x.setAttribute("aria-pressed", x === b));
+    for (const k of ["streets", "sat"]) if (map.hasLayer(tiles[k])) map.removeLayer(tiles[k]);
+    if (b.dataset.bm !== "plain") tiles[b.dataset.bm].addTo(map);
   });
-
-  </script>
-
-  <style type="text/css">
-  /* base variables */
-
-  /* Edit the CSS properties in this file to create a custom
-     Distill theme. Only edit values in the right column
-     for each row; values shown are the CSS defaults.
-     To return any property to the default,
-     you may set its value to: unset
-     All rows must end with a semi-colon.                      */
-
-  /* Optional: embed custom fonts here with `@import`          */
-  /* This must remain at the top of this file.                 */
-
-
-
-  html {
-    /*-- Main font sizes --*/
-    --title-size:      50px;
-    --body-size:       1.06rem;
-    --code-size:       14px;
-    --aside-size:      12px;
-    --fig-cap-size:    13px;
-    /*-- Main font colors --*/
-    --title-color:     #000000;
-    --header-color:    rgba(0, 0, 0, 0.8);
-    --body-color:      rgba(0, 0, 0, 0.8);
-    --aside-color:     rgba(0, 0, 0, 0.6);
-    --fig-cap-color:   rgba(0, 0, 0, 0.6);
-    /*-- Specify custom fonts ~~~ must be imported above   --*/
-    --heading-font:    sans-serif;
-    --mono-font:       monospace;
-    --body-font:       sans-serif;
-    --navbar-font:     sans-serif;  /* websites + blogs only */
+  canvas = $("#pies"); ctx = canvas.getContext("2d");
+  map.on("move zoom resize viewreset", drawPies);
+  const box = $(".mapbox");
+  box.addEventListener("mousemove", e => { if (pinned) return; const s = hit(e); s ? showTip(s, e, false) : ($("#tip").hidden = true); box.style.cursor = s ? "pointer" : ""; });
+  box.addEventListener("mouseleave", () => { if (!pinned) $("#tip").hidden = true; });
+  map.on("click", e => {
+    const s = hit(e.originalEvent);
+    if (s) { pinned = s; showTip(s, e.originalEvent, true); } else { pinned = null; $("#tip").hidden = true; }
+  });
+  new ResizeObserver(() => { map.invalidateSize(); drawPies(); }).observe(box);
+}
+function setColorBy(k) {
+  S.colorBy = k; $("#cb-sp").setAttribute("aria-pressed", k === "sp"); $("#cb-tg").setAttribute("aria-pressed", k === "tg"); drawMap();
+}
+function catOf(r) {
+  if (S.colorBy === "sp") { const v = dict.sp[r.sp]; return SP_MAP[v] ? v : v === "Undetermined" ? "Undetermined" : "Other species"; }
+  const v = dict.tg[r.tg]; return TG_MAP[v] ? v : v === "Undetermined" ? "Undetermined" : "Other genotypes";
+}
+function cats() {
+  return S.colorBy === "sp" ? [["F. graminearum", "--s1"], ["F. asiaticum", "--s2"], ["F. meridionale", "--s3"], ["Other species", "--s-other"], ["Undetermined", "--s-undet"]]
+    : [["15-ADON", "--s1"], ["3-ADON", "--s2"], ["NIV", "--s3"], ["Other genotypes", "--s-other"], ["Undetermined", "--s-undet"]];
+}
+function drawMap() {
+  if (!map) return;
+  if (tiles.plain) tiles.plain.setStyle({ color: css("--border-land"), fillColor: css("--land") });
+  const m = new Map(), cc = CC();
+  for (const r of F) {
+    if (r.lat == null) continue;
+    const key = r.lat.toFixed(3) + "," + r.lon.toFixed(3);
+    let s = m.get(key);
+    if (!s) { s = { lat: r.lat, lon: r.lon, n: 0, k: {}, refs: new Set(), locs: new Set(), c: r.c, approx: r.pr === cc, rows: [] }; m.set(key, s); }
+    s.n++; const k = catOf(r); s.k[k] = (s.k[k] || 0) + 1; s.refs.add(r.ref); if (r.loc) s.locs.add(r.loc); s.rows.push(r.i);
   }
-
-  /*-- ARTICLE METADATA --*/
-  d-byline {
-    --heading-size:    0.6rem;
-    --heading-color:   rgba(0, 0, 0, 0.5);
-    --body-size:       0.8rem;
-    --body-color:      rgba(0, 0, 0, 0.8);
+  sites = [...m.values()].sort((a, b) => b.n - a.n);
+  const cs = cats(), tot = {};
+  for (const r of F) { const k = catOf(r); tot[k] = (tot[k] || 0) + 1; }
+  $("#legend").innerHTML = `<strong style="font-size:.74rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)">${S.colorBy === "sp" ? "Species" : "TRI genotype"}</strong>` +
+    cs.filter(([k]) => tot[k]).map(([k, v]) => `<div class="row"><span class="sw" style="background:var(${v})"></span><span class="${k.startsWith("F.") ? "sp" : ""}">${k}</span><span class="n">${fmt(tot[k] || 0)}</span></div>`).join("") +
+    `<div class="key"><span><i class="ring"></i>reported site</span><span><i class="ring dash"></i>country centroid</span></div>`;
+  drawPies();
+}
+function radius(n) { const z = map.getZoom(); return Math.min(30, 2.6 + Math.sqrt(n) * (z <= 2 ? 1.35 : z <= 4 ? 1.7 : 2.1)); }
+function drawPies() {
+  if (!ctx) return;
+  const w = canvas.clientWidth, h = canvas.clientHeight, dpr = devicePixelRatio || 1;
+  if (canvas.width !== w * dpr || canvas.height !== h * dpr) { canvas.width = w * dpr; canvas.height = h * dpr; }
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, w, h);
+  const cs = cats().map(([k, v]) => [k, css(v)]), ring = css("--surface"), ink = css("--ink-2");
+  const center = map.getCenter().lng;
+  for (const s of sites) {
+    // draw the copy of the site closest to the current view (world wraps)
+    let lon = s.lon; while (lon - center > 180) lon -= 360; while (center - lon > 180) lon += 360;
+    const p = map.latLngToContainerPoint([s.lat, lon]);
+    s.x = p.x; s.y = p.y; s.r = radius(s.n);
+    if (p.x < -40 || p.y < -40 || p.x > w + 40 || p.y > h + 40) { s.vis = false; continue; }
+    s.vis = true;
+    let a0 = -Math.PI / 2;
+    for (const [k, col] of cs) {
+      const v = s.k[k]; if (!v) continue;
+      const a1 = a0 + (v / s.n) * Math.PI * 2;
+      ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.arc(p.x, p.y, s.r, a0, a1); ctx.closePath();
+      ctx.fillStyle = col; ctx.fill(); a0 = a1;
+    }
+    ctx.lineWidth = 1.5;
+    if (s.approx) { ctx.setLineDash([3, 2.5]); ctx.strokeStyle = ink; } else { ctx.setLineDash([]); ctx.strokeStyle = ring; }
+    ctx.beginPath(); ctx.arc(p.x, p.y, s.r + (s.approx ? 1.5 : 0.75), 0, Math.PI * 2); ctx.stroke();
   }
-
-  /*-- ARTICLE TABLE OF CONTENTS --*/
-  .d-contents {
-    --heading-size:    18px;
-    --contents-size:   13px;
+  ctx.setLineDash([]);
+}
+function hit(e) {
+  const b = canvas.getBoundingClientRect(), x = e.clientX - b.left, y = e.clientY - b.top;
+  let best = null, bd = Infinity;
+  for (const s of sites) { if (!s.vis) continue; const d = Math.hypot(s.x - x, s.y - y); if (d <= Math.max(s.r, 6) + 2 && d < bd) { bd = d; best = s; } }
+  return best;
+}
+function showTip(s, e, pin) {
+  const tip = $("#tip"), b = $(".mapbox").getBoundingClientRect();
+  const cs = cats().filter(([k]) => s.k[k]);
+  const refs = [...s.refs].map(j => dict.ref[j]);
+  const locs = [...s.locs];
+  tip.innerHTML = `<h4>${esc(locs.length ? locs.slice(0, 2).join("; ") + (locs.length > 2 ? ` +${locs.length - 2}` : "") : dict.c[s.c])}</h4>
+    <div class="meta">${esc(dict.c[s.c])} · ${fmt(s.n)} isolate${s.n > 1 ? "s" : ""}${s.approx ? " · placed at country centroid" : ""}</div>
+    <table>${cs.map(([k, v]) => `<tr><td><span class="sw" style="background:var(${v})"></span><span class="${k.startsWith("F.") ? "sp" : ""}">${k}</span></td><td class="n">${fmt(s.k[k])}</td></tr>`).join("")}</table>
+    <div class="refs">${esc(refs.slice(0, 4).join("; "))}${refs.length > 4 ? ` +${refs.length - 4} more` : ""}</div>
+    ${pin ? `<div class="go"><button class="btn" type="button" id="tip-list">List these isolates</button><button class="btn" type="button" id="tip-x">Close</button></div>` : ""}`;
+  tip.classList.toggle("pinned", pin); tip.hidden = false;
+  let x = e.clientX - b.left + 14, y = e.clientY - b.top + 14;
+  const tw = tip.offsetWidth, th = tip.offsetHeight;
+  if (x + tw > b.width - 8) x = e.clientX - b.left - tw - 14;
+  if (y + th > b.height - 8) y = Math.max(8, e.clientY - b.top - th - 14);
+  tip.style.left = Math.max(8, x) + "px"; tip.style.top = y + "px";
+  if (pin) {
+    $("#tip-x").onclick = () => { pinned = null; tip.hidden = true; };
+    $("#tip-list").onclick = () => { S.only = new Set(s.rows); S.onlyLabel = $(".tip h4").textContent; showTab("table"); };
   }
+}
 
-  /*-- ARTICLE APPENDIX --*/
-  d-appendix {
-    --heading-size:    15px;
-    --heading-color:   rgba(0, 0, 0, 0.65);
-    --text-size:       0.8em;
-    --text-color:      rgba(0, 0, 0, 0.5);
-  }
+/* ---------------- charts ---------------- */
+function plotStyle() { return { background: "transparent", color: css("--ink-2"), fontSize: "12px", overflow: "visible" }; }
+function key(el, entries) { $(el).innerHTML = entries.map(([k, v]) => `<span style="--c:var(${v})" class="${k.startsWith("F.") ? "sp" : ""}">${k}</span>`).join(""); }
+function drawCharts() {
+  if (!D) return;
+  const W1 = Math.max(320, $("#c1").clientWidth || 800);
+  // 1. species x genotype
+  const tgUsed = TG_ORDER.filter(t => F.some(r => dict.tg[r.tg] === t));
+  const roll = d3.rollups(F, v => v.length, r => dict.sp[r.sp], r => dict.tg[r.tg]);
+  const rows1 = []; const spTot = new Map();
+  for (const [sp, arr] of roll) for (const [tg, n] of arr) { rows1.push({ sp, tg, n }); spTot.set(sp, (spTot.get(sp) || 0) + n); }
+  const spOrder = [...spTot.entries()].sort((a, b) => b[1] - a[1]).map(d => d[0]);
+  $("#c1-sub").textContent = `${fmt(F.length)} isolates · ${spOrder.length} taxa`;
+  key("#c1-key", tgUsed.map(t => [t, TG[t]]));
+  const c1 = Plot.plot({
+    width: W1, height: 34 + spOrder.length * 24, marginLeft: 190, marginRight: 60, style: plotStyle(),
+    x: { label: S.c1 === "p" ? "Share of isolates (%)" : "Isolates", grid: true, percent: S.c1 === "p", tickFormat: S.c1 === "p" ? undefined : "," },
+    y: { domain: spOrder, label: null, tickFormat: d => d },
+    color: { domain: TG_ORDER, range: TG_ORDER.map(t => css(TG[t])) },
+    marks: [
+      Plot.barX(rows1, Plot.stackX({ order: TG_ORDER, offset: S.c1 === "p" ? "normalize" : null, x: "n", y: "sp", fill: "tg", inset: 0.5, insetTop: 3, insetBottom: 3, rx: 2,
+        channels: { Species: "sp", "TRI genotype": "tg", Isolates: "n" }, tip: { format: { x: false, y: false, fill: false, Isolates: fmt } } })),
+      S.c1 === "n" ? Plot.text(spOrder.map(sp => ({ sp, n: spTot.get(sp) })), { x: "n", y: "sp", text: d => fmt(d.n), dx: 6, textAnchor: "start", fill: css("--ink-2"), fontFamily: "IBM Plex Mono, monospace", fontSize: 11 }) : null,
+      Plot.ruleX([0], { stroke: css("--line-2") })
+    ]
+  });
+  c1.querySelectorAll('g[aria-label="y-axis tick label"] text').forEach(t => { if (t.textContent.startsWith("F.")) { t.style.fontStyle = "italic"; t.style.fontFamily = "Spectral, Georgia, serif"; t.style.fontSize = "13px"; } });
+  $("#c1").replaceChildren(c1);
 
-  /*-- WEBSITE HEADER + FOOTER --*/
-  /* These properties only apply to Distill sites and blogs  */
+  // 2. cumulative by year (3 species + other)
+  const spCat = r => { const v = dict.sp[r.sp]; return SP_MAP[v] ? v : "Other species"; };
+  const C2 = [["F. graminearum", "--s1"], ["F. asiaticum", "--s2"], ["F. meridionale", "--s3"], ["Other species", "--s-other"]];
+  const yrs = F.filter(r => r.y != null);
+  const W2 = Math.max(300, $("#c2").clientWidth || 480);
+  if (yrs.length) {
+    const y0 = d3.min(yrs, r => r.y), y1 = d3.max(yrs, r => r.y);
+    const byKey = d3.rollup(yrs, v => v.length, spCat, r => r.y);
+    const rows2 = [];
+    for (const [k] of C2) { const m = byKey.get(k); if (!m) continue; let cum = 0; for (let y = y0; y <= y1; y++) { cum += m.get(y) || 0; rows2.push({ k, y: new Date(Date.UTC(y, 0, 1)), year: y, cum }); } }
+    key("#c2-key", C2.filter(([k]) => byKey.has(k)));
+    $("#c2").replaceChildren(Plot.plot({
+      width: W2, height: 300, marginLeft: 50, style: plotStyle(),
+      x: { type: "utc", label: null }, y: { label: "Cumulative isolates", grid: true, tickFormat: "," },
+      color: { domain: C2.map(d => d[0]), range: C2.map(d => css(d[1])) },
+      marks: [
+        Plot.ruleY([0], { stroke: css("--line-2") }),
+        Plot.lineY(rows2, { x: "y", y: "cum", stroke: "k", strokeWidth: 2, curve: "step-after" }),
+        Plot.ruleX(rows2, Plot.pointerX({ x: "y", stroke: css("--line-2") })),
+        Plot.dot(rows2, Plot.pointerX({ x: "y", y: "cum", fill: "k", r: 4, stroke: css("--surface"), strokeWidth: 2 })),
+        Plot.tip(rows2, Plot.pointerX({ x: "y", y: "cum", title: d => `${d.k}\n${d.year}: ${fmt(d.cum)} isolates (cumulative)` }))
+      ]
+    }));
+  } else { $("#c2").innerHTML = `<p class="hint">No isolates with a known collection year in the current selection.</p>`; $("#c2-key").innerHTML = ""; }
 
-  .distill-site-header {
-    --title-size:       18px;
-    --text-color:       rgba(255, 255, 255, 0.8);
-    --text-size:        15px;
-    --hover-color:      white;
-    --bkgd-color:       #0F2E3D;
-  }
+  // 3. top countries
+  const cTot = d3.rollups(F, v => v.length, r => dict.c[r.c]).sort((a, b) => b[1] - a[1]).slice(0, 15);
+  const top = new Set(cTot.map(d => d[0]));
+  const rows3 = d3.rollups(F.filter(r => top.has(dict.c[r.c])), v => v.length, r => dict.c[r.c], spCat).flatMap(([c, a]) => a.map(([k, n]) => ({ c, k, n })));
+  const W3 = Math.max(300, $("#c3").clientWidth || 480);
+  key("#c3-key", C2.filter(([k]) => rows3.some(d => d.k === k)));
+  $("#c3").replaceChildren(Plot.plot({
+    width: W3, height: 30 + cTot.length * 22, marginLeft: 110, marginRight: 50, style: plotStyle(),
+    x: { label: "Isolates", grid: true, tickFormat: ",", ticks: 5 }, y: { domain: cTot.map(d => d[0]), label: null },
+    color: { domain: C2.map(d => d[0]), range: C2.map(d => css(d[1])) },
+    marks: [
+      Plot.barX(rows3, Plot.stackX({ order: C2.map(d => d[0]), x: "n", y: "c", fill: "k", inset: 0.5, insetTop: 2.5, insetBottom: 2.5, rx: 2,
+        channels: { Country: "c", Species: "k", Isolates: "n" }, tip: { format: { x: false, y: false, fill: false, Isolates: fmt } } })),
+      Plot.text(cTot.map(([c, n]) => ({ c, n })), { x: "n", y: "c", text: d => fmt(d.n), dx: 6, textAnchor: "start", fill: css("--ink-2"), fontFamily: "IBM Plex Mono, monospace", fontSize: 11 }),
+      Plot.ruleX([0], { stroke: css("--line-2") })
+    ]
+  }));
+}
 
-  .distill-site-footer {
-    --text-color:       rgba(255, 255, 255, 0.8);
-    --text-size:        15px;
-    --hover-color:      white;
-    --bkgd-color:       #0F2E3D;
-  }
+/* ---------------- table ---------------- */
+const COLS = [
+  ["id", "ID", r => r.id, "mono"], ["st", "Strain", r => r.st ?? "", "mono"],
+  ["sp", "Species", r => dict.sp[r.sp], "sp"], ["tri", "TRI genotype", r => dict.tri[r.tri]],
+  ["h", "Host", r => dict.h[r.h]], ["c", "Country", r => dict.c[r.c]], ["loc", "Location", r => r.loc ?? ""],
+  ["y", "Year", r => r.y ?? "", "num"], ["ref", "Source", r => dict.ref[r.ref]], ["pr", "Location from", r => dict.pr[r.pr], "prec"]
+];
+function tableRows() {
+  let rows = S.only ? F.filter(r => S.only.has(r.i)) : F;
+  if (S.q) rows = rows.filter(r => [r.id, r.st, r.loc, dict.ref[r.ref], dict.sp[r.sp], dict.c[r.c], dict.h[r.h]].join(" ").toLowerCase().includes(S.q));
+  const col = COLS.find(c => c[0] === S.sort.k), d = S.sort.d;
+  return rows.slice().sort((a, b) => { const x = col[2](a), y = col[2](b); return (x === "" ? 1 : y === "" ? -1 : x < y ? -1 : x > y ? 1 : 0) * d; });
+}
+function drawTable() {
+  const t = $("#grid");
+  t.tHead.innerHTML = "<tr>" + COLS.map(c => `<th scope="col" data-k="${c[0]}" ${S.sort.k === c[0] ? `aria-sort="${S.sort.d > 0 ? "ascending" : "descending"}"` : ""}>${c[1]}</th>`).join("") + "</tr>";
+  t.tHead.querySelectorAll("th").forEach(th => th.onclick = () => { const k = th.dataset.k; S.sort = { k, d: S.sort.k === k ? -S.sort.d : 1 }; drawTable(); });
+  const rows = tableRows(), per = 50, pages = Math.max(1, Math.ceil(rows.length / per));
+  S.page = Math.min(S.page, pages - 1);
+  const slice = rows.slice(S.page * per, S.page * per + per);
+  t.tBodies[0].innerHTML = slice.map(r => "<tr>" + COLS.map(c => {
+    const v = c[2](r);
+    if (c[3] === "prec") return `<td><span class="prec ${v === "reported" ? "" : "approx"}">${esc(v)}</span></td>`;
+    return `<td class="${c[3] || ""}">${esc(v)}</td>`;
+  }).join("") + "</tr>").join("") || `<tr><td colspan="${COLS.length}" class="hint" style="padding:24px">No isolates match the current filters.</td></tr>`;
+  $("#t-count").innerHTML = (S.only ? `Showing isolates of <strong>${esc(S.onlyLabel)}</strong> · <button class="btn" type="button" id="only-x" style="padding:2px 8px">Show all</button> · ` : "") + `${fmt(rows.length)} isolates`;
+  if (S.only) $("#only-x").onclick = () => { S.only = null; drawTable(); };
+  $("#pg-lab").textContent = `Page ${S.page + 1} of ${pages}`;
+  $("#pg-prev").disabled = S.page === 0; $("#pg-next").disabled = S.page >= pages - 1;
+}
 
-  /*-- Additional custom styles --*/
-  /* Add any additional CSS rules below                      */
-  </style>
-  <style type="text/css">
-  /* base variables */
+/* ---------------- sources ---------------- */
+function drawSources() {
+  const q = $("#qs").value.toLowerCase();
+  const n = d3.rollup(F, v => v.length, r => dict.ref[r.ref]);
+  const arts = D.articles.filter(a => n.has(a.reference) && (!q || (a.reference + " " + a.countries).toLowerCase().includes(q)))
+    .sort((a, b) => a.reference.localeCompare(b.reference));
+  $("#s-count").textContent = `${arts.length} sources`;
+  $("#srcs").innerHTML = arts.map(a => `<div class="src"><span class="t">${esc(a.reference)}${a.doi ? ` · <a href="https://doi.org/${esc(a.doi)}" target="_blank" rel="noopener">doi</a>` : ""}</span>
+    <span class="d">${esc(a.countries)}${a.year_min ? ` · collected ${a.year_min}${a.year_max !== a.year_min ? "–" + a.year_max : ""}` : ""} · <button type="button" data-ref="${esc(a.reference)}">Show only this source</button></span>
+    <span class="n">${fmt(n.get(a.reference))}</span></div>`).join("");
+  $("#srcs").querySelectorAll("button[data-ref]").forEach(b => b.onclick = () => {
+    const j = dict.ref.indexOf(b.dataset.ref); S.sel.ref = new Set([j]); syncChecks("ref"); apply(); showTab("map");
+  });
+}
 
-  /* Edit the CSS properties in this file to create a custom
-     Distill theme. Only edit values in the right column
-     for each row; values shown are the CSS defaults.
-     To return any property to the default,
-     you may set its value to: unset
-     All rows must end with a semi-colon.                      */
-
-  /* Optional: embed custom fonts here with `@import`          */
-  /* This must remain at the top of this file.                 */
-
-
-
-  html {
-    /*-- Main font sizes --*/
-    --title-size:      10px;
-    --body-size:       0.9rem;
-    --code-size:       14px;
-    --aside-size:      12px;
-    --fig-cap-size:    13px;
-    /*-- Main font colors --*/
-    --title-color:     #000000;
-    --header-color:    rgba(0, 0, 0, 0.8);
-    --body-color:      rgba(0, 0, 0, 0.8);
-    --aside-color:     rgba(0, 0, 0, 0.6);
-    --fig-cap-color:   rgba(0, 0, 0, 0.6);
-    /*-- Specify custom fonts ~~~ must be imported above   --*/
-    --heading-font:    sans-serif;
-    --mono-font:       monospace;
-    --body-font:       sans-serif;
-    --navbar-font:     sans-serif;  /* websites + blogs only */
-  }
-
-  /*-- ARTICLE METADATA --*/
-  d-byline {
-    --heading-size:    0.6arem;
-    --heading-color:   rgba(0, 0, 0, 0.5);
-    --body-size:       1rem;
-    --body-color:      rgba(0, 0, 0, 0.8);
-  }
-
-  /*-- ARTICLE TABLE OF CONTENTS --*/
-  .d-contents {
-    --heading-size:    16px;
-    --contents-size:   14px;
-  }
-
-  /*-- ARTICLE APPENDIX --*/
-  d-appendix {
-    --heading-size:    15px;
-    --heading-color:   rgba(0, 0, 0, 0.65);
-    --text-size:       0.9em;
-    --text-color:      rgba(0, 0, 0, 0.5);
-  }
-
-  /*-- WEBSITE HEADER + FOOTER --*/
-  /* These properties only apply to Distill sites and blogs  */
-
-  .distill-site-header {
-    --title-size:       17px;
-    --text-color:       rgba(255, 255, 255, 0.8);
-    --text-size:        16px;
-    --hover-color:      white;
-    --bkgd-color:       #904A71;
-  }
-
-  .distill-site-footer {
-    --text-color:       rgba(255, 255, 255, 0.8);
-    --text-size:        15px;
-    --hover-color:      white;
-    --bkgd-color:       #904A71;
-  }
-
-  /*-- Additional custom styles --*/
-  /* Add any additional CSS rules below                      */
-  </style>
-  <style type="text/css">
-  /* base style */
-
-  /* FONT FAMILIES */
-
-  :root {
-    --heading-default: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
-    --mono-default: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
-    --body-default: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
-  }
-
-  body,
-  .posts-list .post-preview p,
-  .posts-list .description p {
-    font-family: var(--body-font), var(--body-default);
-  }
-
-  h1, h2, h3, h4, h5, h6,
-  .posts-list .post-preview h2,
-  .posts-list .description h2 {
-    font-family: var(--heading-font), var(--heading-default);
-  }
-
-  d-article div.sourceCode code,
-  d-article pre code {
-    font-family: var(--mono-font), var(--mono-default);
-  }
-
-
-  /*-- TITLE --*/
-  d-title h1,
-  .posts-list > h1 {
-    color: var(--title-color, black);
-  }
-
-  d-title h1 {
-    font-size: var(--title-size, 50px);
-  }
-
-  /*-- HEADERS --*/
-  d-article h1,
-  d-article h2,
-  d-article h3,
-  d-article h4,
-  d-article h5,
-  d-article h6 {
-    color: var(--header-color, rgba(0, 0, 0, 0.8));
-  }
-
-  /*-- BODY --*/
-  d-article > p,  /* only text inside of <p> tags */
-  d-article > ul, /* lists */
-  d-article > ol {
-    color: var(--body-color, rgba(0, 0, 0, 0.8));
-    font-size: var(--body-size, 1.06rem);
-  }
-
-
-  /*-- CODE --*/
-  d-article div.sourceCode code,
-  d-article pre code {
-    font-size: var(--code-size, 14px);
-  }
-
-  /*-- ASIDE --*/
-  d-article aside {
-    font-size: var(--aside-size, 12px);
-    color: var(--aside-color, rgba(0, 0, 0, 0.6));
-  }
-
-  /*-- FIGURE CAPTIONS --*/
-  figure .caption,
-  figure figcaption,
-  .figure .caption {
-    font-size: var(--fig-cap-size, 13px);
-    color: var(--fig-cap-color, rgba(0, 0, 0, 0.6));
-  }
-
-  /*-- METADATA --*/
-  d-byline h3 {
-    font-size: var(--heading-size, 0.6rem);
-    color: var(--heading-color, rgba(0, 0, 0, 0.5));
-  }
-
-  d-byline {
-    font-size: var(--body-size, 0.8rem);
-    color: var(--body-color, rgba(0, 0, 0, 0.8));
-  }
-
-  d-byline a,
-  d-article d-byline a {
-    color: var(--body-color, rgba(0, 0, 0, 0.8));
-  }
-
-  /*-- TABLE OF CONTENTS --*/
-  .d-contents nav h3 {
-    font-size: var(--heading-size, 18px);
-  }
-
-  .d-contents nav a {
-    font-size: var(--contents-size, 13px);
-  }
-
-  /*-- APPENDIX --*/
-  d-appendix h3 {
-    font-size: var(--heading-size, 15px);
-    color: var(--heading-color, rgba(0, 0, 0, 0.65));
-  }
-
-  d-appendix {
-    font-size: var(--text-size, 0.8em);
-    color: var(--text-color, rgba(0, 0, 0, 0.5));
-  }
-
-  d-appendix d-footnote-list a.footnote-backlink {
-    color: var(--text-color, rgba(0, 0, 0, 0.5));
-  }
-
-  /*-- WEBSITE HEADER + FOOTER --*/
-  .distill-site-header .title {
-    font-size: var(--title-size, 18px);
-    font-family: var(--navbar-font), var(--heading-default);
-  }
-
-  .distill-site-header a,
-  .nav-dropdown .nav-dropbtn {
-    font-family: var(--navbar-font), var(--heading-default);
-  }
-
-  .nav-dropdown .nav-dropbtn {
-    color: var(--text-color, rgba(255, 255, 255, 0.8));
-    font-size: var(--text-size, 15px);
-  }
-
-  .distill-site-header a:hover,
-  .nav-dropdown:hover .nav-dropbtn {
-    color: var(--hover-color, white);
-  }
-
-  .distill-site-header {
-    font-size: var(--text-size, 15px);
-    color: var(--text-color, rgba(255, 255, 255, 0.8));
-    background-color: var(--bkgd-color, #0F2E3D);
-  }
-
-  .distill-site-footer {
-    font-size: var(--text-size, 15px);
-    color: var(--text-color, rgba(255, 255, 255, 0.8));
-    background-color: var(--bkgd-color, #0F2E3D);
-  }
-
-  .distill-site-footer a:hover {
-    color: var(--hover-color, white);
-  }</style>
-  <!--/radix_placeholder_distill-->
-  <script src="site_libs/header-attrs-2.9/header-attrs.js"></script>
-  <script src="site_libs/popper-2.6.0/popper.min.js"></script>
-  <link href="site_libs/tippy-6.2.7/tippy.css" rel="stylesheet" />
-  <link href="site_libs/tippy-6.2.7/tippy-light-border.css" rel="stylesheet" />
-  <script src="site_libs/tippy-6.2.7/tippy.umd.min.js"></script>
-  <script src="site_libs/anchor-4.2.2/anchor.min.js"></script>
-  <script src="site_libs/bowser-1.9.3/bowser.min.js"></script>
-  <script src="site_libs/webcomponents-2.0.0/webcomponents.js"></script>
-  <script src="site_libs/distill-2.2.21/template.v2.js"></script>
-  <!--radix_placeholder_site_in_header-->
-  <!--/radix_placeholder_site_in_header-->
-
-
-</head>
-
-<body>
-
-<!--radix_placeholder_front_matter-->
-
-<script id="distill-front-matter" type="text/json">
-{"title":"&nbsp;","authors":[]}
+/* ---------------- download ---------------- */
+function download() {
+  const head = ["isolate_id", "strain_code", "species", "tri_genotype", "tri_group", "host", "host_group", "organ", "country", "region", "location", "year", "latitude", "longitude", "coord_precision", "reference"];
+  const q = v => v == null ? "" : /[",\n]/.test(String(v)) ? `"${String(v).replace(/"/g, '""')}"` : v;
+  const lines = [head.join(",")].concat(F.map(r => [r.id, r.st, dict.sp[r.sp], dict.tri[r.tri], dict.tg[r.tg], dict.h[r.h], dict.hg[r.hg], dict.org[r.org], dict.c[r.c], dict.rg[r.rg], r.loc, r.y, r.lat, r.lon, dict.pr[r.pr], dict.ref[r.ref]].map(q).join(",")));
+  const blob = new Blob([lines.join("\n")], { type: "text/csv" });
+  const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = `FGSCdb_${F.length}_isolates.csv`;
+  document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+}
+})();
 </script>
-
-<!--/radix_placeholder_front_matter-->
-<!--radix_placeholder_navigation_before_body-->
-<header class="header header--fixed" role="banner">
-<nav class="distill-site-nav distill-site-header">
-<div class="nav-left">
-<a href="index.html" class="title">FGSCdb</a>
-</div>
-<div class="nav-right">
-<a href="index.html">About</a>
-<a href="javascript:void(0);" class="nav-toggle">&#9776;</a>
-</div>
-</nav>
-</header>
-<!--/radix_placeholder_navigation_before_body-->
-<!--radix_placeholder_site_before_body-->
-<!--/radix_placeholder_site_before_body-->
-
-<div class="d-title">
-<h1> </h1>
-<!--radix_placeholder_categories-->
-<!--/radix_placeholder_categories-->
-
-</div>
-
-
-<div class="d-article">
-<h2 id="database">Database</h2>
-<p><strong>FGSCdb</strong> is a database of information on characterized fungal strains of <em>Fusarium graminearum</em> species complex that encompasses a complex of species that cause head blight or scab of small grain crops, but also ear and stalk rot of maize and panicle blight in rice. The data have been gathered directly from researchers or extracted from the published articles whenever the geographic information can be obtained. Check out details in these presentations made at the <a href="https://speakerdeck.com/emdelponte/fusarium-graminearum-species-complex-global-database-and-mapping-species-and-chemotypes">Mycokey 2018</a> and <a href="https://speakerdeck.com/emdelponte/fgscdb-tracking-the-global-spread-of-species-and-chemotypes">European Conference on Fungal Genetics 2020</a>.</p>
-<p>We would like to extend the utility of this project by allowing other researches to contribute data to populate the global map. Get in touch (<a href="mailto:delponte@ufv.br" class="email">delponte@ufv.br</a>) to receive instructions on how to submit your data.</p>
-<h2 id="dashboard">Dashboard</h2>
-<p><strong>Get access to the <a href="https://edelponte.shinyapps.io/FGSCdb/">dashboard here</a></strong></p>
-<p><strong>Author and maintainer</strong>: Emerson M. Del Ponte<br />
-<strong>Database Maintainer</strong>: Gláucia M. Moreira<br />
-<strong>Dashboard developer</strong>: Kaique S. Alves<br />
-</p>
-<p><img src="front-image.png" style="float: right" /></p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
-<!--radix_placeholder_article_footer-->
-<!--/radix_placeholder_article_footer-->
-</div>
-
-<div class="d-appendix">
-</div>
-
-
-<!--radix_placeholder_site_after_body-->
-<!--/radix_placeholder_site_after_body-->
-<!--radix_placeholder_appendices-->
-<div class="appendix-bottom">
-<h3 id="updates-and-corrections">Corrections</h3>
-<p>If you see mistakes or want to suggest changes, please <a href="https://github.com/emdelponte/FGSC/issues/new">create an issue</a> on the source repository.</p>
-<h3 id="reuse">Reuse</h3>
-<p>Text and figures are licensed under Creative Commons Attribution <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Source code is available at <a href="https://github.com/emdelponte/FGSC">https://github.com/emdelponte/FGSC</a>, unless otherwise noted. The figures that have been reused from other sources don't fall under this license and can be recognized by a note in their caption: "Figure from ...".</p>
-</div>
-<!--/radix_placeholder_appendices-->
-<!--radix_placeholder_navigation_after_body-->
-<div class="distill-site-nav distill-site-footer">
-<html>
-
-<head>
-<title>Title</title>
-</head>
-
-<body>
-  
-FGSCdb - Tracking the global spread of species and chemotypes
-
 </body>
-</html>
-</div>
-<!--/radix_placeholder_navigation_after_body-->
-
-
-</body>
-
 </html>

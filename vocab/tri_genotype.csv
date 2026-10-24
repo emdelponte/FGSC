@@ -1,0 +1,16 @@
+original,tri_genotype,tri_group,note
+15-ADON,15-ADON,15-ADON,
+3-ADON,3-ADON,3-ADON,
+NIV,NIV,NIV,
+NX2,NX-2,NX-2,spelling unified
+NX-2,NX-2,NX-2,
+DON,DON,DON (unresolved),acetylation not resolved by the method
+N-15-ADON,N-15-ADON,Other / mixed,CHECK meaning of label (F. asiaticum; Zhang 2007; Abedi-Tizaki 2017)
+N-15ADON,N-15-ADON,Other / mixed,spelling unified; CHECK meaning (Zhang 2013)
+s3-ADON,3-ADON,3-ADON,CHECK: 's3-ADON' assumed typo (Aamot 2015)
+DON/NIV,DON/NIV,Other / mixed,
+"15-ADON, NIV",15-ADON/NIV,Other / mixed,separator unified
+NX-2/3-ADON,NX-2/3-ADON,Other / mixed,
+"4,15-diANIV",NIV,NIV,"4,15-diANIV is a NIV-type genotype (O'Donnell 2018)"
+DON/ZEA,DON,DON (unresolved),ZEA is not a TRI genotype
+,Undetermined,Undetermined,

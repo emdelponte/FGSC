@@ -1,0 +1,334 @@
+isolate_id,flag,detail
+FGSC12735,coord_malformed,original: NA / -75.65732
+FGSC12742,coord_malformed,original: NA / -75.65733
+FGSC17869,coord_malformed,original: 40.441.08333 / -96.9610556
+FGSC17875,coord_malformed,original: 40.42.369444 / -98.0329444
+FGSC17879,coord_malformed,original: 40.42.280556 / -97.5958889
+FGSC17880,coord_malformed,original: 40.840.05556 / -101.695722
+FGSC17885,coord_malformed,"original: 40.,46 / -101.533611"
+FGSC17888,coord_malformed,original: 41.23241.667 / -103.020278
+FGSC17893,coord_malformed,original: 40.40.680556 / -99.427
+FGSC17894,coord_malformed,original: 40.40.680556 / -99.427
+FGSC17898,coord_malformed,original: 40.57541.667 / -98.1285556
+FGSC17906,coord_malformed,original: 40.242.44444 / -98.2537222
+FGSC17907,coord_malformed,original: 40.242.44444 / -98.2537222
+FGSC17908,coord_malformed,original: 40.242.44444 / -98.2537222
+FGSC17909,coord_malformed,original: 40.242.44444 / -98.2537222
+FGSC17910,coord_malformed,original: 40.242.44444 / -98.2537222
+FGSC17911,coord_malformed,original: 40.242.44444 / -98.2537222
+FGSC17926,coord_malformed,original: 41.0540.5556 / -100.751694
+FGSC17927,coord_malformed,original: 41.0540.5556 / -100.751694
+FGSC17928,coord_malformed,original: 41.0540.5556 / -100.751694
+FGSC10337,identical_record,all fields identical to another row of the same article (except row ID)
+FGSC10338,identical_record,all fields identical to another row of the same article (except row ID)
+FGSC10339,identical_record,all fields identical to another row of the same article (except row ID)
+FGSC10340,identical_record,all fields identical to another row of the same article (except row ID)
+FGSC10637,identical_record,all fields identical to another row of the same article (except row ID)
+FGSC10639,identical_record,all fields identical to another row of the same article (except row ID)
+FGSC10640,identical_record,all fields identical to another row of the same article (except row ID)
+FGSC10641,identical_record,all fields identical to another row of the same article (except row ID)
+FGSC10673,identical_record,all fields identical to another row of the same article (except row ID)
+FGSC10675,identical_record,all fields identical to another row of the same article (except row ID)
+FGSC10676,identical_record,all fields identical to another row of the same article (except row ID)
+FGSC10677,identical_record,all fields identical to another row of the same article (except row ID)
+FGSC12633,identical_record,all fields identical to another row of the same article (except row ID)
+FGSC12640,identical_record,all fields identical to another row of the same article (except row ID)
+FGSC12852,identical_record,all fields identical to another row of the same article (except row ID)
+FGSC12853,identical_record,all fields identical to another row of the same article (except row ID)
+FGSC12857,identical_record,all fields identical to another row of the same article (except row ID)
+FGSC12858,identical_record,all fields identical to another row of the same article (except row ID)
+FGSC14456,identical_record,all fields identical to another row of the same article (except row ID)
+FGSC14457,identical_record,all fields identical to another row of the same article (except row ID)
+FGSC14458,identical_record,all fields identical to another row of the same article (except row ID)
+FGSC14459,identical_record,all fields identical to another row of the same article (except row ID)
+FGSC14566,identical_record,all fields identical to another row of the same article (except row ID)
+FGSC14567,identical_record,all fields identical to another row of the same article (except row ID)
+FGSC14595,identical_record,all fields identical to another row of the same article (except row ID)
+FGSC14596,identical_record,all fields identical to another row of the same article (except row ID)
+FGSC16592,identical_record,all fields identical to another row of the same article (except row ID)
+FGSC16609,identical_record,all fields identical to another row of the same article (except row ID)
+FGSC16683,identical_record,all fields identical to another row of the same article (except row ID)
+FGSC16689,identical_record,all fields identical to another row of the same article (except row ID)
+FGSC16718,identical_record,all fields identical to another row of the same article (except row ID)
+FGSC16722,identical_record,all fields identical to another row of the same article (except row ID)
+FGSC17095,identical_record,all fields identical to another row of the same article (except row ID)
+FGSC17096,identical_record,all fields identical to another row of the same article (except row ID)
+FGSC17123,identical_record,all fields identical to another row of the same article (except row ID)
+FGSC17124,identical_record,all fields identical to another row of the same article (except row ID)
+FGSC04563,duplicate_strain_code,strain Sc458 repeated in the same article
+FGSC04576,duplicate_strain_code,strain Sc458 repeated in the same article
+FGSC04877,duplicate_strain_code,strain 224c repeated in the same article
+FGSC04880,duplicate_strain_code,strain 224c repeated in the same article
+FGSC04983,duplicate_strain_code,strain 02-267 repeated in the same article
+FGSC05000,duplicate_strain_code,strain 02-267 repeated in the same article
+FGSC09489,duplicate_strain_code,strain S-32 repeated in the same article
+FGSC09490,duplicate_strain_code,strain S-4 repeated in the same article
+FGSC09492,duplicate_strain_code,strain T-128-0 repeated in the same article
+FGSC09493,duplicate_strain_code,strain T-16 repeated in the same article
+FGSC09542,duplicate_strain_code,strain S-32 repeated in the same article
+FGSC09543,duplicate_strain_code,strain S-4 repeated in the same article
+FGSC09546,duplicate_strain_code,strain T-128-0 repeated in the same article
+FGSC09548,duplicate_strain_code,strain T-16 repeated in the same article
+FGSC09566,duplicate_strain_code,strain J-128-0 repeated in the same article
+FGSC09573,duplicate_strain_code,strain C-16 repeated in the same article
+FGSC09574,duplicate_strain_code,strain C-16 repeated in the same article
+FGSC09604,duplicate_strain_code,strain J-128-0 repeated in the same article
+FGSC09777,duplicate_strain_code,strain R-9913 repeated in the same article
+FGSC09778,duplicate_strain_code,strain R-9914 repeated in the same article
+FGSC09779,duplicate_strain_code,strain R-9915 repeated in the same article
+FGSC09780,duplicate_strain_code,strain R-9916 repeated in the same article
+FGSC09781,duplicate_strain_code,strain R-9917 repeated in the same article
+FGSC09782,duplicate_strain_code,strain R-9918 repeated in the same article
+FGSC09783,duplicate_strain_code,strain R-9913 repeated in the same article
+FGSC09784,duplicate_strain_code,strain R-9914 repeated in the same article
+FGSC09785,duplicate_strain_code,strain R-9915 repeated in the same article
+FGSC09786,duplicate_strain_code,strain R-9916 repeated in the same article
+FGSC09787,duplicate_strain_code,strain R-9917 repeated in the same article
+FGSC09788,duplicate_strain_code,strain R-9918 repeated in the same article
+FGSC10153,duplicate_strain_code,strain L2a repeated in the same article
+FGSC10155,duplicate_strain_code,strain L3a repeated in the same article
+FGSC10156,duplicate_strain_code,strain L3a repeated in the same article
+FGSC10157,duplicate_strain_code,strain L3b repeated in the same article
+FGSC10161,duplicate_strain_code,strain L5b repeated in the same article
+FGSC10162,duplicate_strain_code,strain L5b repeated in the same article
+FGSC10165,duplicate_strain_code,strain L8a repeated in the same article
+FGSC10173,duplicate_strain_code,strain L13a repeated in the same article
+FGSC10174,duplicate_strain_code,strain L13a repeated in the same article
+FGSC10177,duplicate_strain_code,strain L14b repeated in the same article
+FGSC10178,duplicate_strain_code,strain L14b repeated in the same article
+FGSC10182,duplicate_strain_code,strain L16b repeated in the same article
+FGSC10183,duplicate_strain_code,strain L16b repeated in the same article
+FGSC10184,duplicate_strain_code,strain L17a repeated in the same article
+FGSC10185,duplicate_strain_code,strain L17a repeated in the same article
+FGSC10187,duplicate_strain_code,strain C2a repeated in the same article
+FGSC10188,duplicate_strain_code,strain C2a repeated in the same article
+FGSC10191,duplicate_strain_code,strain C5b repeated in the same article
+FGSC10195,duplicate_strain_code,strain C9a repeated in the same article
+FGSC10196,duplicate_strain_code,strain C9a repeated in the same article
+FGSC10298,duplicate_strain_code,strain L14b repeated in the same article
+FGSC10299,duplicate_strain_code,strain L2a repeated in the same article
+FGSC10300,duplicate_strain_code,strain L3b repeated in the same article
+FGSC10301,duplicate_strain_code,strain L8a repeated in the same article
+FGSC10302,duplicate_strain_code,strain C2a repeated in the same article
+FGSC10303,duplicate_strain_code,strain C5b repeated in the same article
+FGSC10341,duplicate_strain_code,strain FG 3211 repeated in the same article
+FGSC10342,duplicate_strain_code,strain FG 3211 repeated in the same article
+FGSC10365,duplicate_strain_code,strain 9F1 repeated in the same article
+FGSC10416,duplicate_strain_code,strain 30H2 repeated in the same article
+FGSC10446,duplicate_strain_code,strain 43B2 repeated in the same article
+FGSC10514,duplicate_strain_code,strain 43B2 repeated in the same article
+FGSC10519,duplicate_strain_code,strain 30H2 repeated in the same article
+FGSC10528,duplicate_strain_code,strain 9F1 repeated in the same article
+FGSC11108,duplicate_strain_code,strain N1030 repeated in the same article
+FGSC11110,duplicate_strain_code,strain N1032 repeated in the same article
+FGSC11115,duplicate_strain_code,strain N1030 repeated in the same article
+FGSC11116,duplicate_strain_code,strain N1032 repeated in the same article
+FGSC11138,duplicate_strain_code,strain N1064 repeated in the same article
+FGSC11148,duplicate_strain_code,strain N1076 repeated in the same article
+FGSC11149,duplicate_strain_code,strain N1077 repeated in the same article
+FGSC11150,duplicate_strain_code,strain N1078 repeated in the same article
+FGSC11151,duplicate_strain_code,strain N1079 repeated in the same article
+FGSC11157,duplicate_strain_code,strain N1076 repeated in the same article
+FGSC11158,duplicate_strain_code,strain N1077 repeated in the same article
+FGSC11159,duplicate_strain_code,strain N1078 repeated in the same article
+FGSC11160,duplicate_strain_code,strain N1079 repeated in the same article
+FGSC11164,duplicate_strain_code,strain N1083 repeated in the same article
+FGSC11171,duplicate_strain_code,strain N1090 repeated in the same article
+FGSC11172,duplicate_strain_code,strain N1091 repeated in the same article
+FGSC11175,duplicate_strain_code,strain N1094 repeated in the same article
+FGSC11204,duplicate_strain_code,strain N1123 repeated in the same article
+FGSC11212,duplicate_strain_code,strain N1064 repeated in the same article
+FGSC11216,duplicate_strain_code,strain N1083 repeated in the same article
+FGSC11224,duplicate_strain_code,strain N1135 repeated in the same article
+FGSC11241,duplicate_strain_code,strain N1090 repeated in the same article
+FGSC11242,duplicate_strain_code,strain N1091 repeated in the same article
+FGSC11243,duplicate_strain_code,strain N1094 repeated in the same article
+FGSC11273,duplicate_strain_code,strain N1123 repeated in the same article
+FGSC11282,duplicate_strain_code,strain N1135 repeated in the same article
+FGSC11454,duplicate_strain_code,strain W5012 repeated in the same article
+FGSC11457,duplicate_strain_code,strain W5012 repeated in the same article
+FGSC12262,duplicate_strain_code,strain 5129 repeated in the same article
+FGSC12275,duplicate_strain_code,strain 5129 repeated in the same article
+FGSC12603,duplicate_strain_code,strain HLJ6 repeated in the same article
+FGSC12623,duplicate_strain_code,strain HLJ6 repeated in the same article
+FGSC14053,duplicate_strain_code,strain FG144 repeated in the same article
+FGSC14054,duplicate_strain_code,strain FG144 repeated in the same article
+FGSC14055,duplicate_strain_code,strain FG147 repeated in the same article
+FGSC14079,duplicate_strain_code,strain FG142 repeated in the same article
+FGSC14081,duplicate_strain_code,strain FG145 repeated in the same article
+FGSC14082,duplicate_strain_code,strain FG146 repeated in the same article
+FGSC14091,duplicate_strain_code,strain FG142 repeated in the same article
+FGSC14092,duplicate_strain_code,strain FG145 repeated in the same article
+FGSC14093,duplicate_strain_code,strain FG146 repeated in the same article
+FGSC14094,duplicate_strain_code,strain FG147 repeated in the same article
+FGSC14184,duplicate_strain_code,strain 5168 repeated in the same article
+FGSC14249,duplicate_strain_code,strain 5168 repeated in the same article
+FGSC14300,duplicate_strain_code,strain 7001 repeated in the same article
+FGSC14313,duplicate_strain_code,strain 7001 repeated in the same article
+FGSC14324,duplicate_strain_code,strain 7122 repeated in the same article
+FGSC14328,duplicate_strain_code,strain 7122 repeated in the same article
+FGSC14480,duplicate_strain_code,strain IPP14002 repeated in the same article
+FGSC14481,duplicate_strain_code,strain IPP14002 repeated in the same article
+FGSC14568,duplicate_strain_code,strain IPP140102 repeated in the same article
+FGSC14801,duplicate_strain_code,strain IPP14096 repeated in the same article
+FGSC14802,duplicate_strain_code,strain IPP14096 repeated in the same article
+FGSC09924,possible_rereport,same strain/species/country in: Amarasinghe et al. (2019); Kelly et al. (2016)
+FGSC10118,possible_rereport,same strain/species/country in: Jiang et al. (2021); Zhang et al. (2016)
+FGSC10614,possible_rereport,same strain/species/country in: Desjardins & Proctor (2011); O'Donnell et al. (2000)
+FGSC10615,possible_rereport,same strain/species/country in: Desjardins & Proctor (2011); O'Donnell et al. (2000)
+FGSC10789,possible_rereport,same strain/species/country in: Yerkovich et al. (2017); Yerkovich et al. (2020b)
+FGSC10791,possible_rereport,same strain/species/country in: Yerkovich et al. (2017); Yerkovich et al. (2020b)
+FGSC10792,possible_rereport,same strain/species/country in: Yerkovich et al. (2017); Yerkovich et al. (2020b)
+FGSC11729,possible_rereport,same strain/species/country in: Desjardins & Proctor (2011); O'Donnell et al. (2000)
+FGSC11731,possible_rereport,same strain/species/country in: Desjardins & Proctor (2011); O'Donnell et al. (2000)
+FGSC14432,possible_rereport,same strain/species/country in: Valverde-Bogantes et al. (2021); Wegulo et al. (2018)
+FGSC14433,possible_rereport,same strain/species/country in: Valverde-Bogantes et al. (2021); Wegulo et al. (2018)
+FGSC14434,possible_rereport,same strain/species/country in: Valverde-Bogantes et al. (2021); Wegulo et al. (2018)
+FGSC14435,possible_rereport,same strain/species/country in: Valverde-Bogantes et al. (2021); Wegulo et al. (2018)
+FGSC14436,possible_rereport,same strain/species/country in: Valverde-Bogantes et al. (2021); Wegulo et al. (2018)
+FGSC14437,possible_rereport,same strain/species/country in: Valverde-Bogantes et al. (2021); Wegulo et al. (2018)
+FGSC14438,possible_rereport,same strain/species/country in: Valverde-Bogantes et al. (2021); Wegulo et al. (2018)
+FGSC14439,possible_rereport,same strain/species/country in: Valverde-Bogantes et al. (2021); Wegulo et al. (2018)
+FGSC14440,possible_rereport,same strain/species/country in: Valverde-Bogantes et al. (2021); Wegulo et al. (2018)
+FGSC14441,possible_rereport,same strain/species/country in: Valverde-Bogantes et al. (2021); Wegulo et al. (2018)
+FGSC14442,possible_rereport,same strain/species/country in: Valverde-Bogantes et al. (2021); Wegulo et al. (2018)
+FGSC14443,possible_rereport,same strain/species/country in: Valverde-Bogantes et al. (2021); Wegulo et al. (2018)
+FGSC14444,possible_rereport,same strain/species/country in: Valverde-Bogantes et al. (2021); Wegulo et al. (2018)
+FGSC14445,possible_rereport,same strain/species/country in: Valverde-Bogantes et al. (2021); Wegulo et al. (2018)
+FGSC14446,possible_rereport,same strain/species/country in: Valverde-Bogantes et al. (2021); Wegulo et al. (2018)
+FGSC14447,possible_rereport,same strain/species/country in: Valverde-Bogantes et al. (2021); Wegulo et al. (2018)
+FGSC14448,possible_rereport,same strain/species/country in: Valverde-Bogantes et al. (2021); Wegulo et al. (2018)
+FGSC14449,possible_rereport,same strain/species/country in: Valverde-Bogantes et al. (2021); Wegulo et al. (2018)
+FGSC14450,possible_rereport,same strain/species/country in: Valverde-Bogantes et al. (2021); Wegulo et al. (2018)
+FGSC14451,possible_rereport,same strain/species/country in: Valverde-Bogantes et al. (2021); Wegulo et al. (2018)
+FGSC14452,possible_rereport,same strain/species/country in: Valverde-Bogantes et al. (2021); Wegulo et al. (2018)
+FGSC16651,possible_rereport,same strain/species/country in: Amarasinghe et al. (2019); Kelly et al. (2016)
+FGSC16998,possible_rereport,same strain/species/country in: Yerkovich et al. (2017); Yerkovich et al. (2020b)
+FGSC17000,possible_rereport,same strain/species/country in: Yerkovich et al. (2017); Yerkovich et al. (2020b)
+FGSC17001,possible_rereport,same strain/species/country in: Yerkovich et al. (2017); Yerkovich et al. (2020b)
+FGSC17264,possible_rereport,same strain/species/country in: Jiang et al. (2021); Zhang et al. (2016)
+FGSC17869,possible_rereport,same strain/species/country in: Valverde-Bogantes et al. (2021); Wegulo et al. (2018)
+FGSC17874,possible_rereport,same strain/species/country in: Valverde-Bogantes et al. (2021); Wegulo et al. (2018)
+FGSC17877,possible_rereport,same strain/species/country in: Valverde-Bogantes et al. (2021); Wegulo et al. (2018)
+FGSC17878,possible_rereport,same strain/species/country in: Valverde-Bogantes et al. (2021); Wegulo et al. (2018)
+FGSC17880,possible_rereport,same strain/species/country in: Valverde-Bogantes et al. (2021); Wegulo et al. (2018)
+FGSC17882,possible_rereport,same strain/species/country in: Valverde-Bogantes et al. (2021); Wegulo et al. (2018)
+FGSC17883,possible_rereport,same strain/species/country in: Valverde-Bogantes et al. (2021); Wegulo et al. (2018)
+FGSC17884,possible_rereport,same strain/species/country in: Valverde-Bogantes et al. (2021); Wegulo et al. (2018)
+FGSC17885,possible_rereport,same strain/species/country in: Valverde-Bogantes et al. (2021); Wegulo et al. (2018)
+FGSC17886,possible_rereport,same strain/species/country in: Valverde-Bogantes et al. (2021); Wegulo et al. (2018)
+FGSC17887,possible_rereport,same strain/species/country in: Valverde-Bogantes et al. (2021); Wegulo et al. (2018)
+FGSC17888,possible_rereport,same strain/species/country in: Valverde-Bogantes et al. (2021); Wegulo et al. (2018)
+FGSC17890,possible_rereport,same strain/species/country in: Valverde-Bogantes et al. (2021); Wegulo et al. (2018)
+FGSC17892,possible_rereport,same strain/species/country in: Valverde-Bogantes et al. (2021); Wegulo et al. (2018)
+FGSC17893,possible_rereport,same strain/species/country in: Valverde-Bogantes et al. (2021); Wegulo et al. (2018)
+FGSC17894,possible_rereport,same strain/species/country in: Valverde-Bogantes et al. (2021); Wegulo et al. (2018)
+FGSC17895,possible_rereport,same strain/species/country in: Valverde-Bogantes et al. (2021); Wegulo et al. (2018)
+FGSC17898,possible_rereport,same strain/species/country in: Valverde-Bogantes et al. (2021); Wegulo et al. (2018)
+FGSC17902,possible_rereport,same strain/species/country in: Valverde-Bogantes et al. (2021); Wegulo et al. (2018)
+FGSC17904,possible_rereport,same strain/species/country in: Valverde-Bogantes et al. (2021); Wegulo et al. (2018)
+FGSC17905,possible_rereport,same strain/species/country in: Valverde-Bogantes et al. (2021); Wegulo et al. (2018)
+FGSC11179,check_label,TRI genotype label 'N-15-ADON': confirm meaning in source
+FGSC11180,check_label,TRI genotype label 'N-15-ADON': confirm meaning in source
+FGSC11181,check_label,TRI genotype label 'N-15-ADON': confirm meaning in source
+FGSC11182,check_label,TRI genotype label 'N-15-ADON': confirm meaning in source
+FGSC11217,check_label,TRI genotype label 'N-15-ADON': confirm meaning in source
+FGSC11218,check_label,TRI genotype label 'N-15-ADON': confirm meaning in source
+FGSC11219,check_label,TRI genotype label 'N-15-ADON': confirm meaning in source
+FGSC11220,check_label,TRI genotype label 'N-15-ADON': confirm meaning in source
+FGSC11221,check_label,TRI genotype label 'N-15-ADON': confirm meaning in source
+FGSC11222,check_label,TRI genotype label 'N-15-ADON': confirm meaning in source
+FGSC11223,check_label,TRI genotype label 'N-15-ADON': confirm meaning in source
+FGSC11224,check_label,TRI genotype label 'N-15-ADON': confirm meaning in source
+FGSC13709,check_label,TRI genotype label 'N-15-ADON': confirm meaning in source
+FGSC13710,check_label,TRI genotype label 'N-15-ADON': confirm meaning in source
+FGSC13726,check_label,TRI genotype label 'N-15-ADON': confirm meaning in source
+FGSC13727,check_label,TRI genotype label 'N-15-ADON': confirm meaning in source
+FGSC13790,check_label,TRI genotype label 'N-15-ADON': confirm meaning in source
+FGSC13791,check_label,TRI genotype label 'N-15-ADON': confirm meaning in source
+FGSC13792,check_label,TRI genotype label 'N-15-ADON': confirm meaning in source
+FGSC13793,check_label,TRI genotype label 'N-15-ADON': confirm meaning in source
+FGSC13794,check_label,TRI genotype label 'N-15-ADON': confirm meaning in source
+FGSC13795,check_label,TRI genotype label 'N-15-ADON': confirm meaning in source
+FGSC13813,check_label,TRI genotype label 'N-15-ADON': confirm meaning in source
+FGSC13814,check_label,TRI genotype label 'N-15-ADON': confirm meaning in source
+FGSC13815,check_label,TRI genotype label 'N-15-ADON': confirm meaning in source
+FGSC14179,check_label,TRI genotype label 'N-15-ADON': confirm meaning in source
+FGSC14180,check_label,TRI genotype label 'N-15-ADON': confirm meaning in source
+FGSC14181,check_label,TRI genotype label 'N-15-ADON': confirm meaning in source
+FGSC14182,check_label,TRI genotype label 'N-15-ADON': confirm meaning in source
+FGSC14198,check_label,TRI genotype label 'N-15-ADON': confirm meaning in source
+FGSC14205,check_label,TRI genotype label 'N-15-ADON': confirm meaning in source
+FGSC14215,check_label,TRI genotype label 'N-15-ADON': confirm meaning in source
+FGSC14223,check_label,TRI genotype label 'N-15-ADON': confirm meaning in source
+FGSC14224,check_label,TRI genotype label 'N-15-ADON': confirm meaning in source
+FGSC14245,check_label,TRI genotype label 'N-15-ADON': confirm meaning in source
+FGSC14246,check_label,TRI genotype label 'N-15-ADON': confirm meaning in source
+FGSC14256,check_label,TRI genotype label 'N-15-ADON': confirm meaning in source
+FGSC14257,check_label,TRI genotype label 'N-15-ADON': confirm meaning in source
+FGSC14339,check_label,TRI genotype label 'N-15-ADON': confirm meaning in source
+FGSC14345,check_label,TRI genotype label 'N-15-ADON': confirm meaning in source
+FGSC14378,check_label,TRI genotype label 'N-15-ADON': confirm meaning in source
+FGSC14379,check_label,TRI genotype label 'N-15-ADON': confirm meaning in source
+FGSC14380,check_label,TRI genotype label 'N-15-ADON': confirm meaning in source
+FGSC14404,check_label,TRI genotype label 'N-15-ADON': confirm meaning in source
+FGSC14405,check_label,TRI genotype label 'N-15-ADON': confirm meaning in source
+FGSC14406,check_label,TRI genotype label 'N-15-ADON': confirm meaning in source
+FGSC14407,check_label,TRI genotype label 'N-15-ADON': confirm meaning in source
+FGSC14431,check_label,TRI genotype label 'N-15-ADON': confirm meaning in source
+FGSC11071,check_label,'s3-ADON' recoded to 3-ADON: confirm in source
+FGSC11074,check_label,'s3-ADON' recoded to 3-ADON: confirm in source
+FGSC03239,species_missing,species not reported
+FGSC03250,species_missing,species not reported
+FGSC03258,species_missing,species not reported
+FGSC03259,species_missing,species not reported
+FGSC03260,species_missing,species not reported
+FGSC03263,species_missing,species not reported
+FGSC03264,species_missing,species not reported
+FGSC03265,species_missing,species not reported
+FGSC03266,species_missing,species not reported
+FGSC03267,species_missing,species not reported
+FGSC03268,species_missing,species not reported
+FGSC03273,species_missing,species not reported
+FGSC03274,species_missing,species not reported
+FGSC03275,species_missing,species not reported
+FGSC03276,species_missing,species not reported
+FGSC03277,species_missing,species not reported
+FGSC03278,species_missing,species not reported
+FGSC03279,species_missing,species not reported
+FGSC03281,species_missing,species not reported
+FGSC03283,species_missing,species not reported
+FGSC03285,species_missing,species not reported
+FGSC03286,species_missing,species not reported
+FGSC03288,species_missing,species not reported
+FGSC03289,species_missing,species not reported
+FGSC03290,species_missing,species not reported
+FGSC03291,species_missing,species not reported
+FGSC03293,species_missing,species not reported
+FGSC03294,species_missing,species not reported
+FGSC03297,species_missing,species not reported
+FGSC03298,species_missing,species not reported
+FGSC03299,species_missing,species not reported
+FGSC03303,species_missing,species not reported
+FGSC03304,species_missing,species not reported
+FGSC03305,species_missing,species not reported
+FGSC03306,species_missing,species not reported
+FGSC03309,species_missing,species not reported
+FGSC03314,species_missing,species not reported
+FGSC03316,species_missing,species not reported
+FGSC03317,species_missing,species not reported
+FGSC03319,species_missing,species not reported
+FGSC03320,species_missing,species not reported
+FGSC03323,species_missing,species not reported
+FGSC03324,species_missing,species not reported
+FGSC03327,species_missing,species not reported
+FGSC03332,species_missing,species not reported
+FGSC03334,species_missing,species not reported
+FGSC03335,species_missing,species not reported
+FGSC03337,species_missing,species not reported
+FGSC03338,species_missing,species not reported
+FGSC03339,species_missing,species not reported
+FGSC03340,species_missing,species not reported
+FGSC03345,species_missing,species not reported
+FGSC03346,species_missing,species not reported
+FGSC03347,species_missing,species not reported
