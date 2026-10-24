@@ -108,3 +108,4 @@ article_id,reference,n_isolates,n_species,countries,year_min,year_max,pub_year,d
 107,Henriquez et al. (2025),72,1,Canada,2015.0,2020.0,2025.0,10.3390/toxins17010045,isolate,"Toxins 17:45. Manitoba 2015-2020; 73 isolates of Table 1 joined to Suppl. Table S2 (RM, nearest town). HSW-15-16 linked to Hafez et al. (2019)."
 108,Liu et al. (2026),878,3,Mexico,2014.0,2023.0,2026.0,10.1094/PDIS-01-26-0064-RE,isolate,"Plant Dis 110:3454-3465. Suppl. Table S2 (975 Fusarium isolates, CIMMYT, 2014-2023); 97 non-FGSC excluded."
 109,Wang et al. (2026),360,2,China,2024.0,2024.0,2026.0,10.1094/PDIS-12-25-2593-RE,aggregate,"Plant Dis 110:4093-4099. Counts per city x species x genotype (Table 1), Hubei 2024. City centers."
+110,DeGenring et al. (2026),12,4,Ethiopia,2022.0,2022.0,2026.0,10.1094/PDIS-01-25-0126-RE,isolate,Plant Dis 110:890-902. 12 FGSC isolates incl. F. kistleri sp. nov. (ET-2022-52). Data from NCBI BioSamples (PRJNA1255107).
