@@ -110,3 +110,4 @@ article_id,reference,n_isolates,n_species,countries,year_min,year_max,pub_year,d
 109,Wang et al. (2026),360,2,China,2024.0,2024.0,2026.0,10.1094/PDIS-12-25-2593-RE,aggregate,"Plant Dis 110:4093-4099. Counts per city x species x genotype (Table 1), Hubei 2024. City centers."
 110,DeGenring et al. (2026),12,4,Ethiopia,2022.0,2022.0,2026.0,10.1094/PDIS-01-25-0126-RE,isolate,Plant Dis 110:890-902. 12 FGSC isolates incl. F. kistleri sp. nov. (ET-2022-52). Data from NCBI BioSamples (PRJNA1255107).
 111,Xie et al. (2026),1586,2,China,2013.0,2023.0,2026.0,10.1094/PHYTO-02-26-0044-R,aggregate,"Phytopathology 116:1640-1650. Counts from Table 3 (field x source x year), Kaifeng, Henan."
+112,Smith et al. (2025),24,1,United States,2022.0,2023.0,2025.0,10.1094/PDIS-11-24-2452-RE,isolate,"Plant Dis 109:1976-1982. Kentucky hemp (2022) and wheat (2023) isolates, Table 1; county centroids."
