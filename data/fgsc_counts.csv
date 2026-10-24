@@ -31,3 +31,26 @@ C0029,105,Dong et al. (2021),10.1094/PDIS-11-20-2376-RE,admin2,China,Jiangsu,Cha
 C0030,105,Dong et al. (2021),10.1094/PDIS-11-20-2376-RE,admin2,China,Jiangsu,Wuxi,31.57766,120.29528,2018,2018,Weeds,Seed,F. asiaticum,3-ADON,15,Fig. 3 (digitized pie) + text totals,see articles
 C0031,105,Dong et al. (2021),10.1094/PDIS-11-20-2376-RE,admin2,China,Jiangsu,Wuxi,31.57766,120.29528,2018,2018,Weeds,Seed,F. asiaticum,NIV,10,Fig. 3 (digitized pie) + text totals,see articles
 C0032,105,Dong et al. (2021),10.1094/PDIS-11-20-2376-RE,admin2,China,Jiangsu,Suzhou,31.31112,120.62129,2018,2018,Weeds,Seed,F. asiaticum,3-ADON,15,Fig. 3 (digitized pie) + text totals,see articles
+C0033,109,Wang et al. (2026),10.1094/PDIS-12-25-2593-RE,admin2,China,Hubei,Xiangyang,32.0422,112.14479,2024,2024,Wheat,Kernel,F. asiaticum,NIV,7,Table 1,see articles
+C0034,109,Wang et al. (2026),10.1094/PDIS-12-25-2593-RE,admin2,China,Hubei,Xiangyang,32.0422,112.14479,2024,2024,Wheat,Kernel,F. asiaticum,3-ADON,56,Table 1,see articles
+C0035,109,Wang et al. (2026),10.1094/PDIS-12-25-2593-RE,admin2,China,Hubei,Xiangyang,32.0422,112.14479,2024,2024,Wheat,Kernel,F. asiaticum,15-ADON,4,Table 1,see articles
+C0036,109,Wang et al. (2026),10.1094/PDIS-12-25-2593-RE,admin2,China,Hubei,Xiangyang,32.0422,112.14479,2024,2024,Wheat,Kernel,F. graminearum,15-ADON,24,Table 1,see articles
+C0037,109,Wang et al. (2026),10.1094/PDIS-12-25-2593-RE,admin2,China,Hubei,Suizhou,31.71111,113.36306,2024,2024,Wheat,Kernel,F. asiaticum,NIV,9,Table 1,see articles
+C0038,109,Wang et al. (2026),10.1094/PDIS-12-25-2593-RE,admin2,China,Hubei,Suizhou,31.71111,113.36306,2024,2024,Wheat,Kernel,F. asiaticum,3-ADON,20,Table 1,see articles
+C0039,109,Wang et al. (2026),10.1094/PDIS-12-25-2593-RE,admin2,China,Hubei,Suizhou,31.71111,113.36306,2024,2024,Wheat,Kernel,F. graminearum,15-ADON,3,Table 1,see articles
+C0040,109,Wang et al. (2026),10.1094/PDIS-12-25-2593-RE,admin2,China,Hubei,Jingmen,31.03361,112.20472,2024,2024,Wheat,Kernel,F. asiaticum,NIV,6,Table 1,see articles
+C0041,109,Wang et al. (2026),10.1094/PDIS-12-25-2593-RE,admin2,China,Hubei,Jingmen,31.03361,112.20472,2024,2024,Wheat,Kernel,F. asiaticum,3-ADON,12,Table 1,see articles
+C0042,109,Wang et al. (2026),10.1094/PDIS-12-25-2593-RE,admin2,China,Hubei,Jingmen,31.03361,112.20472,2024,2024,Wheat,Kernel,F. asiaticum,15-ADON,1,Table 1,see articles
+C0043,109,Wang et al. (2026),10.1094/PDIS-12-25-2593-RE,admin2,China,Hubei,Jingmen,31.03361,112.20472,2024,2024,Wheat,Kernel,F. graminearum,15-ADON,1,Table 1,see articles
+C0044,109,Wang et al. (2026),10.1094/PDIS-12-25-2593-RE,admin2,China,Hubei,Xiaogan,30.92689,113.92221,2024,2024,Wheat,Kernel,F. asiaticum,NIV,14,Table 1,see articles
+C0045,109,Wang et al. (2026),10.1094/PDIS-12-25-2593-RE,admin2,China,Hubei,Xiaogan,30.92689,113.92221,2024,2024,Wheat,Kernel,F. asiaticum,3-ADON,31,Table 1,see articles
+C0046,109,Wang et al. (2026),10.1094/PDIS-12-25-2593-RE,admin2,China,Hubei,Xiaogan,30.92689,113.92221,2024,2024,Wheat,Kernel,F. asiaticum,15-ADON,12,Table 1,see articles
+C0047,109,Wang et al. (2026),10.1094/PDIS-12-25-2593-RE,admin2,China,Hubei,Xiaogan,30.92689,113.92221,2024,2024,Wheat,Kernel,F. graminearum,15-ADON,2,Table 1,see articles
+C0048,109,Wang et al. (2026),10.1094/PDIS-12-25-2593-RE,admin2,China,Hubei,Qianjiang,30.421,112.8919,2024,2024,Wheat,Kernel,F. asiaticum,NIV,8,Table 1,see articles
+C0049,109,Wang et al. (2026),10.1094/PDIS-12-25-2593-RE,admin2,China,Hubei,Qianjiang,30.421,112.8919,2024,2024,Wheat,Kernel,F. asiaticum,3-ADON,14,Table 1,see articles
+C0050,109,Wang et al. (2026),10.1094/PDIS-12-25-2593-RE,admin2,China,Hubei,Qianjiang,30.421,112.8919,2024,2024,Wheat,Kernel,F. asiaticum,15-ADON,5,Table 1,see articles
+C0051,109,Wang et al. (2026),10.1094/PDIS-12-25-2593-RE,admin2,China,Hubei,Qianjiang,30.421,112.8919,2024,2024,Wheat,Kernel,F. graminearum,15-ADON,3,Table 1,see articles
+C0052,109,Wang et al. (2026),10.1094/PDIS-12-25-2593-RE,admin2,China,Hubei,Jingzhou,30.35028,112.19028,2024,2024,Wheat,Kernel,F. asiaticum,NIV,19,Table 1,see articles
+C0053,109,Wang et al. (2026),10.1094/PDIS-12-25-2593-RE,admin2,China,Hubei,Jingzhou,30.35028,112.19028,2024,2024,Wheat,Kernel,F. asiaticum,3-ADON,70,Table 1,see articles
+C0054,109,Wang et al. (2026),10.1094/PDIS-12-25-2593-RE,admin2,China,Hubei,Jingzhou,30.35028,112.19028,2024,2024,Wheat,Kernel,F. asiaticum,15-ADON,28,Table 1,see articles
+C0055,109,Wang et al. (2026),10.1094/PDIS-12-25-2593-RE,admin2,China,Hubei,Jingzhou,30.35028,112.19028,2024,2024,Wheat,Kernel,F. graminearum,15-ADON,11,Table 1,see articles
