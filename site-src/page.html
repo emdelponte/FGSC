@@ -1155,12 +1155,16 @@ function initMap() {
     tiles.plain = L.geoJSON(w, { pane: "land", interactive: false, style: () => ({ color: css("--border-land"), weight: 0.7, fillColor: css("--land"), fillOpacity: 1 }) }).addTo(map);
     map.attributionControl.addAttribution("Boundaries: Natural Earth");
   }).catch(() => {});
-  tiles.streets = L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png", { attribution: "© OpenStreetMap, © CARTO", subdomains: "abcd", maxZoom: 19 });
-  tiles.sat = L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}", { attribution: "Imagery © Esri" });
+  // Free tile services that need no API key (attribution required)
+  tiles.streets = L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", { attribution: "© <a href=\"https://www.openstreetmap.org/copyright\" target=\"_blank\" rel=\"noopener\">OpenStreetMap</a> contributors", maxZoom: 19 });
+  tiles.sat = L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}", { attribution: "Imagery © Esri, Maxar, Earthstar Geographics", maxZoom: 18 });
   document.querySelectorAll("[data-bm]").forEach(b => b.onclick = () => {
     document.querySelectorAll("[data-bm]").forEach(x => x.setAttribute("aria-pressed", x === b));
     for (const k of ["streets", "sat"]) if (map.hasLayer(tiles[k])) map.removeLayer(tiles[k]);
-    if (b.dataset.bm !== "plain") tiles[b.dataset.bm].addTo(map);
+    const plain = b.dataset.bm === "plain";
+    if (!plain) tiles[b.dataset.bm].addTo(map);
+    // the vector outline map is only shown on "Plain", so it never sits on top of tile maps
+    if (tiles.plain) { if (plain) { if (!map.hasLayer(tiles.plain)) tiles.plain.addTo(map); } else if (map.hasLayer(tiles.plain)) map.removeLayer(tiles.plain); }
   });
   canvas = $("#pies"); ctx = canvas.getContext("2d");
   map.on("move zoom resize viewreset", drawPies);
