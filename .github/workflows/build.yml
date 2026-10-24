@@ -1,0 +1,44 @@
+# Rebuild the FGSCdb site data from the Google Sheet.
+# Runs on demand (Actions tab > "Build FGSCdb" > Run workflow). To run weekly, uncomment the schedule
+# after sharing the master sheet as "Anyone with the link can view".
+# The built files are committed to docs/, which Netlify serves.
+name: Build FGSCdb
+
+on:
+  workflow_dispatch:
+  # schedule:
+  #   - cron: "17 9 * * 1"
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      FGSC_SHEET_ID: ${{ vars.FGSC_SHEET_ID }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          use-public-rspm: true
+      - uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          packages: |
+            any::readr
+            any::dplyr
+            any::stringr
+            any::jsonlite
+      - name: Fetch curated sheet
+        run: Rscript scripts/00_fetch_sheet.R
+      - name: Validate
+        run: Rscript scripts/03_validate.R
+      - name: Build site data
+        run: Rscript scripts/02_site_data.R
+      - name: Commit if data changed
+        run: |
+          git config user.name "fgscdb-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add data vocab docs
+          git diff --cached --quiet || git commit -m "Data update $(date -u +%Y-%m-%d)"
+          git push

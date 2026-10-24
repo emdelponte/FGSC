@@ -1,0 +1,48 @@
+original,host,host_group
+Wheat,Wheat,Wheat
+Durum wheat,Wheat (durum),Wheat
+Wheat durum,Wheat (durum),Wheat
+Spelt,Spelt,Wheat
+Maize,Maize,Maize
+Barley,Barley,Barley
+Rice,Rice,Rice
+Oat,Oat,Other cereals
+Rye,Rye,Other cereals
+Millet,Millet,Other cereals
+Soybean,Soybean,Soybean
+unknown,Unknown,Unknown
+Panicum virgatum,Panicum virgatum,Grasses (wild/native)
+Glyceria grandis,Glyceria grandis,Grasses (wild/native)
+Hordeum jubatum,Hordeum jubatum,Grasses (wild/native)
+Elymus virginicus,Elymus virginicus,Grasses (wild/native)
+Elymus villosus,Elymus villosus,Grasses (wild/native)
+Elymus canadensis,Elymus canadensis,Grasses (wild/native)
+Phalaris arundinacea,Phalaris arundinacea,Grasses (wild/native)
+Bromus ciliatus,Bromus ciliatus,Grasses (wild/native)
+Bromus kalmii,Bromus kalmii,Grasses (wild/native)
+Hesperostipa spartea,Hesperostipa spartea,Grasses (wild/native)
+Andropogon gerardii,Andropogon gerardii,Grasses (wild/native)
+Koeleria macrantha,Koeleria macrantha,Grasses (wild/native)
+Leersia oryzoides,Leersia oryzoides,Grasses (wild/native)
+Schizachyrium scoparium,Schizachyrium scoparium,Grasses (wild/native)
+Arundo donax,Arundo donax,Grasses (wild/native)
+Johnson grass,Sorghum halepense,Grasses (wild/native)
+Native grasses,Native grasses,Grasses (wild/native)
+Ryegrass,Ryegrass,Grasses (wild/native)
+Fescue hay,Fescue hay,Grasses (wild/native)
+Weeds,Weeds,Other plants
+Potatoes,Potato,Other plants
+Sugar beets,Sugar beet,Other plants
+Sweet potato,Sweet potato,Other plants
+Banana,Banana,Other plants
+Carya illinoinensis,Carya illinoinensis,Other plants
+Acacia mearnsii,Acacia mearnsii,Other plants
+Vachellia erioloba,Vachellia erioloba,Other plants
+Ligusticum chuanxiong,Ligusticum chuanxiong,Other plants
+Cannabis sativa,Cannabis sativa,Other plants
+Grape ivy,Grape ivy,Other plants
+Herbaceours vine,Herbaceous vine,Other plants
+Debris,Debris,Non-plant / environment
+Non-host (soil),Soil,Non-plant / environment
+Feed,Feed,Non-plant / environment
+Polypore,Polypore,Non-plant / environment
